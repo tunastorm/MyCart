@@ -10,9 +10,15 @@
 		BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D42C1AEA21004070B8 /* AppDelegate.swift */; };
 		BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */; };
 		BC9502D92C1AEA21004070B8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D82C1AEA21004070B8 /* ViewController.swift */; };
-		BC9502DC2C1AEA21004070B8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BC9502DB2C1AEA21004070B8 /* Base */; };
 		BC9502DE2C1AEA22004070B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC9502DD2C1AEA22004070B8 /* Assets.xcassets */; };
 		BC9502E12C1AEA22004070B8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BC9502E02C1AEA22004070B8 /* Base */; };
+		BC9502E92C1AEAE4004070B8 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = BC9502E82C1AEAE4004070B8 /* .gitignore */; };
+		BC9502EC2C1AEBB9004070B8 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502EB2C1AEBB9004070B8 /* APIKey.swift */; };
+		BC9502EF2C1AF04B004070B8 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BC9502EE2C1AF04B004070B8 /* IQKeyboardManagerSwift */; };
+		BC9502F22C1AF053004070B8 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BC9502F12C1AF053004070B8 /* Alamofire */; };
+		BC9502F52C1AF05B004070B8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = BC9502F42C1AF05B004070B8 /* Kingfisher */; };
+		BC9502F82C1AF07F004070B8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = BC9502F72C1AF07F004070B8 /* SnapKit */; };
+		BC9502FB2C1AF087004070B8 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = BC9502FA2C1AF087004070B8 /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +26,11 @@
 		BC9502D42C1AEA21004070B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		BC9502D82C1AEA21004070B8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		BC9502DB2C1AEA21004070B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BC9502DD2C1AEA22004070B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BC9502E02C1AEA22004070B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BC9502E22C1AEA22004070B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC9502E82C1AEAE4004070B8 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		BC9502EB2C1AEBB9004070B8 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +38,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC9502FB2C1AF087004070B8 /* Then in Frameworks */,
+				BC9502F52C1AF05B004070B8 /* Kingfisher in Frameworks */,
+				BC9502F82C1AF07F004070B8 /* SnapKit in Frameworks */,
+				BC9502EF2C1AF04B004070B8 /* IQKeyboardManagerSwift in Frameworks */,
+				BC9502F22C1AF053004070B8 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +52,7 @@
 		BC9502C82C1AEA21004070B8 = {
 			isa = PBXGroup;
 			children = (
+				BC9502E82C1AEAE4004070B8 /* .gitignore */,
 				BC9502D32C1AEA21004070B8 /* MyCart */,
 				BC9502D22C1AEA21004070B8 /* Products */,
 			);
@@ -56,15 +69,23 @@
 		BC9502D32C1AEA21004070B8 /* MyCart */ = {
 			isa = PBXGroup;
 			children = (
+				BC9502EA2C1AEBAB004070B8 /* API */,
 				BC9502D42C1AEA21004070B8 /* AppDelegate.swift */,
 				BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */,
 				BC9502D82C1AEA21004070B8 /* ViewController.swift */,
-				BC9502DA2C1AEA21004070B8 /* Main.storyboard */,
 				BC9502DD2C1AEA22004070B8 /* Assets.xcassets */,
 				BC9502DF2C1AEA22004070B8 /* LaunchScreen.storyboard */,
 				BC9502E22C1AEA22004070B8 /* Info.plist */,
 			);
 			path = MyCart;
+			sourceTree = "<group>";
+		};
+		BC9502EA2C1AEBAB004070B8 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				BC9502EB2C1AEBB9004070B8 /* APIKey.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +104,13 @@
 			dependencies = (
 			);
 			name = MyCart;
+			packageProductDependencies = (
+				BC9502EE2C1AF04B004070B8 /* IQKeyboardManagerSwift */,
+				BC9502F12C1AF053004070B8 /* Alamofire */,
+				BC9502F42C1AF05B004070B8 /* Kingfisher */,
+				BC9502F72C1AF07F004070B8 /* SnapKit */,
+				BC9502FA2C1AF087004070B8 /* Then */,
+			);
 			productName = MyCart;
 			productReference = BC9502D12C1AEA21004070B8 /* MyCart.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +139,13 @@
 				Base,
 			);
 			mainGroup = BC9502C82C1AEA21004070B8;
+			packageReferences = (
+				BC9502ED2C1AF04B004070B8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				BC9502F02C1AF053004070B8 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				BC9502F32C1AF05B004070B8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				BC9502F62C1AF07F004070B8 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				BC9502F92C1AF087004070B8 /* XCRemoteSwiftPackageReference "Then" */,
+			);
 			productRefGroup = BC9502D22C1AEA21004070B8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -126,8 +161,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC9502DE2C1AEA22004070B8 /* Assets.xcassets in Resources */,
+				BC9502E92C1AEAE4004070B8 /* .gitignore in Resources */,
 				BC9502E12C1AEA22004070B8 /* Base in Resources */,
-				BC9502DC2C1AEA21004070B8 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +175,7 @@
 			files = (
 				BC9502D92C1AEA21004070B8 /* ViewController.swift in Sources */,
 				BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */,
+				BC9502EC2C1AEBB9004070B8 /* APIKey.swift in Sources */,
 				BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,14 +183,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		BC9502DA2C1AEA21004070B8 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BC9502DB2C1AEA21004070B8 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		BC9502DF2C1AEA22004070B8 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -297,9 +325,9 @@
 				INFOPLIST_FILE = MyCart/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,9 +335,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = tunastorm.MyCart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -325,9 +357,9 @@
 				INFOPLIST_FILE = MyCart/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,9 +367,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = tunastorm.MyCart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -363,6 +399,77 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BC9502ED2C1AF04B004070B8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.3;
+			};
+		};
+		BC9502F02C1AF053004070B8 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+		BC9502F32C1AF05B004070B8 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.12.0;
+			};
+		};
+		BC9502F62C1AF07F004070B8 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		BC9502F92C1AF087004070B8 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BC9502EE2C1AF04B004070B8 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC9502ED2C1AF04B004070B8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
+		BC9502F12C1AF053004070B8 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC9502F02C1AF053004070B8 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		BC9502F42C1AF05B004070B8 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC9502F32C1AF05B004070B8 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		BC9502F72C1AF07F004070B8 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC9502F62C1AF07F004070B8 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		BC9502FA2C1AF087004070B8 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC9502F92C1AF087004070B8 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BC9502C92C1AEA21004070B8 /* Project object */;
 }
