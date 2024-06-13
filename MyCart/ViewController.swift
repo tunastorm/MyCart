@@ -9,11 +9,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    let APICon = APIController()
+    
+    override func loadView() {
+        APICon.requestSearch("선물", sort: .date, page: 1)
     }
 
-
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+      
+    }
 }
-
