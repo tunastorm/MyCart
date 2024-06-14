@@ -42,6 +42,13 @@ extension SearchCollectionViewController: UICollectionViewDelegate, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-      
+        let vc = ProductDetailViewController()
+        vc.delegate = self.delegate
+        
+        if let dataList = itemList, dataList.count > 0 {
+            vc.product = dataList[indexPath.row]
+        }
+        setNavigationBarUI()
+        pushAfterView(view: vc, backButton: true, animated: true)
     }
 }

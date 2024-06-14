@@ -138,7 +138,6 @@ class SearchCollectionViewController: UIViewController {
     
     func configView() {
         view.backgroundColor = Resource.MyColor.white
-        
         navigationItem.title = delegate?.query
         
         if let total = delegate?.getTotal(){
@@ -161,7 +160,7 @@ class SearchCollectionViewController: UIViewController {
     
             button.snp.makeConstraints {
                 $0.height.equalTo(34)
-                $0.width.equalTo(24 + title.count * 14)
+                $0.width.equalTo(24 + title.count * 10)
                 $0.centerY.equalToSuperview()
             }
         }
