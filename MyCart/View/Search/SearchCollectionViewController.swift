@@ -35,7 +35,6 @@ class SearchCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(itemList)
         configBaseSetting()
         configHierarchy()
         configLayout()
@@ -70,7 +69,6 @@ class SearchCollectionViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
-        print(SearchCollectionViewCell.identifier)
         collectionView.register(SearchCollectionViewCell.self,
                                 forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
     }

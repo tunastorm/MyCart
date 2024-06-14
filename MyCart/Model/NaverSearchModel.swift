@@ -16,12 +16,13 @@ class NaverSearchShopModel {
 
     private var searchResponse = SearchResponse<ShopItem>(lastBuildDate: "", total: 1, start: 1, display: 30, items: [])
     
-    var page = 1 
+    var isEnd = false
     
+    var page = 1
     
     func requestSearch(_ query: String, sort: APIRouter.Sorting, callback: @escaping () -> ()) {
         APIClient.request(SearchResponse<ShopItem>.self,
-                          router: APIRouter.searchShoppings(query, sort: sort, page: page),
+                          router: APIRouter.searchShoppings(query, sort: sort),
                           success: {(response: SearchResponse<ShopItem>) -> () in
                                self.setNewResponse(response)
                                callback()
@@ -32,10 +33,26 @@ class NaverSearchShopModel {
         )
     }
     
+    func pageNation() -> Bool {
+        page += 1
+        start = ((page - 1) * 30) + 1
+        print(#function, page, start, total)
+        if start > 1000 {
+            isEnd.toggle()
+            return false
+        }
+        APIRouter.defaultParameters["start"] = start
+        return true
+    }
+    
     func setNewResponse(_ response: SearchResponse<ShopItem>) {
-        self.lastBuildDate = response.lastBuildDate
-        self.start = response.start
-        self.responseItems = response.items
+        if page == 1 {
+            searchResponse = response
+        } else {
+            self.lastBuildDate = response.lastBuildDate
+            self.start = response.start
+            self.responseItems.append(contentsOf: response.items)
+        }
     }
     
     var lastBuildDate: String {

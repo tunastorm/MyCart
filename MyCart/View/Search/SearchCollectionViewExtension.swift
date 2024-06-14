@@ -12,7 +12,7 @@ extension SearchCollectionViewController: UICollectionViewDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print(delegate?.getDisplay() ?? 1)
-        return delegate?.getDisplay() ?? 1
+        return itemList?.count ?? 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -29,5 +29,11 @@ extension SearchCollectionViewController: UICollectionViewDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         
+        guard let itemSize = itemList?.count else {return}
+        indexPaths.forEach {
+            if let isEnd = delegate?.getIsEnd(), !isEnd, itemSize - 4 == $0.row {
+                delegate?.scrollDown()
+            }
+        }
     }
 }

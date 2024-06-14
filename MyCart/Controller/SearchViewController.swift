@@ -25,10 +25,13 @@ class SearchViewController: UIViewController {
         model.requestSearch(query, sort: .sim,
                             callback: {() -> () in
             self.vc.itemList = self.model.responseItems
-            self.pushAfterView(view: self.vc, backButton: true, animated: true)
         })
+        self.pushAfterView(view: self.vc, backButton: true, animated: true)
     }
     
+    func getIsEnd() -> Bool {
+        return model.isEnd
+    }
     
     func getSearchedList() -> [String] {
        return model.searchedList
@@ -56,5 +59,15 @@ class SearchViewController: UIViewController {
     
     func getResponsItems() -> [ShopItem]{
         return model.responseItems
+    }
+    
+    func scrollDown() {
+        if let query, model.pageNation() {
+            
+            model.requestSearch(query, sort: .sim,
+                                callback: {() -> () in
+                self.vc.itemList = self.model.responseItems
+            })
+        }
     }
 }
