@@ -85,7 +85,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         }
         
         itemNameLabel.snp.makeConstraints {
-            $0.height.greaterThanOrEqualTo(24)
+            $0.height.lessThanOrEqualTo(40)
             $0.top.equalTo(mallNameLabel.snp.bottom).offset(2)
             $0.horizontalEdges.equalToSuperview()
         }

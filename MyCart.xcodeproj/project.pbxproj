@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC3B9C582C1C71E0008DCD18 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C572C1C71E0008DCD18 /* ProductDetailViewController.swift */; };
 		BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D42C1AEA21004070B8 /* AppDelegate.swift */; };
 		BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */; };
 		BC9502D92C1AEA21004070B8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D82C1AEA21004070B8 /* ViewController.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BC3B9C572C1C71E0008DCD18 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		BC9502D12C1AEA21004070B8 /* MyCart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC9502D42C1AEA21004070B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				BC95030C2C1BDA41004070B8 /* SearchCollectionViewController.swift */,
 				BC95030E2C1BDA83004070B8 /* SearchCollectionViewExtension.swift */,
 				BC9503102C1BDE7E004070B8 /* SearchCollectionViewCell.swift */,
+				BC3B9C572C1C71E0008DCD18 /* ProductDetailViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				BCF731B82C1C1AF7003FC583 /* UIViewController+Extension.swift in Sources */,
 				BC9502D92C1AEA21004070B8 /* ViewController.swift in Sources */,
 				BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */,
+				BC3B9C582C1C71E0008DCD18 /* ProductDetailViewController.swift in Sources */,
 				BC9502EC2C1AEBB9004070B8 /* APIKey.swift in Sources */,
 				BC9503002C1B32CB004070B8 /* NaverSearchModel.swift in Sources */,
 				BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */,
