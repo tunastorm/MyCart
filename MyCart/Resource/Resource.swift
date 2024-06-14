@@ -1,0 +1,63 @@
+//
+//  Resource.swift
+//  MyCart
+//
+//  Created by 유철원 on 6/14/24.
+//
+
+import UIKit
+
+
+enum Resource {
+    enum Font {
+        static let system13 = UIFont.systemFont(ofSize: 13)
+        static let system14 = UIFont.systemFont(ofSize: 14)
+        static let system15 = UIFont.systemFont(ofSize: 15)
+        static let system16 = UIFont.systemFont(ofSize: 16)
+        static let boldSystem13 = UIFont.boldSystemFont(ofSize: 13)
+        static let boldSystem14 = UIFont.boldSystemFont(ofSize: 14)
+        static let boldSystem15 = UIFont.boldSystemFont(ofSize: 15)
+        static let boldSystem16 = UIFont.boldSystemFont(ofSize: 16)
+    }
+    
+    enum MyColor {
+        static let orange = UIColor(hexCode: "EF8947", alpha: Alpha.full)
+        static let white = UIColor(hexCode: "FFFFFF", alpha: Alpha.full)
+        static let lightGray = UIColor(hexCode: "CDCDCD", alpha: Alpha.full)
+        static let gray = UIColor(hexCode: "828282", alpha: Alpha.full)
+        static let darkGray = UIColor(hexCode: "4C4C4C", alpha: Alpha.full)
+        static let black = UIColor(hexCode: "000000", alpha: Alpha.full)
+    }
+    
+    enum Alpha {
+        static let full = CGFloat(1.0)
+        static let half = CGFloat(0.5)
+    }
+    
+    enum Border {
+        static let width1 = CGFloat(1)
+        static let width3 = CGFloat(3)
+    }
+    
+    enum SystemImage {
+        static let cameraFill = UIImage(systemName: "camera.fill")
+        static let cart = UIImage(systemName: "cart")
+        static let cartFill = UIImage(systemName: "cart.fill")
+        static let chevronRight = UIImage(systemName: "chevron.right")
+        static let clock = UIImage(systemName: "clock")
+        static let magnifyingGlass = UIImage(systemName: "magnifyingglass")
+        static let xmark = UIImage(systemName: "xmark")
+        static let person = UIImage(systemName: "person")
+    }
+    
+    enum NamedImage {
+        static let empty = UIImage(named: "empty")
+        static let launch = UIImage(named: "launch")
+        static let likeSelected = UIImage(named: "like_selected")
+        static let likeUnselected = UIImage(named: "like_unselected")
+        
+        var profile: UIImage {
+            return UIImage(named: "profile_\(Int.random(in: 0...11))")!
+        }
+    }
+}

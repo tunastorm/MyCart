@@ -12,12 +12,32 @@ class APIController {
     
     internal let model = NaverSearchShopModel.model
     
-    func getResponsItems() -> [ShopItem]{
-        return model.responseItems
+    func getSearchedList() -> [String] {
+       return model.searchedList
+    }
+    
+    func setSearchedList(newList: [String]) {
+        model.searchedList = newList
+    }
+    
+    func getLastBuildDate() -> String {
+        return model.lastBuildDate
+    }
+    
+    func getTotal() -> Int {
+        return model.total
     }
     
     func getStart() -> Int {
         return model.start
+    }
+    
+    func getDisplay() -> Int {
+        return model.display
+    }
+    
+    func getResponsItems() -> [ShopItem]{
+        return model.responseItems
     }
 }
 
@@ -43,6 +63,7 @@ class TableViewAPIController: APIController {
                           }
         )
     }
+
 }
 
 class CollectionViewAPIController: APIController {

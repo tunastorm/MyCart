@@ -32,7 +32,7 @@ class NaverSearchShopModel {
     static let model = NaverSearchShopModel()
 
     private var searchResponse = SearchResponse<ShopItem>(lastBuildDate: "", total: 1, start: 1, display: 30, items: [])
-    
+        
     var lastBuildDate: String {
         get {
             return searchResponse.lastBuildDate
@@ -68,6 +68,25 @@ class NaverSearchShopModel {
             searchResponse.items.append(contentsOf: newValue)
         }
     }
+    
+    var searchedList: [String] {
+        get {
+            return UserDefaultHelper.standard.searchedList
+        }
+        set {
+            UserDefaultHelper.standard.searchedList = newValue
+        }
+    }
+    
+    var likedList: [String] {
+        get {
+            return UserDefaultHelper.standard.likedList
+        }
+        set {
+            UserDefaultHelper.standard.likedList = newValue
+        }
+    }
+    
 }
 
 struct SearchResponse<T: Codable>: Codable {
@@ -79,6 +98,7 @@ struct SearchResponse<T: Codable>: Codable {
 }
 
 struct ShopItem: Codable {
+    let productId: String
     let link: String
     let image: String
     let mallName: String

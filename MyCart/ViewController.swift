@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     let APICon = APIController()
     
     override func loadView() {
-        APICon.requestSearch("선물", sort: .date, page: 1)
+        
     }
 
     override func viewDidLoad() {

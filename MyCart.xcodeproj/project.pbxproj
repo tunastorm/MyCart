@@ -23,6 +23,13 @@
 		BC9503002C1B32CB004070B8 /* NaverSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502FF2C1B32CB004070B8 /* NaverSearchModel.swift */; };
 		BC9503022C1B3532004070B8 /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9503012C1B3532004070B8 /* APIRouter.swift */; };
 		BC9503052C1B47C8004070B8 /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9503042C1B47C8004070B8 /* APIController.swift */; };
+		BC95030B2C1BD6DA004070B8 /* UserDefaultHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC95030A2C1BD6DA004070B8 /* UserDefaultHelper.swift */; };
+		BC95030D2C1BDA41004070B8 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC95030C2C1BDA41004070B8 /* SearchViewController.swift */; };
+		BC95030F2C1BDA83004070B8 /* SearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC95030E2C1BDA83004070B8 /* SearchCollectionViewController.swift */; };
+		BC9503112C1BDE7E004070B8 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9503102C1BDE7E004070B8 /* SearchCollectionViewCell.swift */; };
+		BC9503142C1BE086004070B8 /* ReusableIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9503132C1BE086004070B8 /* ReusableIdentifier.swift */; };
+		BCF731AF2C1BEB85003FC583 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731AE2C1BEB85003FC583 /* Resource.swift */; };
+		BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +46,13 @@
 		BC9502FF2C1B32CB004070B8 /* NaverSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverSearchModel.swift; sourceTree = "<group>"; };
 		BC9503012C1B3532004070B8 /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
 		BC9503042C1B47C8004070B8 /* APIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
+		BC95030A2C1BD6DA004070B8 /* UserDefaultHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultHelper.swift; sourceTree = "<group>"; };
+		BC95030C2C1BDA41004070B8 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		BC95030E2C1BDA83004070B8 /* SearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewController.swift; sourceTree = "<group>"; };
+		BC9503102C1BDE7E004070B8 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
+		BC9503132C1BE086004070B8 /* ReusableIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableIdentifier.swift; sourceTree = "<group>"; };
+		BCF731AE2C1BEB85003FC583 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColorExtension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +91,7 @@
 		BC9502D32C1AEA21004070B8 /* MyCart */ = {
 			isa = PBXGroup;
 			children = (
+				BC9503122C1BDF16004070B8 /* Resource */,
 				BC9503062C1B4FC7004070B8 /* View */,
 				BC9503032C1B47A2004070B8 /* Controller */,
 				BC9502FC2C1AF850004070B8 /* Model */,
@@ -105,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				BC9502FF2C1B32CB004070B8 /* NaverSearchModel.swift */,
+				BC95030A2C1BD6DA004070B8 /* UserDefaultHelper.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -120,16 +136,29 @@
 		BC9503062C1B4FC7004070B8 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				BC9503072C1B5246004070B8 /* New Group */,
+				BC9503072C1B5246004070B8 /* Search */,
+				BC9503132C1BE086004070B8 /* ReusableIdentifier.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		BC9503072C1B5246004070B8 /* New Group */ = {
+		BC9503072C1B5246004070B8 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				BC95030C2C1BDA41004070B8 /* SearchViewController.swift */,
+				BC95030E2C1BDA83004070B8 /* SearchCollectionViewController.swift */,
+				BC9503102C1BDE7E004070B8 /* SearchCollectionViewCell.swift */,
 			);
-			path = "New Group";
+			path = Search;
+			sourceTree = "<group>";
+		};
+		BC9503122C1BDF16004070B8 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				BCF731AE2C1BEB85003FC583 /* Resource.swift */,
+				BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,14 +246,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC95030F2C1BDA83004070B8 /* SearchCollectionViewController.swift in Sources */,
+				BC95030D2C1BDA41004070B8 /* SearchViewController.swift in Sources */,
+				BC9503112C1BDE7E004070B8 /* SearchCollectionViewCell.swift in Sources */,
 				BC9503052C1B47C8004070B8 /* APIController.swift in Sources */,
+				BC95030B2C1BD6DA004070B8 /* UserDefaultHelper.swift in Sources */,
 				BC9503022C1B3532004070B8 /* APIRouter.swift in Sources */,
+				BC9503142C1BE086004070B8 /* ReusableIdentifier.swift in Sources */,
 				BC9502D92C1AEA21004070B8 /* ViewController.swift in Sources */,
 				BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */,
 				BC9502EC2C1AEBB9004070B8 /* APIKey.swift in Sources */,
 				BC9503002C1B32CB004070B8 /* NaverSearchModel.swift in Sources */,
+				BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */,
 				BC9502FE2C1AF862004070B8 /* APIClient.swift in Sources */,
 				BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */,
+				BCF731AF2C1BEB85003FC583 /* Resource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
