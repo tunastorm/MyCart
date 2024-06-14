@@ -15,9 +15,17 @@ class SearchCollectionViewController: UIViewController {
     
     var delegate: SearchViewController?
     
-    var total: Int?
+    private var total: Int?
+    
+    var nowSort = APIRouter.Sorting.sim
     
     var itemList: [ShopItem]? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
+    var likedList: [String]? {
         didSet {
             collectionView.reloadData()
         }
@@ -172,6 +180,7 @@ class SearchCollectionViewController: UIViewController {
     }
     
     @objc func sortSearching(_ sender: UIButton) {
+        nowSort = APIRouter.Sorting.allCases[sender.tag]
         sender.setTitleColor(Resource.MyColor.white, for: .normal)
         sender.backgroundColor = Resource.MyColor.darkGray
         sender.layer.borderWidth = Resource.Border.widthZero
@@ -185,7 +194,8 @@ class SearchCollectionViewController: UIViewController {
                 button.layer.borderColor = Resource.MyColor.lightGray.cgColor
             }
         }
-        print(#function, APIRouter.Sorting.allCases[sender.tag])
-        delegate?.requestSearch(APIRouter.Sorting.allCases[sender.tag])
+        print(#function,nowSort)
+        delegate?.clearSearchResponse()
+        delegate?.requestSearch(nowSort)
     }
 }

@@ -20,10 +20,13 @@ class NaverSearchShopModel {
     
     var page = 1
     
+    var maxStart = 1000
+ 
     func requestSearch(_ query: String, sort: APIRouter.Sorting, callback: @escaping () -> ()) {
         APIClient.request(SearchResponse<ShopItem>.self,
                           router: APIRouter.searchShoppings(query, sort: sort),
                           success: {(response: SearchResponse<ShopItem>) -> () in
+                               print(#function, response.display, response.items.count)
                                self.setNewResponse(response)
                                callback()
                           },
@@ -37,7 +40,7 @@ class NaverSearchShopModel {
         page += 1
         start = ((page - 1) * 30) + 1
         print(#function, page, start, total)
-        if start > 1000 {
+        if start > maxStart {
             isEnd.toggle()
             return false
         }
@@ -48,11 +51,18 @@ class NaverSearchShopModel {
     func setNewResponse(_ response: SearchResponse<ShopItem>) {
         if page == 1 {
             searchResponse = response
-        } else {
+        } else if page > 1 {
             self.lastBuildDate = response.lastBuildDate
             self.start = response.start
-            self.responseItems.append(contentsOf: response.items)
+            self.responseItems = response.items
         }
+    }
+    
+    func clearSearchResponse() {
+        isEnd = false
+        page = 1
+        searchResponse.start = 1
+        searchResponse.items = []
     }
     
     var lastBuildDate: String {
@@ -87,7 +97,9 @@ class NaverSearchShopModel {
             return searchResponse.items
         }
         set {
-            searchResponse.items.append(contentsOf: newValue)
+            var oldList = searchResponse.items
+            oldList.append(contentsOf: newValue)
+            searchResponse.items = oldList
         }
     }
     

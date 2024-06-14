@@ -14,6 +14,8 @@ import Then
 
 class SearchCollectionViewCell: UICollectionViewCell {
     
+    var delegate: SearchViewController?
+    
     let imageView = UIImageView().then {
         $0.backgroundColor = Resource.MyColor.lightGray
         $0.contentMode = .scaleToFill
@@ -22,11 +24,12 @@ class SearchCollectionViewCell: UICollectionViewCell {
     }
     
     let likeButton = UIButton().then{
-        $0.tintColor = Resource.MyColor.white
-        $0.backgroundColor = Resource.MyColor.black
-        $0.alpha = Resource.Alpha.half
         $0.layer.cornerRadius = Resource.CornerRadious.likeButton
         $0.layer.masksToBounds = true
+        $0.titleLabel?.layer.opacity = 0
+        $0.titleLabel?.font = .systemFont(ofSize: 0)
+        $0.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
+    
     }
     
     let mallNameLabel = UILabel().then {
@@ -50,7 +53,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         configHierarchy()
         configLayout()
-        configUI()
     }
     
     required init?(coder: NSCoder) {
@@ -94,25 +96,25 @@ class SearchCollectionViewCell: UICollectionViewCell {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.greaterThanOrEqualToSuperview()
         }
-        
     }
     
-    func configUI() {
-    
-    }
-    
-    func configCell(_ data: ShopItem, like: Bool) {
+    func configCell(_ data: ShopItem, _ isLiked: Bool) {
         let url = URL(string: data.image)
         imageView.kf.setImage(with: url)
-        
-        var likeIamge = Resource.SystemImage.cartFill
-        if like {
-            likeIamge = Resource.SystemImage.cart
+    
+        likeButton.setTitle(data.productId, for: .normal)
+        if isLiked {
+            likeButton.setImage(Resource.SystemImage.cart, for: .normal)
             likeButton.tintColor = Resource.MyColor.black
             likeButton.backgroundColor = Resource.MyColor.white
             likeButton.alpha = Resource.Alpha.full
+        } else {
+            likeButton.setImage(Resource.SystemImage.cartFill, for: .normal)
+            likeButton.tintColor = Resource.MyColor.white
+            likeButton.backgroundColor = Resource.MyColor.black
+            likeButton.alpha = Resource.Alpha.half
         }
-        likeButton.setImage(likeIamge, for: .normal)
+        
         mallNameLabel.text = data.mallName
         
         var itemName = data.title.replacingOccurrences(of: "<b>", with: "")
@@ -120,5 +122,11 @@ class SearchCollectionViewCell: UICollectionViewCell {
         
         guard let intPrice = Int(data.lprice) else {return}
         priceLabel.text = intPrice.formatted(.number) + "원"
+    }
+    
+    @objc func likeButtonClicked(_ sender: UIButton) {
+        print(#function, sender.title(for: .normal))
+        guard let productId = sender.title(for: .normal) else {return}
+        delegate?.setIsLiked(productId)
     }
 }

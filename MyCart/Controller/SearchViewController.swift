@@ -19,6 +19,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
+//        UserDefaultHelper.standard.userDefaults.removeObject(forKey: "likedList")
         vc.delegate = self
         requestSearch(.sim)
         setNavigationBarUI()
@@ -31,10 +32,16 @@ class SearchViewController: UIViewController {
         model.requestSearch(query, sort: sort,
                             callback: {() -> () in
             self.vc.itemList = self.model.responseItems
+            self.vc.likedList = self.model.likedList
             if self.model.page == 1 {
-                self.vc.totalLabel.text = Int(self.getTotal()).formatted(.number) + Resource.Text.searchTotal
+                self.vc.totalLabel.text = Int(self.getTotal()).formatted(.number) 
+                                          + Resource.Text.searchTotal
             }
         })
+    }
+    
+    func clearSearchResponse() {
+        model.clearSearchResponse()
     }
     
     func getIsEnd() -> Bool {
@@ -74,11 +81,25 @@ class SearchViewController: UIViewController {
         return likedList.contains(productId)
     }
     
-    func scrollDown() {
-        if let query, model.pageNation() {
+    func setIsLiked(_ productId: String) {
+        var likedList = model.likedList
+        if likedList.contains(productId),
+           let index = likedList.firstIndex(of: productId) {
+            likedList.remove(at: index)
             
-            model.requestSearch(query, sort: .sim,
+        } else {
+            likedList.append(productId)
+            model.likedList = likedList
+            vc.likedList = model.likedList
+        }
+        vc.likedList = model.likedList
+    }
+    
+    func scrollDown(_ sort: APIRouter.Sorting) {
+        if let query, model.pageNation() {
+            model.requestSearch(query, sort: sort,
                                 callback: {() -> () in
+                print(#function, self.model.responseItems.count)
                 self.vc.itemList = self.model.responseItems
             })
         }

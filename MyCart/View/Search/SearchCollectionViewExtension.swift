@@ -11,7 +11,6 @@ import UIKit
 extension SearchCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(delegate?.getDisplay() ?? 1)
         return itemList?.count ?? 1
     }
     
@@ -20,10 +19,13 @@ extension SearchCollectionViewController: UICollectionViewDelegate, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as! SearchCollectionViewCell
         
         if let dataList = itemList, dataList.count > 0 {
-           let data = dataList[indexPath.row]
-            guard let isLiked = delegate?.getIsLiked(productId: data.productId) else {return cell}
+            let data = dataList[indexPath.row]
+            guard let likedList else {return cell}
             
-            cell.configCell(data, like: isLiked)
+            let isLiked = likedList.contains(data.productId)
+            
+            cell.delegate = self.delegate
+            cell.configCell(data, isLiked)
         }
         
         return cell
@@ -34,7 +36,7 @@ extension SearchCollectionViewController: UICollectionViewDelegate, UICollection
         guard let itemSize = itemList?.count else {return}
         indexPaths.forEach {
             if let isEnd = delegate?.getIsEnd(), !isEnd, itemSize - 4 == $0.row {
-                delegate?.scrollDown()
+                delegate?.scrollDown(self.nowSort)
             }
         }
     }
