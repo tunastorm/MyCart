@@ -21,7 +21,9 @@ extension SearchCollectionViewController: UICollectionViewDelegate, UICollection
         
         if let dataList = itemList, dataList.count > 0 {
            let data = dataList[indexPath.row]
-           cell.configCell(data)
+            guard let isLiked = delegate?.getIsLiked(productId: data.productId) else {return cell}
+            
+            cell.configCell(data, like: isLiked)
         }
         
         return cell
@@ -35,5 +37,9 @@ extension SearchCollectionViewController: UICollectionViewDelegate, UICollection
                 delegate?.scrollDown()
             }
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+      
     }
 }

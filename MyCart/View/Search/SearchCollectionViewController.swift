@@ -15,6 +15,8 @@ class SearchCollectionViewController: UIViewController {
     
     var delegate: SearchViewController?
     
+    var total: Int?
+    
     var itemList: [ShopItem]? {
         didSet {
             collectionView.reloadData()
@@ -24,21 +26,50 @@ class SearchCollectionViewController: UIViewController {
     let totalLabel = UILabel().then {
         $0.textAlignment = .left
         $0.textColor = Resource.MyColor.orange
-        $0.font = Resource.Font.boldSystem13
+        $0.font = Resource.Font.boldSystem15
     }
     
-    let sortingStackView = UIStackView()
+    let sortingView = UIView()
+    
+    let simButton = UIButton().then {
+        $0.setTitleColor( Resource.MyColor.white, for: .normal)
+        $0.backgroundColor = Resource.MyColor.darkGray
+        $0.layer.borderWidth = Resource.Border.widthZero
+    }
+    
+    let dateButton = UIButton().then {
+        $0.setTitleColor(Resource.MyColor.black, for: .normal)
+        $0.backgroundColor = Resource.MyColor.white
+        $0.layer.borderWidth = Resource.Border.width1
+        $0.layer.borderColor = Resource.MyColor.lightGray.cgColor
+    }
+    
+    let dscButton = UIButton().then {
+        $0.setTitleColor(Resource.MyColor.black, for: .normal)
+        $0.backgroundColor = Resource.MyColor.white
+        $0.layer.borderWidth = Resource.Border.width1
+        $0.layer.borderColor = Resource.MyColor.lightGray.cgColor
+    }
+    
+    let ascButton = UIButton().then {
+        $0.setTitleColor(Resource.MyColor.black, for: .normal)
+        $0.backgroundColor = Resource.MyColor.white
+        $0.layer.borderWidth = Resource.Border.width1
+        $0.layer.borderColor = Resource.MyColor.lightGray.cgColor
+    }
+    
     
     lazy var collectionView = UICollectionView(frame: .zero,
                                                collectionViewLayout: collectionViewLayout())
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configBaseSetting()
         configHierarchy()
         configLayout()
-        configUI()
+        configView()
+        configSortingView()
     }
     
     func collectionViewLayout() -> UICollectionViewLayout {
@@ -75,35 +106,86 @@ class SearchCollectionViewController: UIViewController {
     
     func configHierarchy() {
         view.addSubview(totalLabel)
-        view.addSubview(sortingStackView)
+        view.addSubview(sortingView)
         view.addSubview(collectionView)
     }
     
     func configLayout() {
         totalLabel.snp.makeConstraints{
             $0.height.equalTo(30)
-            $0.width.equalTo(120)
-            $0.top.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
-        sortingStackView.snp.makeConstraints{
+        sortingView.snp.makeConstraints{
             $0.height.equalTo(50)
-            $0.width.equalTo(300)
-            $0.top.equalTo(totalLabel.snp.bottom).offset(20)
-            $0.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.top.equalTo(totalLabel.snp.bottom).offset(5)
         }
         
         collectionView.snp.makeConstraints{
-            $0.top.equalTo(sortingStackView.snp.bottom)
+            $0.top.equalTo(sortingView.snp.bottom)
             $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
-    func configUI() {
-        setDefaultUI()
+    func configView() {
+        view.backgroundColor = Resource.MyColor.white
+        
         navigationItem.title = delegate?.query
-        totalLabel.backgroundColor = Resource.MyColor.orange
-        sortingStackView.backgroundColor = .red
-        collectionView.backgroundColor = .lightGray
+        
+        if let total = delegate?.getTotal(){
+            totalLabel.text = Int(total).formatted() + Resource.Text.searchTotal
+        }
+    }
+    
+    func configSortingView() {
+        for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
+            let title = APIRouter.Sorting.allCases[idx].buttonTitle
+            print(#function, title)
+            button.setTitle(title, for: .normal)
+            button.titleLabel?.font = Resource.Font.system13
+            button.layer.masksToBounds = true
+            button.layer.cornerRadius = Resource.CornerRadious.sortingButton
+            button.addTarget(self, action: #selector(sortSearching), for: .touchUpInside)
+            button.tag = idx
+    
+            sortingView.addSubview(button)
+    
+            button.snp.makeConstraints {
+                $0.height.equalTo(34)
+                $0.width.equalTo(24 + title.count * 14)
+                $0.centerY.equalToSuperview()
+            }
+        }
+        
+        dateButton.snp.makeConstraints {
+            $0.leading.equalTo(simButton.snp.trailing).offset(6)
+        }
+        
+        dscButton.snp.makeConstraints {
+            $0.leading.equalTo(dateButton.snp.trailing).offset(6)
+        }
+        
+        ascButton.snp.makeConstraints {
+            $0.leading.equalTo(dscButton.snp.trailing).offset(6)
+        }
+    }
+    
+    @objc func sortSearching(_ sender: UIButton) {
+        sender.setTitleColor(Resource.MyColor.white, for: .normal)
+        sender.backgroundColor = Resource.MyColor.darkGray
+        sender.layer.borderWidth = Resource.Border.widthZero
+        
+        for (idx, view) in sortingView.subviews.enumerated() {
+            if idx != sender.tag {
+                let button = view as! UIButton
+                button.setTitleColor(Resource.MyColor.black, for: .normal)
+                button.backgroundColor = Resource.MyColor.white
+                button.layer.borderWidth = Resource.Border.width1
+                button.layer.borderColor = Resource.MyColor.lightGray.cgColor
+            }
+        }
+        print(#function, APIRouter.Sorting.allCases[sender.tag])
+        delegate?.requestSearch(APIRouter.Sorting.allCases[sender.tag])
     }
 }

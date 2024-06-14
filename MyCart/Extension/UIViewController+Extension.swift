@@ -10,15 +10,14 @@ import UIKit
 
 extension UIViewController {
     
-    func setDefaultUI() {
-        self.view.backgroundColor = .white
-        self.navigationController?.navigationBar.tintColor = .black
+    func setNavigationBarUI() {
+        self.navigationController?.navigationBar.tintColor = Resource.MyColor.black
         
         navigationItem.backButtonTitle = ""
         
-        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        let textAttributes = [NSAttributedString.Key.foregroundColor: Resource.MyColor.black]
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .white
+        appearance.backgroundColor = Resource.MyColor.white
         appearance.shadowImage = nil
         appearance.titleTextAttributes = textAttributes
         self.navigationController?.navigationBar.standardAppearance = appearance

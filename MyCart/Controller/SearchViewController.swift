@@ -19,14 +19,22 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-        guard let query else {return}
-        
         vc.delegate = self
-        model.requestSearch(query, sort: .sim,
+        requestSearch(.sim)
+        setNavigationBarUI()
+        self.pushAfterView(view: self.vc, backButton: true, animated: true)
+    }
+    
+    func requestSearch(_ sort: APIRouter.Sorting) {
+        guard let query else {return}
+        print(#function, sort)
+        model.requestSearch(query, sort: sort,
                             callback: {() -> () in
             self.vc.itemList = self.model.responseItems
+            if self.model.page == 1 {
+                self.vc.totalLabel.text = Int(self.getTotal()).formatted(.number) + Resource.Text.searchTotal
+            }
         })
-        self.pushAfterView(view: self.vc, backButton: true, animated: true)
     }
     
     func getIsEnd() -> Bool {
@@ -59,6 +67,11 @@ class SearchViewController: UIViewController {
     
     func getResponsItems() -> [ShopItem]{
         return model.responseItems
+    }
+    
+    func getIsLiked(productId: String) -> Bool {
+        let likedList = model.likedList
+        return likedList.contains(productId)
     }
     
     func scrollDown() {

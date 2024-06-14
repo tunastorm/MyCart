@@ -35,8 +35,15 @@ enum Resource {
     }
     
     enum Border {
+        static let widthZero = CGFloat(0)
         static let width1 = CGFloat(1)
         static let width3 = CGFloat(3)
+    }
+    
+    enum CornerRadious {
+        static let searchImage = CGFloat(16)
+        static let likeButton = CGFloat(6)
+        static let sortingButton = CGFloat(17)
     }
     
     enum SystemImage {
@@ -59,5 +66,9 @@ enum Resource {
         var profile: UIImage {
             return UIImage(named: "profile_\(Int.random(in: 0...11))")!
         }
+    }
+    
+    enum Text {
+        static let searchTotal = "개의 검색결과"
     }
 }
