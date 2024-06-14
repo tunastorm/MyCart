@@ -12,10 +12,14 @@ import Then
 
 
 class SearchCollectionViewController: UIViewController {
-
-    let searchViewController = SearchViewController()
-   
-    var itemList: [ShopItem] = []
+    
+    var delegate: SearchViewController?
+    
+    var itemList: [ShopItem]? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     let totalLabel = UILabel().then {
         $0.textAlignment = .left
@@ -27,9 +31,11 @@ class SearchCollectionViewController: UIViewController {
     
     lazy var collectionView = UICollectionView(frame: .zero,
                                                collectionViewLayout: collectionViewLayout())
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(itemList)
         configBaseSetting()
         configHierarchy()
         configLayout()
@@ -65,7 +71,8 @@ class SearchCollectionViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
         print(SearchCollectionViewCell.identifier)
-        collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
+        collectionView.register(SearchCollectionViewCell.self,
+                                forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
     }
     
     func configHierarchy() {
@@ -76,12 +83,14 @@ class SearchCollectionViewController: UIViewController {
     
     func configLayout() {
         totalLabel.snp.makeConstraints{
-            $0.height.equalTo(20)
+            $0.height.equalTo(30)
+            $0.width.equalTo(120)
             $0.top.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         sortingStackView.snp.makeConstraints{
             $0.height.equalTo(50)
+            $0.width.equalTo(300)
             $0.top.equalTo(totalLabel.snp.bottom).offset(20)
             $0.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
@@ -93,17 +102,10 @@ class SearchCollectionViewController: UIViewController {
     }
     
     func configUI() {
-        view.backgroundColor = .white
+        setDefaultUI()
+        navigationItem.title = delegate?.query
+        totalLabel.backgroundColor = Resource.MyColor.orange
+        sortingStackView.backgroundColor = .red
         collectionView.backgroundColor = .lightGray
     }
 }
-
-extension SearchCollectionViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = searchBar.text {
-            searchViewController.requestSearch(searchText, sort: .sim)
-        }
-    }
-}
-
-

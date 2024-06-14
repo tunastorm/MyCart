@@ -7,23 +7,6 @@
 
 import UIKit
 
-//class NaverSearchModel<T:Codable> {
-//    private init() {}
-//    
-//    static let newModel = NaverSearchModel()
-//    
-//    let model = NaverSearchModel.newModel
-//    
-//    private var searchResponse = SearchResponse<T>(lastBuildDate: "", total: 1, start: 1, display: 1, items: [])
-//    
-//    func getResponse() -> SearchResponse<T> {
-//        return searchResponse
-//    }
-//    
-//    func setResponse<T:Codable>(newResponse: SearchResponse<T>) {
-//        searchResponse.items.append(contentsOf: newResponse.items)
-//    }
-//}
 
 class NaverSearchShopModel {
     
@@ -32,7 +15,29 @@ class NaverSearchShopModel {
     static let model = NaverSearchShopModel()
 
     private var searchResponse = SearchResponse<ShopItem>(lastBuildDate: "", total: 1, start: 1, display: 30, items: [])
-        
+    
+    var page = 1 
+    
+    
+    func requestSearch(_ query: String, sort: APIRouter.Sorting, callback: @escaping () -> ()) {
+        APIClient.request(SearchResponse<ShopItem>.self,
+                          router: APIRouter.searchShoppings(query, sort: sort, page: page),
+                          success: {(response: SearchResponse<ShopItem>) -> () in
+                               self.setNewResponse(response)
+                               callback()
+                          },
+                          failure: {(error: Error) -> () in
+                               print(error)
+                          }
+        )
+    }
+    
+    func setNewResponse(_ response: SearchResponse<ShopItem>) {
+        self.lastBuildDate = response.lastBuildDate
+        self.start = response.start
+        self.responseItems = response.items
+    }
+    
     var lastBuildDate: String {
         get {
             return searchResponse.lastBuildDate
@@ -86,7 +91,6 @@ class NaverSearchShopModel {
             UserDefaultHelper.standard.likedList = newValue
         }
     }
-    
 }
 
 struct SearchResponse<T: Codable>: Codable {

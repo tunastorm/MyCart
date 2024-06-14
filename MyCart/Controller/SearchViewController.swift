@@ -8,13 +8,27 @@
 import UIKit
 
 
-class SearchViewController {
+class SearchViewController: UIViewController {
     
-    internal let model = NaverSearchShopModel.model
+    private let model = NaverSearchShopModel.model
     
-    func requestSearch(_ query: String, sort: APIRouter.Sorting, page: Int) {
-        model.requestSearch(query, sort: sort, page: page)
+    let vc = SearchCollectionViewController()
+    
+    var query: String?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .clear
+        guard let query else {return}
+        
+        vc.delegate = self
+        model.requestSearch(query, sort: .sim,
+                            callback: {() -> () in
+            self.vc.itemList = self.model.responseItems
+            self.pushAfterView(view: self.vc, backButton: true, animated: true)
+        })
     }
+    
     
     func getSearchedList() -> [String] {
        return model.searchedList
