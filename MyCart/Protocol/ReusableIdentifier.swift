@@ -14,7 +14,7 @@ protocol ReuseIdentifierProtocol {
 extension ReuseIdentifierProtocol {
     
     static var identifier: String {
-        return String(describing: self.self)
+        return String(describing: self)
     }
 }
 
