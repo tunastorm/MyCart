@@ -20,8 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-        let mainViewController = AuthViewController()
-//        mainViewController.query = "선물"
+//        let mainViewController = AuthViewController()
+        let mainViewController = SearchViewController()
+        mainViewController.query = "선물"
         let navigationController = UINavigationController(rootViewController: mainViewController)
         window?.rootViewController = navigationController// sb entrypoint
         window?.makeKeyAndVisible() // show the rootViewController to display

@@ -56,18 +56,20 @@ class ProductDetailViewController: UIViewController {
     
     func configLikeButton() {
         
-        var cartImage = Resource.NamedImage.likeUnselected
-        if let id = product?.productId,
-            let isLiked = delegate?.getIsLiked(productId: id), isLiked {
-            print(#function, isLiked)
-            cartImage = Resource.NamedImage.likeSelected
+        var cartImage = Resource.NamedImage.likeUnselected?.withRenderingMode(.alwaysOriginal)
+
+        guard let id = product?.productId,
+              let isLiked = delegate?.getIsLiked(productId: id) else {return}
+        
+        if isLiked {
+            cartImage = Resource.NamedImage.likeSelected?.withRenderingMode(.alwaysOriginal)
         }
         likeButton = UIBarButtonItem(image: cartImage,
                                          style: .plain, target: self,
                                          action: #selector(likeButtonClicked))
-        likeButton?.tintColor = Resource.MyColor.black
         
-        navigationItem.rightBarButtonItem = likeButton
+        guard let likeButton else {return}
+        navigationItem.rightBarButtonItems = [likeButton]
     }
     
     @objc func likeButtonClicked(_ sender: UIButton) {
