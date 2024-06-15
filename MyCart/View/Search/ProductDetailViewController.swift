@@ -56,11 +56,11 @@ class ProductDetailViewController: UIViewController {
     
     func configLikeButton() {
         
-        var cartImage = Resource.SystemImage.cart
+        var cartImage = Resource.NamedImage.likeUnselected
         if let id = product?.productId,
             let isLiked = delegate?.getIsLiked(productId: id), isLiked {
             print(#function, isLiked)
-            cartImage = Resource.SystemImage.cartFill
+            cartImage = Resource.NamedImage.likeSelected
         }
         likeButton = UIBarButtonItem(image: cartImage,
                                          style: .plain, target: self,

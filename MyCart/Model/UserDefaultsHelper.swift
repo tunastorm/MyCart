@@ -11,11 +11,11 @@ import Foundation
 
 
 
-class UserDefaultHelper {
+class UserDefaultsHelper {
     
     private init() { }
     
-    static let standard = UserDefaultHelper()
+    static let standard = UserDefaultsHelper()
     
     let userDefaults = UserDefaults.standard
     
@@ -61,7 +61,7 @@ class UserDefaultHelper {
         return nil
     }
     
-    func signUp(newUser: User, userIdKey: String) {
+    func signUp(_ newUser: User, userIdKey: String) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(newUser) {
             UserDefaults.standard.setValue(encoded, forKey: userIdKey)

@@ -104,12 +104,12 @@ class SearchCollectionViewCell: UICollectionViewCell {
     
         likeButton.setTitle(data.productId, for: .normal)
         if isLiked {
-            likeButton.setImage(Resource.SystemImage.cartFill, for: .normal)
+            likeButton.setImage(Resource.NamedImage.likeSelected, for: .normal)
             likeButton.tintColor = Resource.MyColor.black
             likeButton.backgroundColor = Resource.MyColor.white
             likeButton.alpha = Resource.Alpha.full
         } else {
-            likeButton.setImage(Resource.SystemImage.cart, for: .normal)
+            likeButton.setImage(Resource.NamedImage.likeUnselected, for: .normal)
             likeButton.tintColor = Resource.MyColor.white
             likeButton.backgroundColor = Resource.MyColor.black
             likeButton.alpha = Resource.Alpha.half
