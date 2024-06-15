@@ -7,15 +7,27 @@
 
 import UIKit
 
-class AuthonticationViewController: UIViewController {
+class AuthViewController: UIViewController {
 
+    let model = UserModel.model
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        presentAfterView(view: , presentationStyle: <#T##UIModalPresentationStyle#>, animated: <#T##Bool#>)
+        view.backgroundColor = .clear
+        authonticateUser()
     }
     
-    
-    
-    
+    func authonticateUser() {
+        let vc = SplashViewController()
+        vc.delegate = self
+        
+        let nowUser = model.nowUser
+        if nowUser.userId == Resource.Text.guestUser {
+            vc.nextViewType = OnboadingViewController.self
+        } else {
+            vc.nextViewType = TabBarController.self
+        }
+        setNavigationBarUI()
+        presentAfterView(view: vc, presentationStyle: .fullScreen, animated: false)
+    }
 }

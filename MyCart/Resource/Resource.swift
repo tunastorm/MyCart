@@ -41,6 +41,7 @@ enum Resource {
     }
     
     enum CornerRadious {
+        static let startButton = CGFloat(30)
         static let searchImage = CGFloat(16)
         static let likeButton = CGFloat(6)
         static let sortingButton = CGFloat(17)
@@ -69,6 +70,14 @@ enum Resource {
     }
     
     enum Text {
+        static let appTitle = "MyCart"
+        static let applicantName = "유철원"
+        static let startButton = "시작하기"
+        static let guestUser = "guest"
+        static let searchTabBar = "검색"
+        static let settingTabBar = "설정"
+        
         static let searchTotal = "개의 검색결과"
+       
     }
 }

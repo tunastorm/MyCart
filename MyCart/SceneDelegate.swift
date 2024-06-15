@@ -20,8 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-        let mainViewController = SearchViewController()
-        mainViewController.query = "선물"
+        let mainViewController = AuthViewController()
+//        mainViewController.query = "선물"
         let navigationController = UINavigationController(rootViewController: mainViewController)
         window?.rootViewController = navigationController// sb entrypoint
         window?.makeKeyAndVisible() // show the rootViewController to display
@@ -55,7 +55,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
+    
+    func changeRootVC(_ vc: UIViewController, animated: Bool) {
+        guard let window = self.window else { return }
+        window.rootViewController = vc
+        
+        UIView.transition(with: window, duration: 2.0, options: [.transitionCrossDissolve], animations: nil, completion: nil)
+    }
 }
 

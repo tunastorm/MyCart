@@ -105,19 +105,19 @@ class NaverSearchShopModel {
     
     var searchedList: [String] {
         get {
-            return UserDefaultHelper.standard.searchedList
+            return UserDefaultsHelper.standard.searchedList
         }
         set {
-            UserDefaultHelper.standard.searchedList = newValue
+            UserDefaultsHelper.standard.searchedList = newValue
         }
     }
     
     var likedList: [String] {
         get {
-            return UserDefaultHelper.standard.likedList
+            return UserDefaultsHelper.standard.likedList
         }
         set {
-            UserDefaultHelper.standard.likedList = newValue
+            UserDefaultsHelper.standard.likedList = newValue
         }
     }
 }

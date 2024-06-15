@@ -20,17 +20,8 @@ class UserDefaultsHelper {
     let userDefaults = UserDefaults.standard
     
     enum Key: String {
-        case userIdDB
+        case userIdKeyMapper
         case searchedList, likedList // 기본 키값 + User_index로 키 지정
-    }
-    
-    var userIdDB: [String:String] {
-        get {
-            return userDefaults.dictionary(forKey: Key.userIdDB.rawValue) as? [String:String] ?? [:]
-        }
-        set {
-            userDefaults.set(newValue, forKey: Key.userIdDB.rawValue)
-        }
     }
     
     var searchedList: [String] {
@@ -51,8 +42,13 @@ class UserDefaultsHelper {
         }
     }
     
-    func signIn(userIdKey: String) -> User? {
-        if let savedData = UserDefaults.standard.object(forKey: userIdKey) as? Data {
+    static func signIn(_ mappingKey: String) -> User? {
+        // mappingKey : userIdKey 쌍 조회, 없으면 return nil
+        var userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
+        guard let userIdKey = userIdKeyMapper[mappingKey] else {return nil}
+        
+        // userIdKey 조회 성공 시 userIdKey : User 쌍 조회, 없으면 return nil
+        if let savedData = UserDefaults.standard.object(forKey: userIdKey as! String) as? Data {
             let decoder = JSONDecoder()
             if let nowUser = try? decoder.decode(User.self, from: savedData) {
                 return nowUser
@@ -61,13 +57,32 @@ class UserDefaultsHelper {
         return nil
     }
     
-    func signUp(_ newUser: User, userIdKey: String) {
+    static func signUp(_ newUser: User, mappingKey: String) {
+        // mappingKey : userIdKey 쌍 조회
+        var userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
+        var userIdKey = ""
+        
+        while (userIdKey.count != 10) {
+            let newUserIdKey = mappingKey.createRandomStr(length: 10)
+            userIdKey = newUserIdKey
+            for mappingKey in userIdKeyMapper.keys {
+                if userIdKeyMapper[mappingKey] as! String == newUserIdKey {
+                   userIdKey = ""
+                   break
+                }
+            }
+        }
+        
+        // mappingKey : userIdKey 쌍 딕셔너리 저장
+        userIdKeyMapper[mappingKey] = userIdKey
+        UserDefaults.standard.setValue(userIdKeyMapper , forKey: Key.userIdKeyMapper.rawValue)
+        
+        // userIdKey : User 구조체 쌍 저장
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(newUser) {
             UserDefaults.standard.setValue(encoded, forKey: userIdKey)
         }
     }
-   
 }
 
 

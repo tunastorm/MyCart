@@ -8,22 +8,34 @@
 import Foundation
 
 
-
-
 class UserModel {
     
     private init() {}
     
     static let model = UserModel()
     
-    private var nowUser = User(userId: "-", signInid: "guest", password: "-")
+    private var user = User(userId: Resource.Text.guestUser, signInid: "-", password: "-")
         
-    func signUp() {
-        
+    var nowUser: User {
+        get {
+            return user
+        }
+        set {
+            user = newValue
+        }
     }
     
-    func signIn() {
+    func signUp(_ newUser: User) {
+        let mappingKey = newUser.userId + newUser.password
+        if let oldUser = UserDefaultsHelper.signIn(mappingKey) {
+            return
+        } else {
+            UserDefaultsHelper.signUp(newUser, mappingKey: mappingKey)
+        }
+    }
         
+    func signIn(signInId: String, password: String) {
+        let mappingKey = signInId + password
     }
 }
 
