@@ -20,9 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-//        let mainViewController = AuthViewController()
-        let mainViewController = SearchViewController()
-        mainViewController.query = "선물"
+        let mainViewController = AuthViewController()
+//        let mainViewController = SearchViewController()
+//        mainViewController.query = "선물"
         let navigationController = UINavigationController(rootViewController: mainViewController)
         window?.rootViewController = navigationController// sb entrypoint
         window?.makeKeyAndVisible() // show the rootViewController to display
@@ -60,6 +60,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func changeRootVC(_ vc: UIViewController, animated: Bool) {
         guard let window = self.window else { return }
         window.rootViewController = vc
+        
+        UIView.transition(with: window, duration: 2.0, options: [.transitionCrossDissolve], animations: nil, completion: nil)
+    }
+    
+    func changeRootVCWithNavi(_ vc: UIViewController, animated: Bool) {
+        guard let window = self.window else { return }
+        let nav = UINavigationController(rootViewController: vc)
+        window.rootViewController = nav
         
         UIView.transition(with: window, duration: 2.0, options: [.transitionCrossDissolve], animations: nil, completion: nil)
     }

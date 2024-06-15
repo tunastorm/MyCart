@@ -64,12 +64,17 @@ enum Resource {
         static let likeSelected = UIImage(named: "like_selected")
         static let likeUnselected = UIImage(named: "like_unselected")
         
-        var profile: UIImage {
+        static var profile: UIImage {
             return UIImage(named: "profile_\(Int.random(in: 0...11))")!
         }
     }
     
     enum Text {
+        case nickNameSuccess
+        case nickNameCountOver
+        case nickNameNoSpecial
+        case nickNameNoNumber
+        
         static let appTitle = "MyCart"
         static let applicantName = "유철원"
         static let startButton = "시작하기"
@@ -77,7 +82,22 @@ enum Resource {
         static let searchTabBar = "검색"
         static let settingTabBar = "설정"
         
+        static let nickNamePlaceholder = "닉네임을 입력해주세요 :)"
+        
         static let searchTotal = "개의 검색결과"
        
+        var message: String {
+            switch self {
+            case .nickNameSuccess:
+                return "사용할 수 있는 닉네임이에요"
+            case .nickNameCountOver:
+                return "2글자 이상 10글자 미만으로 설정해주세요"
+            case .nickNameNoSpecial:
+                return "닉네임에 @, #, $, %는 포함할 수 없어요"
+            case .nickNameNoNumber:
+                return "닉네임에 숫자는 포함할 수 없어요"
+            }
+        }
+        
     }
 }

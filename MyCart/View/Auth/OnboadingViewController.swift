@@ -32,6 +32,7 @@ class OnboadingViewController: UIViewController {
         $0.layer.cornerRadius = Resource.CornerRadious.startButton
         $0.layer.masksToBounds = true
         $0.setTitle(Resource.Text.startButton, for: .normal)
+        $0.addTarget(self, action: #selector(goSignUpView), for: .touchUpInside)
     }
     
     
@@ -71,5 +72,11 @@ class OnboadingViewController: UIViewController {
     
     func configView() {
         view.backgroundColor = Resource.MyColor.white
+    }
+    
+    @objc func goSignUpView() {
+        let vc = SignUpViewController()
+        vc.delegate = self.delegate
+        pushAfterView(view: vc, backButton: true, animated: true)
     }
 }

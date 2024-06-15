@@ -16,6 +16,7 @@ class SplashViewController: UIViewController {
     
     var nextViewType: UIViewController.Type?
     var nextView: UIViewController?
+    var withNavi: Bool?
     
     let appTitle = UILabel().then {
         $0.textAlignment = .center
@@ -43,19 +44,22 @@ class SplashViewController: UIViewController {
         configLayout()
         configView()
        
-        var vc = UIViewController()
         switch nextViewType {
         case is OnboadingViewController.Type:
             let nextVC = OnboadingViewController()
             nextVC.delegate = self.delegate
             nextView = nextVC
+            withNavi = true
+            
         case is TabBarController.Type:
             let tabBar = TabBarController()
             guard let mainView = tabBar.storyboard?.instantiateViewController(identifier: MainViewController.identifier) else {return}
             nextView = mainView
+            withNavi = false
         default: print("Error")
         }
         
+        // 2초 간 대기후 화면 전환
         let timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(changeRootview), userInfo: nil, repeats: false)
         timer.tolerance = 0.2
     }
@@ -96,6 +100,12 @@ class SplashViewController: UIViewController {
     @objc func changeRootview() {
         guard let nextView else {return}
         print(#function, nextView)
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(nextView, animated: false)
+        
+        if let withNavi, withNavi {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVCWithNavi(nextView, animated: false)
+        } else {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(nextView, animated: false)
+        }
+        
     }
 }

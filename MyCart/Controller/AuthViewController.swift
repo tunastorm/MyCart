@@ -27,7 +27,6 @@ class AuthViewController: UIViewController {
         } else {
             vc.nextViewType = TabBarController.self
         }
-        setNavigationBarUI()
-        presentAfterView(view: vc, presentationStyle: .fullScreen, animated: false)
+        pushAfterView(view: vc, backButton: false, animated: false)
     }
 }
