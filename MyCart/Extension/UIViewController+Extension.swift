@@ -15,6 +15,7 @@ extension UIViewController {
         
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         self.navigationItem.backBarButtonItem = backBarButtonItem
+        self.navigationItem.backButtonTitle = ""
         
         let textAttributes = [NSAttributedString.Key.foregroundColor: Resource.MyColor.black]
         let appearance = UINavigationBarAppearance()
