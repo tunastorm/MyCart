@@ -86,6 +86,7 @@ enum Resource {
         static let searchTabBar = "검색"
         static let settingTabBar = "설정"
         
+        static let profileSetting = "PROFILE SETTING"
         static let nickNamePlaceholder = "닉네임을 입력해주세요 :)"
         static let specialFilter = "@#$%"
         

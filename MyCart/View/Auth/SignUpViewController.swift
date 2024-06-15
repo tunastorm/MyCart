@@ -68,7 +68,7 @@ class SignUpViewController: UIViewController {
     }
     
     func configBaseSetting() {
-        nickNameTextfield.delegate = self
+       
     }
     
     func configHierarchy() {
@@ -129,6 +129,10 @@ class SignUpViewController: UIViewController {
     
     func configView() {
         view.backgroundColor = .white
+        navigationItem.title = Resource.Text.profileSetting
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(goSelectPhotoView))
+        profileView.addGestureRecognizer(tapGesture)
     }
 
     @objc func checkNickName(_ sender: UITextField) {
@@ -153,6 +157,10 @@ class SignUpViewController: UIViewController {
         messageLabel.text = Resource.Text.nickNameSuccess.message
     }
     
+    @objc func goSelectPhotoView() {
+        pushAfterView(view: , backButton: <#T##Bool#>, animated: <#T##Bool#>)
+    }
+    
     @objc func goMain() {
         if messageLabel.text == Resource.Text.nickNameSuccess.message {
             
@@ -160,15 +168,15 @@ class SignUpViewController: UIViewController {
     }
 }
 
+
 extension SignUpViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == nickNameTextfield {
-            textField.resignFirstResponder()
-            self.isEditing = false
-        }
-        return true
-    }
-    
-    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        print(#function)
+//        if textField == nickNameTextfield {
+//            view.endEditing(true)
+//            textField.resignFirstResponder()
+//        }
+//        return true
+//    }
 }

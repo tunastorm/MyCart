@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 라이브러리를 사용할 수 있도록 기본 설정
         IQKeyboardManager.shared.enable = true
         // 별도 코드 작성 없이 키보드 위에 Toolbar 삽입 (Done 버튼 추가)
-        IQKeyboardManager.shared.enableAutoToolbar = true
+        IQKeyboardManager.shared.enableAutoToolbar = false
         // 화면 아무 곳이나 터치하면 키보드가 자동으로 내려갈 수 있도록 설정
         IQKeyboardManager.shared.resignOnTouchOutside = true
         
