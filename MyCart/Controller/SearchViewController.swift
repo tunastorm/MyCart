@@ -85,14 +85,16 @@ class SearchViewController: UIViewController {
         var likedList = model.likedList
         if likedList.contains(productId),
            let index = likedList.firstIndex(of: productId) {
+            print(#function, productId, index)
             likedList.remove(at: index)
-            
+            print(#function, likedList)
         } else {
             likedList.append(productId)
-            model.likedList = likedList
-            vc.likedList = model.likedList
         }
+        model.likedList = likedList
         vc.likedList = model.likedList
+        print(#function, "vc: \(vc.likedList)")
+        print(#function, "model: \(model.likedList)")
     }
     
     func scrollDown(_ sort: APIRouter.Sorting) {

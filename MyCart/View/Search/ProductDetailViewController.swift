@@ -9,13 +9,17 @@ import UIKit
 import WebKit
 
 import SnapKit
+import Then
 
 class ProductDetailViewController: UIViewController {
     
     var delegate: SearchViewController?
     
     var product: ShopItem?
+    
     let webView = WKWebView()
+    var likeButton: UIBarButtonItem?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +27,7 @@ class ProductDetailViewController: UIViewController {
         configHierarchy()
         configLayout()
         configView()
+        configLikeButton()
       
     }
     
@@ -49,5 +54,25 @@ class ProductDetailViewController: UIViewController {
         webView.load(request)
     }
     
+    func configLikeButton() {
+        
+        var cartImage = Resource.SystemImage.cart
+        if let id = product?.productId,
+            let isLiked = delegate?.getIsLiked(productId: id), isLiked {
+            print(#function, isLiked)
+            cartImage = Resource.SystemImage.cartFill
+        }
+        likeButton = UIBarButtonItem(image: cartImage,
+                                         style: .plain, target: self,
+                                         action: #selector(likeButtonClicked))
+        likeButton?.tintColor = Resource.MyColor.black
+        
+        navigationItem.rightBarButtonItem = likeButton
+    }
     
+    @objc func likeButtonClicked(_ sender: UIButton) {
+        guard let productId = product?.productId else {return}
+        delegate?.setIsLiked(productId)
+        configLikeButton()
+    }
 }
