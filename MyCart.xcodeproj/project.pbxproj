@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BC3B9C582C1C71E0008DCD18 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C572C1C71E0008DCD18 /* ProductDetailViewController.swift */; };
+		BC3B9C5A2C1D3612008DCD18 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C592C1D3612008DCD18 /* UserModel.swift */; };
+		BC3B9C5C2C1D4338008DCD18 /* String+randomExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C5B2C1D4338008DCD18 /* String+randomExtension.swift */; };
 		BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D42C1AEA21004070B8 /* AppDelegate.swift */; };
 		BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */; };
 		BC9502D92C1AEA21004070B8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D82C1AEA21004070B8 /* ViewController.swift */; };
@@ -37,6 +39,8 @@
 
 /* Begin PBXFileReference section */
 		BC3B9C572C1C71E0008DCD18 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		BC3B9C592C1D3612008DCD18 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		BC3B9C5B2C1D4338008DCD18 /* String+randomExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+randomExtension.swift"; sourceTree = "<group>"; };
 		BC9502D12C1AEA21004070B8 /* MyCart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC9502D42C1AEA21004070B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				BC9502FF2C1B32CB004070B8 /* NaverSearchModel.swift */,
+				BC3B9C592C1D3612008DCD18 /* UserModel.swift */,
 				BC95030A2C1BD6DA004070B8 /* UserDefaultHelper.swift */,
 			);
 			path = Model;
@@ -182,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				BCF731B72C1C1AF7003FC583 /* UIViewController+Extension.swift */,
+				BC3B9C5B2C1D4338008DCD18 /* String+randomExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -282,10 +288,12 @@
 				BCF731B82C1C1AF7003FC583 /* UIViewController+Extension.swift in Sources */,
 				BC9502D92C1AEA21004070B8 /* ViewController.swift in Sources */,
 				BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */,
+				BC3B9C5C2C1D4338008DCD18 /* String+randomExtension.swift in Sources */,
 				BC3B9C582C1C71E0008DCD18 /* ProductDetailViewController.swift in Sources */,
 				BC9502EC2C1AEBB9004070B8 /* APIKey.swift in Sources */,
 				BC9503002C1B32CB004070B8 /* NaverSearchModel.swift in Sources */,
 				BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */,
+				BC3B9C5A2C1D3612008DCD18 /* UserModel.swift in Sources */,
 				BC9502FE2C1AF862004070B8 /* APIClient.swift in Sources */,
 				BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */,
 				BCF731AF2C1BEB85003FC583 /* Resource.swift in Sources */,
