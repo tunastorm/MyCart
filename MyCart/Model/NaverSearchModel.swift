@@ -110,6 +110,7 @@ class NaverSearchShopModel {
     func setSearchedList(userId: String, list: [String]) {
         UserDefaultsHelper.setSearchedList(userId, list)
     }
+    
    
     func getLikedList(userId: String) -> [String]? {
         return UserDefaultsHelper.getLikedList(userId)

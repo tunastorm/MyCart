@@ -51,7 +51,6 @@ class UserModel {
         self.currentUser = "-"
         self.nowUser = User(userId: Resource.Text.guestUser, nickName: "-", profileImage: "-")
         UserDefaultsHelper.deleteUser(userId: user.userId)
-       
     }
 }
 

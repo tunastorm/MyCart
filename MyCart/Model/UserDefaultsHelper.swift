@@ -33,20 +33,20 @@ class UserDefaultsHelper {
         }
     }
     
-    // 모든 유저들의 최근 검색 기록 리스트 담는 리스트
-    var allSearchedList: [String:[String]] {
+    // 모든 유저들의 최근 검색 기록 리스트 키를 담는 딕셔너리
+    var searchedListKeys: [String:String] {
         get {
-            return userDefaults.dictionary(forKey: Key.searchedList.rawValue) as? [String:[String]] ?? [:]
+            return userDefaults.dictionary(forKey: Key.searchedList.rawValue) as? [String:String] ?? [:]
         }
         set {
             userDefaults.set(newValue, forKey: Key.searchedList.rawValue)
         }
     }
     
-    // 모든 유저들의 좋아요 리스트를 담는 리스트
-    var allLikedList: [String:[String]] {
+    // 모든 유저들의 좋아요 리스트 키를 담는 딕셔너리
+    var likedListKeys: [String:String] {
         get {
-            return userDefaults.dictionary(forKey: Key.likedList.rawValue) as? [String:[String]] ?? [:]
+            return userDefaults.dictionary(forKey: Key.likedList.rawValue) as? [String:String] ?? [:]
         }
         set {
             userDefaults.set(newValue, forKey: Key.likedList.rawValue)
@@ -77,19 +77,32 @@ class UserDefaultsHelper {
         if let encoded = try? encoder.encode(newUser) {
             UserDefaults.standard.setValue(encoded, forKey: newUser.userId)
         }
-        UserDefaultsHelper.standard.allSearchedList[newUser.userId] = []
-        UserDefaultsHelper.standard.allLikedList[newUser.userId] = []
+        let userId = newUser.userId
+        var searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
+        var likedListKeys = UserDefaultsHelper.standard.likedListKeys
+        
+        searchedListKeys[userId] = Key.searchedList.rawValue + " | " + userId
+        likedListKeys[userId] = Key.likedList.rawValue + " | " + userId
+        
+        UserDefaultsHelper.standard.searchedListKeys = searchedListKeys
+        UserDefaultsHelper.standard.likedListKeys = likedListKeys
+                
+        setSearchedList(userId, [])
+        setLikedList(userId, [])
     }
     
     static func deleteUser(userId: String)  {
-        var allSearchedList = UserDefaultsHelper.standard.allSearchedList
-        var allLikedKList = UserDefaultsHelper.standard.allLikedList
+        var searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
+        var likedListKeys = UserDefaultsHelper.standard.likedListKeys
         
-        allSearchedList.removeValue(forKey: userId)
-        allLikedKList.removeValue(forKey: userId)
+        guard let mySearchKey = getSearchedListkey(userId) else {return}
+        guard let myLikeKey = getLikedListKey(userId) else {return}
         
-        UserDefaultsHelper.standard.allSearchedList = allSearchedList
-        UserDefaultsHelper.standard.allLikedList = allLikedKList
+        UserDefaults.standard.removeObject(forKey: mySearchKey)
+        UserDefaults.standard.removeObject(forKey: myLikeKey)
+        
+        searchedListKeys.removeValue(forKey: userId)
+        likedListKeys.removeValue(forKey: userId)
         
         UserDefaults.standard.removeObject(forKey: Key.currentUser.rawValue)
         print(#function, UserDefaultsHelper.standard.currentUser)
@@ -120,32 +133,34 @@ class UserDefaultsHelper {
         return newKeyMapper[mappingKey]
     }
     
+    static func getSearchedListkey(_ userId: String) -> String? {
+        let searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
+        return searchedListKeys[userId]
+    }
+    
+    static func getLikedListKey(_ userId: String) -> String? {
+        let likedListKeys = UserDefaultsHelper.standard.likedListKeys
+        return likedListKeys[userId]
+    }
+    
     static func getSearchedList(_ userId: String) -> [String]? {
-        let allSearchedList = UserDefaultsHelper.standard.allSearchedList
-        return allSearchedList[userId]
+        guard let myKey = getSearchedListkey(userId) else {return []}
+        return UserDefaults.standard.stringArray(forKey: myKey)
     }
     
     static func setSearchedList(_ userId: String, _ list: [String]) {
-        var allSearchedList = UserDefaultsHelper.standard.allSearchedList
-        guard let myList = allSearchedList[userId] else {return}
-        var myListCopy = myList
-        myListCopy.append(contentsOf: list)
-        allSearchedList[userId] = myListCopy
-        UserDefaultsHelper.standard.allSearchedList = allSearchedList
+        guard let myKey = getSearchedListkey(userId) else {return}
+        UserDefaults.standard.setValue(list, forKey: myKey)
     }
-    
+        
     static func getLikedList(_ userId: String) -> [String]? {
-        let allLikedList = UserDefaultsHelper.standard.allLikedList
-        return allLikedList[userId]
+        guard let myKey = getLikedListKey(userId) else {return []}
+        return UserDefaults.standard.stringArray(forKey: myKey)
     }
     
     static func setLikedList(_ userId: String, _ list: [String]) {
-        var allLikedList = UserDefaultsHelper.standard.allLikedList
-        guard let myList = allLikedList[userId] else {return}
-        var myListCopy = myList
-        myListCopy.append(contentsOf: list)
-        allLikedList[userId] = myListCopy
-        UserDefaultsHelper.standard.allLikedList = allLikedList
+        guard let myKey = getLikedListKey(userId)  else {return}
+        UserDefaults.standard.setValue(list, forKey: myKey)
     }
 }
 

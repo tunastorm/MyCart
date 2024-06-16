@@ -9,7 +9,7 @@ import UIKit
 
 class AuthViewController: UIViewController {
 
-    let model = UserModel.model
+    var model: UserModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +18,8 @@ class AuthViewController: UIViewController {
         print("model: ", model)
         print("UserModel.model: ", UserModel.model)
         
-        UserDefaultsHelper.deleteUser(userId: model.nowUser.userId)
+        self.model = UserModel.model
+        guard let model else {return}
         authonticateUser()
     }
     
@@ -26,8 +27,8 @@ class AuthViewController: UIViewController {
         let vc = SplashViewController()
         vc.delegate = self
         
-        model.signIn()
-        let nowUser = model.nowUser
+        model?.signIn()
+        guard let nowUser = model?.nowUser else {return}
         print(#function, "nowUser: \(nowUser)")
         if nowUser.userId == Resource.Text.guestUser {
             vc.nextViewType = OnboadingViewController.self
@@ -37,11 +38,15 @@ class AuthViewController: UIViewController {
         pushAfterView(view: vc, backButton: false, animated: false)
     }
     
-    func signUpNewUser(nickName: String, profileImage: UIImage) {
+    func signUpNewUser(nickName: String, profileImage: UIImage) -> Bool {
         var thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
         print(#function, thisName)
-        model.signUp(nickName, profileImage: thisName)
-        print(#function, "nowUser: \(model.nowUser)")
-        authonticateUser()
+        model?.signUp(nickName, profileImage: thisName)
+        guard let newUserId = model?.nowUser.userId else {return false}
+        if newUserId != Resource.Text.guestUser {
+            print(#function, "newUserId: \(newUserId)")
+            return true
+        }
+        return false
     }
 }

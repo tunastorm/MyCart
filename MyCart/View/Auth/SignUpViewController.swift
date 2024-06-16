@@ -183,6 +183,9 @@ class SignUpViewController: UIViewController {
         guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
         print(#function, nickName, image)
         delegate?.signUpNewUser(nickName: nickName, profileImage: image)
+        
+        let nextView = AuthViewController()
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVCWithNavi(nextView, animated: false)
     }
 }
 
