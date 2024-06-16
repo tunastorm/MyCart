@@ -33,18 +33,20 @@ class UserDefaultsHelper {
         }
     }
     
-    var searchedList: [String] {
+    // 모든 유저들의 최근 검색 기록 리스트 담는 리스트
+    var allSearchedList: [String:[String]] {
         get {
-            return userDefaults.array(forKey: Key.searchedList.rawValue) as? [String] ?? []
+            return userDefaults.dictionary(forKey: Key.searchedList.rawValue) as? [String:[String]] ?? [:]
         }
         set {
             userDefaults.set(newValue, forKey: Key.searchedList.rawValue)
         }
     }
     
-    var likedList: [String] {
+    // 모든 유저들의 좋아요 리스트를 담는 리스트
+    var allLikedList: [String:[String]] {
         get {
-            return userDefaults.array(forKey: Key.likedList.rawValue) as? [String] ?? []
+            return userDefaults.dictionary(forKey: Key.likedList.rawValue) as? [String:[String]] ?? [:]
         }
         set {
             userDefaults.set(newValue, forKey: Key.likedList.rawValue)
@@ -100,6 +102,34 @@ class UserDefaultsHelper {
         let newKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) as! [String:String]
 
         return newKeyMapper[mappingKey]
+    }
+    
+    static func getSearchedList(_ userId: String) -> [String]? {
+        let allSearchedList = UserDefaultsHelper.standard.allSearchedList
+        return allSearchedList[userId]
+    }
+    
+    static func setSearchedList(_ userId: String, _ list: [String]) {
+        var allSearchedList = UserDefaultsHelper.standard.allSearchedList
+        guard let myList = allSearchedList[userId] else {return}
+        var myListCopy = myList
+        myListCopy.append(contentsOf: list)
+        allSearchedList[userId] = myListCopy
+        UserDefaultsHelper.standard.allSearchedList = allSearchedList
+    }
+    
+    static func getLikedList(_ userId: String) -> [String]? {
+        let allLikedList = UserDefaultsHelper.standard.allLikedList
+        return allLikedList[userId]
+    }
+    
+    static func setLikedList(_ userId: String, _ list: [String]) {
+        var allLikedList = UserDefaultsHelper.standard.allLikedList
+        guard let myList = allLikedList[userId] else {return}
+        var myListCopy = myList
+        myListCopy.append(contentsOf: list)
+        allLikedList[userId] = myListCopy
+        UserDefaultsHelper.standard.allLikedList = allLikedList
     }
 }
 

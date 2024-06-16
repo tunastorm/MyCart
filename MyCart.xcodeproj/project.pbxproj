@@ -112,13 +112,6 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
-		BC3B9C642C1D6B1E008DCD18 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
 		BC3B9C692C1D78E3008DCD18 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,7 +179,6 @@
 			isa = PBXGroup;
 			children = (
 				BC3B9C5E2C1D66A5008DCD18 /* AuthViewController.swift */,
-				BC3B9C652C1D6CCB008DCD18 /* MainViewController.swift */,
 				BC9503042C1B47C8004070B8 /* SearchViewController.swift */,
 				BC3B9C6A2C1D7914008DCD18 /* SettingViewController.swift */,
 			);
@@ -198,7 +190,6 @@
 			children = (
 				BC3B9C672C1D786B008DCD18 /* TabBarController.swift */,
 				BC3B9C5D2C1D6663008DCD18 /* Auth */,
-				BC3B9C642C1D6B1E008DCD18 /* Main */,
 				BC9503072C1B5246004070B8 /* Search */,
 				BC3B9C692C1D78E3008DCD18 /* Setting */,
 			);
@@ -208,6 +199,7 @@
 		BC9503072C1B5246004070B8 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				BC3B9C652C1D6CCB008DCD18 /* MainViewController.swift */,
 				BC95030C2C1BDA41004070B8 /* SearchCollectionViewController.swift */,
 				BC95030E2C1BDA83004070B8 /* SearchCollectionViewExtension.swift */,
 				BC9503102C1BDE7E004070B8 /* SearchCollectionViewCell.swift */,

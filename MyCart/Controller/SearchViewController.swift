@@ -10,6 +10,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
+    private let user = UserModel.model
     private let model = NaverSearchShopModel.model
     
     let vc = SearchCollectionViewController()
@@ -19,11 +20,11 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-//        UserDefaultHelper.standard.userDefaults.removeObject(forKey: "likedList")
+        UserDefaultsHelper.standard.userDefaults.removeObject(forKey: "likedList")
+        UserDefaultsHelper.standard.userDefaults.removeObject(forKey: "searchedList")
+        print(#function, "Aaaaaaaaaaaaaaaaaaaaaaaaaa")
         vc.delegate = self
-        requestSearch(.sim)
         setNavigationBarUI()
-        self.pushAfterView(view: self.vc, backButton: true, animated: true)
     }
     
     func requestSearch(_ sort: APIRouter.Sorting) {
@@ -32,7 +33,7 @@ class SearchViewController: UIViewController {
         model.requestSearch(query, sort: sort,
                             callback: {() -> () in
             self.vc.itemList = self.model.responseItems
-            self.vc.likedList = self.model.likedList
+            self.vc.likedList = self.model.getLikedList(userId: self.user.nowUser.userId) ?? []
             if self.model.page == 1 {
                 self.vc.totalLabel.text = Int(self.getTotal()).formatted(.number) 
                                           + Resource.Text.searchTotal
@@ -49,11 +50,11 @@ class SearchViewController: UIViewController {
     }
     
     func getSearchedList() -> [String] {
-       return model.searchedList
+        return model.getSearchedList(userId: user.nowUser.userId) ?? []
     }
     
     func setSearchedList(newList: [String]) {
-        model.searchedList = newList
+        model.setSearchedList(userId: user.nowUser.userId, list: newList)
     }
     
     func getLastBuildDate() -> String {
@@ -77,12 +78,12 @@ class SearchViewController: UIViewController {
     }
     
     func getIsLiked(productId: String) -> Bool {
-        let likedList = model.likedList
+        var likedList = model.getLikedList(userId: user.nowUser.userId) ?? []
         return likedList.contains(productId)
     }
     
     func setIsLiked(_ productId: String) {
-        var likedList = model.likedList
+        var likedList: [String] = model.getLikedList(userId: user.nowUser.userId) ?? []
         if likedList.contains(productId),
            let index = likedList.firstIndex(of: productId) {
             print(#function, productId, index)
@@ -91,10 +92,9 @@ class SearchViewController: UIViewController {
         } else {
             likedList.append(productId)
         }
-        model.likedList = likedList
-        vc.likedList = model.likedList
+        model.setLikedList(userId: user.nowUser.userId, list: likedList)
+        vc.likedList = model.getLikedList(userId: user.nowUser.userId)
         print(#function, "vc: \(vc.likedList)")
-        print(#function, "model: \(model.likedList)")
     }
     
     func scrollDown(_ sort: APIRouter.Sorting) {

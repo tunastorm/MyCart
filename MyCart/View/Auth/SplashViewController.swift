@@ -54,7 +54,6 @@ class SplashViewController: UIViewController {
             
         case is TabBarController.Type:
             let tabBar = TabBarController()
-            
             nextView = tabBar
             withNavi = false
         default: print("Error")

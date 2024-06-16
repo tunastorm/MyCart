@@ -103,24 +103,23 @@ class NaverSearchShopModel {
         }
     }
     
-    var searchedList: [String] {
-        get {
-            return UserDefaultsHelper.standard.searchedList
-        }
-        set {
-            UserDefaultsHelper.standard.searchedList = newValue
-        }
+    func getSearchedList(userId: String) -> [String]? {
+        return UserDefaultsHelper.getSearchedList(userId)
     }
     
-    var likedList: [String] {
-        get {
-            return UserDefaultsHelper.standard.likedList
-        }
-        set {
-            UserDefaultsHelper.standard.likedList = newValue
-        }
+    func setSearchedList(userId: String, list: [String]) {
+        UserDefaultsHelper.setSearchedList(userId, list)
+    }
+   
+    func getLikedList(userId: String) -> [String]? {
+        return UserDefaultsHelper.getLikedList(userId)
+    }
+    
+    func setLikedList(userId: String, list: [String]) {
+        UserDefaultsHelper.setLikedList(userId, list)
     }
 }
+
 
 struct SearchResponse<T: Codable>: Codable {
     var lastBuildDate: String
