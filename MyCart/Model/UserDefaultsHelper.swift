@@ -20,8 +20,17 @@ class UserDefaultsHelper {
     let userDefaults = UserDefaults.standard
     
     enum Key: String {
-        case userIdKeyMapper
+        case currentUser, userIdKeyMapper
         case searchedList, likedList // 기본 키값 + User_index로 키 지정
+    }
+    
+    var currentUser: String? {
+        get {
+            return userDefaults.string(forKey: Key.currentUser.rawValue) ?? "-"
+        }
+        set {
+            userDefaults.setValue(newValue, forKey: Key.currentUser.rawValue)
+        }
     }
     
     var searchedList: [String] {
@@ -44,8 +53,11 @@ class UserDefaultsHelper {
     
     static func signIn(_ mappingKey: String) -> User? {
         // mappingKey : userIdKey 쌍 조회, 없으면 return nil
-        var userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
+        let userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
         guard let userIdKey = userIdKeyMapper[mappingKey] else {return nil}
+        
+        // 최근 사용자로 저장
+        UserDefaultsHelper.standard.currentUser = mappingKey
         
         // userIdKey 조회 성공 시 userIdKey : User 쌍 조회, 없으면 return nil
         if let savedData = UserDefaults.standard.object(forKey: userIdKey as! String) as? Data {
@@ -57,31 +69,37 @@ class UserDefaultsHelper {
         return nil
     }
     
-    static func signUp(_ newUser: User, mappingKey: String) {
+    static func signUp(_ newUser: User) {
+        // userIdKey : User 구조체 쌍 저장
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(newUser) {
+            UserDefaults.standard.setValue(encoded, forKey: newUser.userId)
+        }
+    }
+    
+    static func makeUserIdKey(mappingKey: String)  -> String? {
         // mappingKey : userIdKey 쌍 조회
         var userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
         var userIdKey = ""
         
+        // 일치하는 것 없을 때까지 반복 생성
         while (userIdKey.count != 10) {
             let newUserIdKey = mappingKey.createRandomStr(length: 10)
             userIdKey = newUserIdKey
             for mappingKey in userIdKeyMapper.keys {
                 if userIdKeyMapper[mappingKey] as! String == newUserIdKey {
-                   userIdKey = ""
-                   break
+                    userIdKey = ""
+                    break
                 }
             }
         }
         
-        // mappingKey : userIdKey 쌍 딕셔너리 저장
+        // mappingKey : userIdKey 쌍 딕셔너리 저장 후 리턴
         userIdKeyMapper[mappingKey] = userIdKey
         UserDefaults.standard.setValue(userIdKeyMapper , forKey: Key.userIdKeyMapper.rawValue)
-        
-        // userIdKey : User 구조체 쌍 저장
-        let encoder = JSONEncoder()
-        if let encoded = try? encoder.encode(newUser) {
-            UserDefaults.standard.setValue(encoded, forKey: userIdKey)
-        }
+        let newKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) as! [String:String]
+
+        return newKeyMapper[mappingKey]
     }
 }
 

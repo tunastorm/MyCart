@@ -58,6 +58,7 @@ class SignUpViewController: UIViewController {
         $0.layer.masksToBounds = true
         $0.setTitle(Resource.Text.startButton, for: .normal)
         $0.setTitleColor(Resource.MyColor.white, for: .normal)
+        $0.addTarget(self, action: #selector(signUpAndGoMain), for: .touchUpInside)
     }
     
     
@@ -137,6 +138,7 @@ class SignUpViewController: UIViewController {
             profileImageView.image = selectedPhoto
         } else {
             profileImageView.image = Resource.NamedImage.randomProfile
+            selectedPhoto = profileImageView.image
         }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(goSelectPhotoView))
@@ -172,10 +174,15 @@ class SignUpViewController: UIViewController {
         pushAfterView(view: vc, backButton: true, animated: true)
     }
     
-    @objc func goMain() {
-        if messageLabel.text == Resource.Text.nickNameSuccess.message {
-            
+    @objc func signUpAndGoMain() {
+        print(#function, messageLabel.text, Resource.Text.nickNameSuccess.message)
+        if let message = messageLabel.text, message != Resource.Text.nickNameSuccess.message {
+            return
         }
+        print(#function)
+        guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
+        print(#function, nickName, image)
+        delegate?.signUpNewUser(nickName: nickName, profileImage: image)
     }
 }
 

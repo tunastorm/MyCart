@@ -21,12 +21,22 @@ class AuthViewController: UIViewController {
         let vc = SplashViewController()
         vc.delegate = self
         
+        model.signIn()
         let nowUser = model.nowUser
+        print(#function, "nowUser: \(nowUser)")
         if nowUser.userId == Resource.Text.guestUser {
             vc.nextViewType = OnboadingViewController.self
         } else {
             vc.nextViewType = TabBarController.self
         }
         pushAfterView(view: vc, backButton: false, animated: false)
+    }
+    
+    func signUpNewUser(nickName: String, profileImage: UIImage) {
+        var thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
+        print(#function, thisName)
+        model.signUp(nickName, profileImage: thisName)
+        print(#function, "nowUser: \(model.nowUser)")
+        authonticateUser()
     }
 }

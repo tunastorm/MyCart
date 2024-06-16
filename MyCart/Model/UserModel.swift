@@ -14,8 +14,10 @@ class UserModel {
     
     static let model = UserModel()
     
-    private var user = User(userId: Resource.Text.guestUser, signInid: "-", password: "-")
-        
+    private var user = User(userId: Resource.Text.guestUser, nickName: "-", profileImage: "-")
+    
+    private var currentUser = UserDefaultsHelper.standard.currentUser
+    
     var nowUser: User {
         get {
             return user
@@ -25,25 +27,32 @@ class UserModel {
         }
     }
     
-    func signUp(_ newUser: User) {
-        let mappingKey = newUser.userId + newUser.password
+    func signUp(_ nickName: String, profileImage: String) {
+        let mappingKey = nickName + profileImage
         if let oldUser = UserDefaultsHelper.signIn(mappingKey) {
             return
         } else {
-            UserDefaultsHelper.signUp(newUser, mappingKey: mappingKey)
+            guard let userId = UserDefaultsHelper.makeUserIdKey(mappingKey: mappingKey) else {return}
+            let newUser = User(userId: userId, nickName: nickName, profileImage: profileImage)
+            UserDefaultsHelper.signUp(newUser)
+            currentUser = mappingKey
+            signIn()
         }
     }
         
-    func signIn(signInId: String, password: String) {
-        let mappingKey = signInId + password
+    func signIn() {
+        print(#function, self.currentUser)
+        if let currentUser, let nowUser = UserDefaultsHelper.signIn(currentUser) {
+            self.nowUser = nowUser
+        }
     }
 }
 
 
 struct User: Codable {
     let userId: String
-    let signInid : String
-    var password: String
+    let nickName : String
+    var profileImage: String
 }
 
 

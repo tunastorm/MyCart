@@ -44,6 +44,7 @@ class SplashViewController: UIViewController {
         configLayout()
         configView()
        
+        print(#function, "\(self.self) 진입")
         switch nextViewType {
         case is OnboadingViewController.Type:
             let nextVC = OnboadingViewController()
@@ -53,8 +54,8 @@ class SplashViewController: UIViewController {
             
         case is TabBarController.Type:
             let tabBar = TabBarController()
-            guard let mainView = tabBar.storyboard?.instantiateViewController(identifier: MainViewController.identifier) else {return}
-            nextView = mainView
+            
+            nextView = tabBar
             withNavi = false
         default: print("Error")
         }
