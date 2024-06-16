@@ -29,7 +29,11 @@ class MainViewController: UIViewController {
     
     let tableView = UITableView()
 
-    var searchedList: [String]?
+    var searchedList: [String]? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +41,12 @@ class MainViewController: UIViewController {
         configHierarchy()
         configLayout()
         configView()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        searchedList = delegate?.getSearchedList()
         searchedListToggle()
     }
     
@@ -102,6 +112,8 @@ class MainViewController: UIViewController {
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         delegate?.query = searchBar.text
+        guard let query = delegate?.query else {return}
+        delegate?.setSearchedList(newWord: query)
         delegate?.requestSearch(.sim)
         guard let nextVC = delegate?.vc else { return }
         nextVC.delegate = self.delegate

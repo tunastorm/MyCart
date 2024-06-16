@@ -14,12 +14,17 @@ class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-        
-        print("model: ", model)
-        print("UserModel.model: ", UserModel.model)
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.model = UserModel.model
+        print(#function, model?.nowUser)
         guard let model else {return}
+        model.signIn()
+        print(#function, model)
+//        model.deleteUser()
+//        print(#function, model)
         authonticateUser()
     }
     

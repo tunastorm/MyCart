@@ -21,7 +21,7 @@ class UserDefaultsHelper {
     
     enum Key: String {
         case currentUser, userIdKeyMapper
-        case searchedList, likedList // 기본 키값 + User_index로 키 지정
+        case searchedList, likedList
     }
     
     var currentUser: String? {
@@ -77,6 +77,8 @@ class UserDefaultsHelper {
         if let encoded = try? encoder.encode(newUser) {
             UserDefaults.standard.setValue(encoded, forKey: newUser.userId)
         }
+        
+        
         let userId = newUser.userId
         var searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
         var likedListKeys = UserDefaultsHelper.standard.likedListKeys
@@ -84,19 +86,31 @@ class UserDefaultsHelper {
         searchedListKeys[userId] = Key.searchedList.rawValue + " | " + userId
         likedListKeys[userId] = Key.likedList.rawValue + " | " + userId
         
+        print(#function, searchedListKeys)
+        print(#function, likedListKeys)
+        
+        UserDefaults.standard.removeObject(forKey: Key.searchedList.rawValue)
+        UserDefaults.standard.removeObject(forKey: Key.likedList.rawValue)
         UserDefaultsHelper.standard.searchedListKeys = searchedListKeys
         UserDefaultsHelper.standard.likedListKeys = likedListKeys
-                
+        
+        print(#function, UserDefaultsHelper.standard.searchedListKeys)
+        print(#function, UserDefaultsHelper.standard.likedListKeys)
+        
         setSearchedList(userId, [])
         setLikedList(userId, [])
     }
     
     static func deleteUser(userId: String)  {
+        print(#function, userId)
         var searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
         var likedListKeys = UserDefaultsHelper.standard.likedListKeys
         
         guard let mySearchKey = getSearchedListkey(userId) else {return}
         guard let myLikeKey = getLikedListKey(userId) else {return}
+        
+        print(#function, mySearchKey)
+        print(#function, myLikeKey)
         
         UserDefaults.standard.removeObject(forKey: mySearchKey)
         UserDefaults.standard.removeObject(forKey: myLikeKey)
@@ -104,9 +118,23 @@ class UserDefaultsHelper {
         searchedListKeys.removeValue(forKey: userId)
         likedListKeys.removeValue(forKey: userId)
         
+        print(#function, searchedListKeys)
+        print(#function, likedListKeys)
+        
+        UserDefaults.standard.removeObject(forKey: Key.searchedList.rawValue)
+        UserDefaults.standard.removeObject(forKey: Key.likedList.rawValue)
+        UserDefaultsHelper.standard.searchedListKeys = searchedListKeys
+        UserDefaultsHelper.standard.likedListKeys = likedListKeys
+        
         UserDefaults.standard.removeObject(forKey: Key.currentUser.rawValue)
         print(#function, UserDefaultsHelper.standard.currentUser)
         UserDefaults.standard.removeObject(forKey: userId)
+        if let savedData = UserDefaults.standard.object(forKey: userId as! String) as? Data {
+            let decoder = JSONDecoder()
+            if let nowUser = try? decoder.decode(User.self, from: savedData) {
+                print(#function, nowUser)
+            }
+        }
     }
     
     static func makeUserIdKey(mappingKey: String)  -> String? {
@@ -135,32 +163,39 @@ class UserDefaultsHelper {
     
     static func getSearchedListkey(_ userId: String) -> String? {
         let searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
+        print(#function, searchedListKeys)
         return searchedListKeys[userId]
     }
     
     static func getLikedListKey(_ userId: String) -> String? {
         let likedListKeys = UserDefaultsHelper.standard.likedListKeys
+        print(#function, likedListKeys)
         return likedListKeys[userId]
     }
     
     static func getSearchedList(_ userId: String) -> [String]? {
         guard let myKey = getSearchedListkey(userId) else {return []}
-        return UserDefaults.standard.stringArray(forKey: myKey)
+        return UserDefaults.standard.stringArray(forKey: myKey) ?? [] as [String]
     }
     
     static func setSearchedList(_ userId: String, _ list: [String]) {
         guard let myKey = getSearchedListkey(userId) else {return}
+        UserDefaults.standard.removeObject(forKey: myKey)
         UserDefaults.standard.setValue(list, forKey: myKey)
+        print(#function, getSearchedList(userId))
     }
         
     static func getLikedList(_ userId: String) -> [String]? {
         guard let myKey = getLikedListKey(userId) else {return []}
-        return UserDefaults.standard.stringArray(forKey: myKey)
+        return UserDefaults.standard.stringArray(forKey: myKey) ?? [] as [String]
     }
     
     static func setLikedList(_ userId: String, _ list: [String]) {
         guard let myKey = getLikedListKey(userId)  else {return}
+        UserDefaults.standard.removeObject(forKey: myKey)
         UserDefaults.standard.setValue(list, forKey: myKey)
+        print(#function, getLikedList(userId))
+        
     }
 }
 

@@ -83,6 +83,16 @@ class SearchCollectionViewController: UIViewController {
         configSortingView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationItem.title = delegate?.query
+        
+        if let total = delegate?.getTotal(){
+            totalLabel.text = Int(total).formatted() + Resource.Text.searchTotal
+        }
+    }
+    
     func collectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         
@@ -141,11 +151,6 @@ class SearchCollectionViewController: UIViewController {
     
     func configView() {
         view.backgroundColor = Resource.MyColor.white
-        navigationItem.title = delegate?.query
-        
-        if let total = delegate?.getTotal(){
-            totalLabel.text = Int(total).formatted() + Resource.Text.searchTotal
-        }
     }
     
     func configSortingView() {

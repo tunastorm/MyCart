@@ -43,14 +43,15 @@ class UserModel {
     func signIn() {
         print(#function, self.currentUser)
         if let currentUser, let nowUser = UserDefaultsHelper.signIn(currentUser) {
+            print(#function, nowUser)
             self.nowUser = nowUser
         }
     }
     
     func deleteUser() {
+        UserDefaultsHelper.deleteUser(userId: user.userId)
         self.currentUser = "-"
         self.nowUser = User(userId: Resource.Text.guestUser, nickName: "-", profileImage: "-")
-        UserDefaultsHelper.deleteUser(userId: user.userId)
     }
 }
 

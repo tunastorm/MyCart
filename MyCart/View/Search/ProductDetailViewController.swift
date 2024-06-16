@@ -28,7 +28,12 @@ class ProductDetailViewController: UIViewController {
         configLayout()
         configView()
         configLikeButton()
-      
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let title = product?.title.replacingOccurrences(of: "<b>", with: "")
+        navigationItem.title = title?.replacingOccurrences(of: "</b>", with: "")
     }
     
     func configHierarchy() {
@@ -43,8 +48,6 @@ class ProductDetailViewController: UIViewController {
     
     func configView() {
         view.backgroundColor = Resource.MyColor.white
-        let title = product?.title.replacingOccurrences(of: "<b>", with: "")
-        navigationItem.title = title?.replacingOccurrences(of: "</b>", with: "")
     }
     
     func configWebView() {
