@@ -111,7 +111,14 @@ class NaverSearchShopModel {
         UserDefaultsHelper.setSearchedList(userId, list)
     }
     
-   
+    func deleteSearchedWord(userId: String, deleteWord: String) {
+        guard let oldList = UserDefaultsHelper.getSearchedList(userId),
+              let index = oldList.firstIndex(of: deleteWord) else {return}
+        var newList = oldList
+        newList.remove(at: index)
+        UserDefaultsHelper.setSearchedList(userId, newList)
+    }
+    
     func getLikedList(userId: String) -> [String] {
         return UserDefaultsHelper.getLikedList(userId) ?? []
     }

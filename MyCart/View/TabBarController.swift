@@ -16,7 +16,7 @@ class TabBarController: UITabBarController {
         tabBar.unselectedItemTintColor = Resource.MyColor.lightGray
         tabBar.layer.addBorder([.top], color: Resource.MyColor.lightGray, width: Resource.Border.width1)
         
-        let main = MainViewController()
+        let main = MainTableViewController()
         main.delegate = SearchViewController()
         let setting = SettingViewController()
         

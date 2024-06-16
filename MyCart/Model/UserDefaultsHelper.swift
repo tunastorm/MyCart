@@ -182,7 +182,7 @@ class UserDefaultsHelper {
         guard let myKey = getSearchedListkey(userId) else {return}
         UserDefaults.standard.removeObject(forKey: myKey)
         UserDefaults.standard.setValue(list, forKey: myKey)
-        print(#function, getSearchedList(userId))
+//        print(#function, getSearchedList(userId))
     }
         
     static func getLikedList(_ userId: String) -> [String]? {
@@ -194,7 +194,7 @@ class UserDefaultsHelper {
         guard let myKey = getLikedListKey(userId)  else {return}
         UserDefaults.standard.removeObject(forKey: myKey)
         UserDefaults.standard.setValue(list, forKey: myKey)
-        print(#function, getLikedList(userId))
+//        print(#function, getLikedList(userId))
         
     }
 }

@@ -103,6 +103,8 @@ enum Resource {
         static let mainViewTitle = "님의 MEANING OUT"
         static let noListMessgae = "최근 검색어가 없어요"
         static let searchBarPlaceHolder = "브랜드, 상품 등을 입력하세요"
+        static let currentSearched = "최근 검색"
+        static let allDelete = "전체 삭제"
         static let searchTotal = "개의 검색결과"
        
         var message: String {

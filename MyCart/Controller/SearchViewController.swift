@@ -13,8 +13,6 @@ class SearchViewController: UIViewController {
     private let model = NaverSearchShopModel.model
     
     var vc = SearchCollectionViewController()
-
-    var likedList: [String]?
     
     var query: String?
     
@@ -23,7 +21,6 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .clear
         vc.delegate = self
         setNavigationBarUI()
-        likedList = model.getLikedList(userId: user.userId)
     }
     
     func requestSearch(_ sort: APIRouter.Sorting) {
@@ -66,8 +63,16 @@ class SearchViewController: UIViewController {
         if searchedList.contains(query) {
             return
         }
-        searchedList.append(query)
+        searchedList.insert(newWord, at: 0)
         model.setSearchedList(userId: user.userId, list: searchedList)
+    }
+    
+    func deleteSearchedWord(deleteWord: String) {
+        model.deleteSearchedWord(userId: user.userId, deleteWord: deleteWord)
+    }
+    
+    func deleteSearchedList() {
+        model.setSearchedList(userId: user.userId, list: [])
     }
     
     func getLastBuildDate() -> String {

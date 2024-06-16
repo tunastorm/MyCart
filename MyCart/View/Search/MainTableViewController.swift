@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 
-class MainViewController: UIViewController {
+class MainTableViewController: UIViewController {
     
     var delegate: SearchViewController?
     
@@ -27,7 +27,25 @@ class MainViewController: UIViewController {
         $0.text = Resource.Text.noListMessgae
     }
     
-    let tableView = UITableView()
+    let currentSearchedView = UIView()
+    
+    let currentSearchedlabel = UILabel().then {
+        $0.font = Resource.Font.boldSystem16
+        $0.textAlignment = .left
+        $0.text = Resource.Text.currentSearched
+    }
+    
+    let allDeleteButton = UIButton().then {
+        $0.titleLabel?.font = Resource.Font.boldSystem14
+        $0.titleLabel?.textAlignment = .right
+        $0.setTitle(Resource.Text.allDelete, for: .normal)
+        $0.setTitleColor(Resource.MyColor.orange, for: .normal)
+        $0.addTarget(self, action: #selector(deleteAllWords), for: .touchUpInside)
+    }
+    
+    let tableView = UITableView().then {
+        $0.separatorInset = .zero
+    }
 
     var searchedList: [String]? {
         didSet {
@@ -58,6 +76,9 @@ class MainViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.prefetchDataSource = self
+        tableView.register(MainTableViewCell.self,
+                           forCellReuseIdentifier: MainTableViewCell.identifier)
     }
 
     func configHierarchy() {
@@ -66,6 +87,9 @@ class MainViewController: UIViewController {
         }
         view.addSubview(imageView)
         view.addSubview(noSearchedListLabel)
+        view.addSubview(currentSearchedView)
+        currentSearchedView.addSubview(currentSearchedlabel)
+        currentSearchedView.addSubview(allDeleteButton)
         view.addSubview(tableView)
     }
     
@@ -84,8 +108,24 @@ class MainViewController: UIViewController {
             $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
+        currentSearchedView.snp.makeConstraints {
+            $0.height.equalTo(60)
+            $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        currentSearchedlabel.snp.makeConstraints {
+            $0.width.equalTo(80)
+            $0.leading.verticalEdges.equalToSuperview().inset(20)
+        }
+        
+        allDeleteButton.snp.makeConstraints {
+            $0.width.equalTo(60)
+            $0.trailing.verticalEdges.equalToSuperview().inset(20)
+        }
+        
         tableView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(currentSearchedView.snp.bottom)
+            $0.bottom.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
@@ -97,19 +137,26 @@ class MainViewController: UIViewController {
     }
     
     func searchedListToggle() {
-        if let searchedList {
+        if let searchedList, searchedList.count > 0 {
             imageView.isHidden = true
             noSearchedListLabel.isHidden = true
+            currentSearchedView.isHidden = false
             tableView.isHidden = false
         } else {
             imageView.isHidden = false
             noSearchedListLabel.isHidden = false
+            currentSearchedView.isHidden = true
             tableView.isHidden = true
         }
     }
+    
+    @objc func deleteAllWords() {
+        delegate?.deleteSearchedList()
+        searchedList = delegate?.getSearchedList()
+    }
 }
 
-extension MainViewController: UISearchBarDelegate {
+extension MainTableViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         delegate?.query = searchBar.text
         guard let query = delegate?.query else {return}
@@ -122,14 +169,35 @@ extension MainViewController: UISearchBarDelegate {
 }
 
 
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+extension MainTableViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchedList?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier, for: indexPath) as! MainTableViewCell
+        
+        guard let searchedList else {return cell}
+        
+        cell.configCell(data: searchedList[indexPath.row])
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! MainTableViewCell
+        
+        delegate?.query = cell.wordLabel.text
+        delegate?.requestSearch(.sim)
+        
+        guard let nextVC = delegate?.vc else {return}
+        nextVC.delegate = self.delegate
+        
+        pushAfterView(view: nextVC, backButton: true, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        
     }
 }
