@@ -47,7 +47,7 @@ enum Resource {
         static let cameraIcon = CGFloat(15)
         
         static let searchImage = CGFloat(16)
-        static let likeButton = CGFloat(6)
+        static let likeButton = CGFloat(10)
         static let sortingButton = CGFloat(17)
     }
     
@@ -99,6 +99,10 @@ enum Resource {
         static let nickNamePlaceholder = "닉네임을 입력해주세요 :)"
         static let specialFilter = "@#$%"
         
+        
+        static let mainViewTitle = "님의 MEANING OUT"
+        static let noListMessgae = "최근 검색어가 없어요"
+        static let searchBarPlaceHolder = "브랜드, 상품 등을 입력하세요"
         static let searchTotal = "개의 검색결과"
        
         var message: String {

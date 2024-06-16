@@ -77,6 +77,23 @@ class UserDefaultsHelper {
         if let encoded = try? encoder.encode(newUser) {
             UserDefaults.standard.setValue(encoded, forKey: newUser.userId)
         }
+        UserDefaultsHelper.standard.allSearchedList[newUser.userId] = []
+        UserDefaultsHelper.standard.allLikedList[newUser.userId] = []
+    }
+    
+    static func deleteUser(userId: String)  {
+        var allSearchedList = UserDefaultsHelper.standard.allSearchedList
+        var allLikedKList = UserDefaultsHelper.standard.allLikedList
+        
+        allSearchedList.removeValue(forKey: userId)
+        allLikedKList.removeValue(forKey: userId)
+        
+        UserDefaultsHelper.standard.allSearchedList = allSearchedList
+        UserDefaultsHelper.standard.allLikedList = allLikedKList
+        
+        UserDefaults.standard.removeObject(forKey: Key.currentUser.rawValue)
+        print(#function, UserDefaultsHelper.standard.currentUser)
+        UserDefaults.standard.removeObject(forKey: userId)
     }
     
     static func makeUserIdKey(mappingKey: String)  -> String? {
@@ -95,7 +112,6 @@ class UserDefaultsHelper {
                 }
             }
         }
-        
         // mappingKey : userIdKey 쌍 딕셔너리 저장 후 리턴
         userIdKeyMapper[mappingKey] = userIdKey
         UserDefaults.standard.setValue(userIdKeyMapper , forKey: Key.userIdKeyMapper.rawValue)

@@ -14,6 +14,11 @@ class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
+        
+        print("model: ", model)
+        print("UserModel.model: ", UserModel.model)
+        
+        UserDefaultsHelper.deleteUser(userId: model.nowUser.userId)
         authonticateUser()
     }
     

@@ -21,12 +21,14 @@ class SearchCollectionViewController: UIViewController {
     
     var itemList: [ShopItem]? {
         didSet {
+            print(#function, "itemList didSet")
             collectionView.reloadData()
         }
     }
     
     var likedList: [String]? {
         didSet {
+            print(#function, "likedList didSet")
             collectionView.reloadData()
         }
     }
@@ -73,6 +75,7 @@ class SearchCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configBaseSetting()
         configHierarchy()
         configLayout()
@@ -90,7 +93,7 @@ class SearchCollectionViewController: UIViewController {
         let inset = CGFloat(20)
         
         let width = UIScreen.main.bounds.width - (inset * 2) - (itemSpacing * horizontalCount-1)
-        let height = 300 - (inset * 2) - (lineSpacing * verticalCount-1)
+        let height = UIScreen.main.bounds.height - 240 - (inset * 2) - (lineSpacing * verticalCount-1)
         
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: width / horizontalCount,

@@ -14,6 +14,7 @@ class TabBarController: UITabBarController {
         
         tabBar.tintColor = Resource.MyColor.orange
         tabBar.unselectedItemTintColor = Resource.MyColor.lightGray
+        tabBar.layer.addBorder([.top], color: Resource.MyColor.lightGray, width: Resource.Border.width1)
         
         let main = MainViewController()
         main.delegate = SearchViewController()
@@ -29,7 +30,5 @@ class TabBarController: UITabBarController {
         
         // stroyboard 상에서 view controller seg설정하는 것과 동일
         setViewControllers([nav0, nav1], animated: true)
-        
-//        tabBarController?.tabBar.items = [nav1.tabBarItem, nav2.tabBarItem, nav3.tabBarItem]
     }
 }

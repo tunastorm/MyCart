@@ -75,7 +75,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         
         likeButton.snp.makeConstraints {
             $0.size.equalTo(40)
-            $0.bottom.trailing.equalTo(imageView).inset(16)
+            $0.bottom.trailing.equalTo(imageView).inset(10)
         }
         
         mallNameLabel.snp.makeConstraints {
