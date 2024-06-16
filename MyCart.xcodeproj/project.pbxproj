@@ -18,7 +18,8 @@
 		BC3B9C6B2C1D7914008DCD18 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C6A2C1D7914008DCD18 /* SettingViewController.swift */; };
 		BC3B9C6F2C1D8607008DCD18 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C6E2C1D8607008DCD18 /* SignUpViewController.swift */; };
 		BC3B9C712C1DBFBA008DCD18 /* NickNameFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C702C1DBFBA008DCD18 /* NickNameFilter.swift */; };
-		BC3B9C732C1DC6A9008DCD18 /* SelectPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C722C1DC6A9008DCD18 /* SelectPhotoViewController.swift */; };
+		BC3B9C732C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C722C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift */; };
+		BC3B9C752C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C742C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift */; };
 		BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D42C1AEA21004070B8 /* AppDelegate.swift */; };
 		BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */; };
 		BC9502DE2C1AEA22004070B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC9502DD2C1AEA22004070B8 /* Assets.xcassets */; };
@@ -57,7 +58,8 @@
 		BC3B9C6A2C1D7914008DCD18 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		BC3B9C6E2C1D8607008DCD18 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		BC3B9C702C1DBFBA008DCD18 /* NickNameFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NickNameFilter.swift; sourceTree = "<group>"; };
-		BC3B9C722C1DC6A9008DCD18 /* SelectPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoViewController.swift; sourceTree = "<group>"; };
+		BC3B9C722C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCollectionViewController.swift; sourceTree = "<group>"; };
+		BC3B9C742C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		BC9502D12C1AEA21004070B8 /* MyCart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC9502D42C1AEA21004070B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -104,7 +106,8 @@
 				BC3B9C622C1D6B0D008DCD18 /* SplashViewController.swift */,
 				BC3B9C6E2C1D8607008DCD18 /* SignUpViewController.swift */,
 				BC3B9C702C1DBFBA008DCD18 /* NickNameFilter.swift */,
-				BC3B9C722C1DC6A9008DCD18 /* SelectPhotoViewController.swift */,
+				BC3B9C722C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift */,
+				BC3B9C742C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -216,7 +219,6 @@
 		BC9503122C1BDF16004070B8 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				BCF731AE2C1BEB85003FC583 /* Resource.swift */,
 				BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */,
 			);
 			path = Resource;
@@ -227,6 +229,7 @@
 			children = (
 				BC9503132C1BE086004070B8 /* ReusableIdentifier.swift */,
 				BCF731B32C1C14DB003FC583 /* ViewTransition.swift */,
+				BCF731AE2C1BEB85003FC583 /* Resource.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				BC95030F2C1BDA83004070B8 /* SearchCollectionViewExtension.swift in Sources */,
 				BC95030D2C1BDA41004070B8 /* SearchCollectionViewController.swift in Sources */,
 				BC9503112C1BDE7E004070B8 /* SearchCollectionViewCell.swift in Sources */,
+				BC3B9C752C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift in Sources */,
 				BC3B9C6B2C1D7914008DCD18 /* SettingViewController.swift in Sources */,
 				BC9503052C1B47C8004070B8 /* SearchViewController.swift in Sources */,
 				BC95030B2C1BD6DA004070B8 /* UserDefaultsHelper.swift in Sources */,
@@ -340,7 +344,7 @@
 				BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */,
 				BC3B9C5C2C1D4338008DCD18 /* String+randomExtension.swift in Sources */,
 				BC3B9C5F2C1D66A5008DCD18 /* AuthViewController.swift in Sources */,
-				BC3B9C732C1DC6A9008DCD18 /* SelectPhotoViewController.swift in Sources */,
+				BC3B9C732C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift in Sources */,
 				BC3B9C582C1C71E0008DCD18 /* ProductDetailViewController.swift in Sources */,
 				BC3B9C662C1D6CCB008DCD18 /* MainViewController.swift in Sources */,
 				BC3B9C612C1D674B008DCD18 /* OnboadingViewController.swift in Sources */,

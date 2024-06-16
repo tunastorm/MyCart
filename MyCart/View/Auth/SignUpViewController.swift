@@ -15,9 +15,11 @@ class SignUpViewController: UIViewController {
 
     var delegate: AuthViewController?
         
+    var selectedPhoto: UIImage?
+    
     let profileView = UIView()
     
-    let profileImageView = UIImageView(image: Resource.NamedImage.profile).then {
+    let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.layer.borderWidth = Resource.Border.width3
         $0.layer.borderColor = Resource.MyColor.orange.cgColor
@@ -131,6 +133,12 @@ class SignUpViewController: UIViewController {
         view.backgroundColor = .white
         navigationItem.title = Resource.Text.profileSetting
         
+        if let selectedPhoto {
+            profileImageView.image = selectedPhoto
+        } else {
+            profileImageView.image = Resource.NamedImage.randomProfile
+        }
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(goSelectPhotoView))
         profileView.addGestureRecognizer(tapGesture)
     }
@@ -158,13 +166,23 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func goSelectPhotoView() {
-        pushAfterView(view: , backButton: <#T##Bool#>, animated: <#T##Bool#>)
+        let vc = SelectPhotoCollectionViewController()
+        vc.delegate = self
+        vc.selectedPhoto = profileImageView.image
+        pushAfterView(view: vc, backButton: true, animated: true)
     }
     
     @objc func goMain() {
         if messageLabel.text == Resource.Text.nickNameSuccess.message {
             
         }
+    }
+}
+
+extension SignUpViewController: DataReceiveDelegate {
+    func receiveData<T>(data: T) {
+        selectedPhoto = data as? UIImage
+        profileImageView.image = selectedPhoto
     }
 }
 

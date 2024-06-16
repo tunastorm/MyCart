@@ -68,9 +68,18 @@ enum Resource {
         static let likeSelected = UIImage(named: "like_selected")
         static let likeUnselected = UIImage(named: "like_unselected")
         
-        static var profile: UIImage {
+        static var randomProfile: UIImage {
             return UIImage(named: "profile_\(Int.random(in: 0...11))")!
         }
+        
+        static var allProfile: [UIImage] {
+            var list: [UIImage] = []
+            for i in 0...11 {
+                list.append(UIImage(named: "profile_\(i)")!)
+            }
+            return list
+        }
+        
     }
     
     enum Text {
