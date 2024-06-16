@@ -138,6 +138,7 @@ class MainTableViewController: UIViewController {
     
     func searchedListToggle() {
         if let searchedList, searchedList.count > 0 {
+            print(#function, searchedList, searchedList.count)
             imageView.isHidden = true
             noSearchedListLabel.isHidden = true
             currentSearchedView.isHidden = false
@@ -153,15 +154,18 @@ class MainTableViewController: UIViewController {
     @objc func deleteAllWords() {
         delegate?.deleteSearchedList()
         searchedList = delegate?.getSearchedList()
+        searchedListToggle()
     }
 }
 
 extension MainTableViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         delegate?.query = searchBar.text
+        
         guard let query = delegate?.query else {return}
         delegate?.setSearchedList(newWord: query)
         delegate?.requestSearch(.sim)
+        
         guard let nextVC = delegate?.vc else { return }
         nextVC.delegate = self.delegate
         pushAfterView(view: nextVC, backButton: true, animated: true)

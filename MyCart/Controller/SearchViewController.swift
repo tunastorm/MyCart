@@ -53,7 +53,7 @@ class SearchViewController: UIViewController {
     }
     
     func getSearchedList() -> [String] {
-        return model.getSearchedList(userId: user.userId) ?? []
+        return model.getSearchedList(userId: user.userId)
     }
     
     func setSearchedList(newWord: String) {
@@ -117,7 +117,11 @@ class SearchViewController: UIViewController {
         print(#function, "vc: \(vc.likedList)")
     }
     
-    func scrollDown(_ sort: APIRouter.Sorting) {
+    func searchedWordScrollDown() {
+        // 최근 검색어 페이징 구현
+    }
+    
+    func searchScrollDown(_ sort: APIRouter.Sorting) {
         if let query, model.pageNation() {
             model.requestSearch(query, sort: sort,
                                 callback: {() -> () in
