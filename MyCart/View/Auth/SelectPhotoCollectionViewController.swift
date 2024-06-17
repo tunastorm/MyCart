@@ -44,6 +44,8 @@ class SelectPhotoCollectionViewController: UIViewController {
     lazy var collectiomView = UICollectionView(frame: .zero,
                                           collectionViewLayout: collectionViewLayout())
     
+    let collectionViewHeight = UIScreen.main.bounds.width - 90
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configBaseSetting()
@@ -67,7 +69,8 @@ class SelectPhotoCollectionViewController: UIViewController {
         let inset = CGFloat(10)
         
         let width = UIScreen.main.bounds.width - (inset * 2) - (itemSpacing * horizontalCount-1)
-        let height = 300 - (inset * 2) - (lineSpacing * verticalCount-1)
+        let height = collectionViewHeight - (inset * 2) - (lineSpacing * verticalCount-1)
+        print(#function, UIScreen.main.bounds.width - 80)
         
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: width / horizontalCount,
@@ -97,6 +100,7 @@ class SelectPhotoCollectionViewController: UIViewController {
     }
     
     func configLayout() {
+        
         profileView.snp.makeConstraints {
             $0.size.equalTo(120)
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(20)
@@ -116,8 +120,9 @@ class SelectPhotoCollectionViewController: UIViewController {
             $0.edges.equalToSuperview().inset(5)
         }
         
+        let height = UIScreen.main.bounds.width - 80
         collectiomView.snp.makeConstraints {
-            $0.height.equalTo(300)
+            $0.height.equalTo(collectionViewHeight)
             $0.top.equalTo(profileView.snp.bottom).offset(50)
             $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
         }

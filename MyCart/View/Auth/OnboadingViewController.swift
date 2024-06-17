@@ -43,6 +43,11 @@ class OnboadingViewController: UIViewController {
         configView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setOnboardingNavigationBarUI()
+    }
+    
     func configHierarchy() {
         view.addSubview(appTitle)
         view.addSubview(imageView)

@@ -10,6 +10,21 @@ import UIKit
 
 extension UIViewController {
     
+    func setOnboardingNavigationBarUI() {
+        self.navigationController?.navigationBar.tintColor = Resource.MyColor.black
+        
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        self.navigationItem.backBarButtonItem = backBarButtonItem
+        self.navigationItem.backButtonTitle = ""
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = Resource.MyColor.white
+        appearance.shadowImage = UIImage()
+        appearance.shadowColor = .clear
+//        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
     func setNavigationBarUI() {
         self.navigationController?.navigationBar.tintColor = Resource.MyColor.black
         
