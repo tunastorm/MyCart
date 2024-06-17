@@ -76,7 +76,6 @@ class MainTableViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.prefetchDataSource = self
         tableView.register(MainTableViewCell.self,
                            forCellReuseIdentifier: MainTableViewCell.identifier)
     }
@@ -173,7 +172,7 @@ extension MainTableViewController: UISearchBarDelegate {
 }
 
 
-extension MainTableViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+extension MainTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchedList?.count ?? 0
@@ -184,24 +183,10 @@ extension MainTableViewController: UITableViewDelegate, UITableViewDataSource, U
         
         guard let searchedList else {return cell}
         
+        cell.delegate = self
+        cell.searchCon = self.delegate
         cell.configCell(data: searchedList[indexPath.row])
         
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! MainTableViewCell
-        
-        delegate?.query = cell.wordLabel.text
-        delegate?.requestSearch(.sim)
-        
-        guard let nextVC = delegate?.vc else {return}
-        nextVC.delegate = self.delegate
-        
-        pushAfterView(view: nextVC, backButton: true, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        
     }
 }

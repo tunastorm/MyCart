@@ -117,10 +117,6 @@ class SearchViewController: UIViewController {
         print(#function, "vc: \(vc.likedList)")
     }
     
-    func searchedWordScrollDown() {
-        // 최근 검색어 페이징 구현
-    }
-    
     func searchScrollDown(_ sort: APIRouter.Sorting) {
         if let query, model.pageNation() {
             model.requestSearch(query, sort: sort,
