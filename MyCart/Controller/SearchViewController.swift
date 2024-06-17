@@ -31,7 +31,7 @@ class SearchViewController: UIViewController {
             self.setSearchedList(newWord: query)
             
             self.vc.itemList = self.model.responseItems
-            self.vc.likedList = self.model.getLikedList(userId: self.user.userId)
+            self.vc.likedList = self.getLikedList()
             
             if self.model.page == 1 {
                 self.vc.totalLabel.text = Int(self.getTotal()).formatted(.number)
@@ -73,6 +73,15 @@ class SearchViewController: UIViewController {
     
     func deleteSearchedList() {
         model.setSearchedList(userId: user.userId, list: [])
+    }
+    
+    func getLikedList() -> [String] {
+        return model.getLikedList(userId: user.userId)
+    }
+    
+    func getLikedListCount() -> Int {
+        let list = model.getLikedList(userId: user.userId)
+        return list.count
     }
     
     func getLastBuildDate() -> String {

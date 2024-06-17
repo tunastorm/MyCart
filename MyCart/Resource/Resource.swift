@@ -42,13 +42,14 @@ enum Resource {
     
     enum CornerRadious {
         static let startButton = CGFloat(30)
-        
         static let profileImageView = CGFloat(60)
         static let cameraIcon = CGFloat(15)
-        
         static let searchImage = CGFloat(16)
         static let likeButton = CGFloat(10)
         static let sortingButton = CGFloat(17)
+        static let settingProfileImage = CGFloat(40)
+        
+        
     }
     
     enum SystemImage {
@@ -106,6 +107,15 @@ enum Resource {
         static let currentSearched = "최근 검색"
         static let allDelete = "전체 삭제"
         static let searchTotal = "개의 검색결과"
+        
+        static let settingViewTitle = "SETTING"
+        static let myCartLabel = "나의 장바구니 목록"
+        static let myCartCountLabel = "개의 상품"
+        static let QnALabel = "자주 묻는 질문"
+        static let customerVoiceLabel = "1:1 문의"
+        static let notificationLabel = "알림 설정"
+        static let secessionLabel = "탈퇴하기"
+        
        
         var message: String {
             switch self {

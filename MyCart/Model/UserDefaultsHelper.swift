@@ -56,7 +56,11 @@ class UserDefaultsHelper {
     static func signIn(_ mappingKey: String) -> User? {
         // mappingKey : userIdKey 쌍 조회, 없으면 return nil
         let userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
+        print(#function, mappingKey, userIdKeyMapper)
+        
         guard let userIdKey = userIdKeyMapper[mappingKey] else {return nil}
+        
+        print(#function, userIdKey)
         
         // 최근 사용자로 저장
         UserDefaultsHelper.standard.currentUser = mappingKey
@@ -78,6 +82,12 @@ class UserDefaultsHelper {
             UserDefaults.standard.setValue(encoded, forKey: newUser.userId)
         }
         
+        if let savedData = UserDefaults.standard.object(forKey: newUser.userId as! String) as? Data {
+            let decoder = JSONDecoder()
+            if let nowUser = try? decoder.decode(User.self, from: savedData) {
+                print(#function, nowUser)
+            }
+        }
         
         let userId = newUser.userId
         var searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
@@ -157,7 +167,7 @@ class UserDefaultsHelper {
         userIdKeyMapper[mappingKey] = userIdKey
         UserDefaults.standard.setValue(userIdKeyMapper , forKey: Key.userIdKeyMapper.rawValue)
         let newKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) as! [String:String]
-
+        print(#function, newKeyMapper)
         return newKeyMapper[mappingKey]
     }
     

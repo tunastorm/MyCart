@@ -9,7 +9,7 @@ import UIKit
 
 class AuthViewController: UIViewController {
 
-    var model: UserModel?
+    private var model: UserModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,21 +18,36 @@ class AuthViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.model = UserModel.model
+        configModel()
         print(#function, model?.nowUser)
         guard let model else {return}
-        model.signIn()
         print(#function, model)
+        signIn()
 //        model.deleteUser()
 //        print(#function, model)
         authonticateUser()
+    }
+    
+    func configModel() {
+        model = UserModel.model
+    }
+    
+    func signIn() {
+        model?.signIn()
+    }
+    
+    func getNowUser() -> User {
+        var nowUser = User(userId: "guest", nickName: "-", profileImage: "-", signUpDate: Date())
+        if let user = model?.nowUser {
+            nowUser = user
+        }
+        return nowUser
     }
     
     func authonticateUser() {
         let vc = SplashViewController()
         vc.delegate = self
         
-        model?.signIn()
         guard let nowUser = model?.nowUser else {return}
         print(#function, "nowUser: \(nowUser)")
         if nowUser.userId == Resource.Text.guestUser {
@@ -53,5 +68,10 @@ class AuthViewController: UIViewController {
             return true
         }
         return false
+    }
+    
+    func updateUserProfile(nickName: String, profileImage: UIImage) {
+        
+        
     }
 }

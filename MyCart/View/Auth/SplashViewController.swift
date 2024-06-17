@@ -45,6 +45,7 @@ class SplashViewController: UIViewController {
         configView()
        
         print(#function, "\(self.self) 진입")
+        print(#function, delegate)
         switch nextViewType {
         case is OnboadingViewController.Type:
             let nextVC = OnboadingViewController()

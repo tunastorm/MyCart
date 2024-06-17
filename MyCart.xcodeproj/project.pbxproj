@@ -216,7 +216,7 @@
 		BC9503122C1BDF16004070B8 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */,
+				BCF731AE2C1BEB85003FC583 /* Resource.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -226,7 +226,6 @@
 			children = (
 				BC9503132C1BE086004070B8 /* ReusableIdentifier.swift */,
 				BCF731B32C1C14DB003FC583 /* ViewTransition.swift */,
-				BCF731AE2C1BEB85003FC583 /* Resource.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -235,8 +234,9 @@
 			isa = PBXGroup;
 			children = (
 				BCF731B72C1C1AF7003FC583 /* UIViewController+Extension.swift */,
-				BC3B9C5B2C1D4338008DCD18 /* String+randomExtension.swift */,
 				BC3B9C762C1ECF4A008DCD18 /* CALayer+PartialBorderExtension.swift */,
+				BC3B9C5B2C1D4338008DCD18 /* String+randomExtension.swift */,
+				BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";

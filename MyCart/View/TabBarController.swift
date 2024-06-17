@@ -9,20 +9,21 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       
         tabBar.tintColor = Resource.MyColor.orange
         tabBar.unselectedItemTintColor = Resource.MyColor.lightGray
         tabBar.layer.addBorder([.top], color: Resource.MyColor.lightGray, width: Resource.Border.width1)
         
-        let searchCon = SearchViewController()
+        let searchDelegate = SearchViewController()
         
         let main = MainTableViewController()
-        main.delegate = searchCon
+        main.delegate = searchDelegate
         
         let setting = SettingViewController()
-        setting.searchDelegate = searchCon
+        setting.searchDelegate = searchDelegate
         setting.authDelegate = AuthViewController()
         
         let nav0 = UINavigationController(rootViewController: main)
