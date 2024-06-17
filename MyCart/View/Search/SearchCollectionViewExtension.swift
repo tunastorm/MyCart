@@ -35,7 +35,7 @@ extension SearchCollectionViewController: UICollectionViewDelegate, UICollection
         
         guard let itemSize = itemList?.count else {return}
         indexPaths.forEach {
-            if let isEnd = delegate?.getIsEnd(), !isEnd, itemSize - 4 == $0.row, let nowSort {
+            if let isEnd = delegate?.getIsEnd(), !isEnd, itemSize - 2 == $0.row, let nowSort {
                 delegate?.searchScrollDown(nowSort)
             }
         }
