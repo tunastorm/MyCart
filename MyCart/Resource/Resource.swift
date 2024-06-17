@@ -116,6 +116,8 @@ enum Resource {
         static let notificationLabel = "알림 설정"
         static let secessionLabel = "탈퇴하기"
         
+        static let editProfileTitle = "EDIT PROFILE"
+        
        
         var message: String {
             switch self {

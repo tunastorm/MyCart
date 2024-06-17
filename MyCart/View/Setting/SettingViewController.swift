@@ -283,9 +283,37 @@ class SettingViewController: UIViewController {
         dateFormatter.dateFormat = "yyyy. MM. dd 가입"
         
         signUpDateLabel.text = dateFormatter.string(from: user.signUpDate)
+        
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(goUpdateProfile))
+        profileView.addGestureRecognizer(tapGesture1)
+        
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(alertSecession))
+        secessionView.addGestureRecognizer(tapGesture2)
     }
     
     @objc func goUpdateProfile() {
-        
+        let vc = UpdateProfileViewController()
+        vc.delegate = self.authDelegate
+        pushAfterView(view: vc, backButton: true, animated: true)
+    }
+    
+    @objc func alertSecession() {
+        let alert = UIAlertController(title: "탈퇴하기",
+                                      message: "탈퇴를 하면 데이터가 모두 초기화됩니다. 탈퇴하시겠습니까?",
+                                      preferredStyle: .alert)
+        let delete = UIAlertAction(title: "확인",
+                                   style: .destructive,
+                                   handler: {_ in self.deleteUser()})
+        let cancle = UIAlertAction(title: "취소",
+                                   style: .cancel)
+        alert.addAction(cancle)
+        alert.addAction(delete)
+        present(alert, animated: false)
+    }
+    
+    func deleteUser() {
+        authDelegate?.deleteUser()
+        let nextView = AuthViewController()
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVCWithNavi(nextView, animated: false)
     }
 }

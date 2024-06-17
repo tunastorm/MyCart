@@ -74,4 +74,8 @@ class AuthViewController: UIViewController {
         
         
     }
+    
+    func deleteUser() {
+        model?.deleteUser()
+    }
 }
