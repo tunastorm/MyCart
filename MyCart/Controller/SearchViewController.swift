@@ -30,6 +30,7 @@ class SearchViewController: UIViewController {
                             callback: {() -> () in
             self.setSearchedList(newWord: query)
             
+            self.vc.nowSort = sort
             self.vc.itemList = self.model.responseItems
             self.vc.likedList = self.getLikedList()
             
@@ -37,6 +38,8 @@ class SearchViewController: UIViewController {
                 self.vc.totalLabel.text = Int(self.getTotal()).formatted(.number)
                                           + Resource.Text.searchTotal
             }
+            
+            
         })
     }
     
