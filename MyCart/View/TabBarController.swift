@@ -16,9 +16,14 @@ class TabBarController: UITabBarController {
         tabBar.unselectedItemTintColor = Resource.MyColor.lightGray
         tabBar.layer.addBorder([.top], color: Resource.MyColor.lightGray, width: Resource.Border.width1)
         
+        let searchCon = SearchViewController()
+        
         let main = MainTableViewController()
-        main.delegate = SearchViewController()
+        main.delegate = searchCon
+        
         let setting = SettingViewController()
+        setting.searchDelegate = searchCon
+        setting.authDelegate = AuthViewController()
         
         let nav0 = UINavigationController(rootViewController: main)
         let nav1 = UINavigationController(rootViewController: setting)

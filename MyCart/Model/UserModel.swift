@@ -14,7 +14,7 @@ class UserModel {
     
     static let model = UserModel()
     
-    private var user = User(userId: Resource.Text.guestUser, nickName: "-", profileImage: "-")
+    private var user = User(userId: Resource.Text.guestUser, nickName: "-", profileImage: "-", signUpDate:  Date())
     
     private var currentUser = UserDefaultsHelper.standard.currentUser
     
@@ -33,7 +33,7 @@ class UserModel {
             return
         } else {
             guard let userId = UserDefaultsHelper.makeUserIdKey(mappingKey: mappingKey) else {return}
-            let newUser = User(userId: userId, nickName: nickName, profileImage: profileImage)
+            let newUser = User(userId: userId, nickName: nickName, profileImage: profileImage, signUpDate: Date())
             UserDefaultsHelper.signUp(newUser)
             currentUser = mappingKey
             signIn()
@@ -51,7 +51,7 @@ class UserModel {
     func deleteUser() {
         UserDefaultsHelper.deleteUser(userId: user.userId)
         self.currentUser = "-"
-        self.nowUser = User(userId: Resource.Text.guestUser, nickName: "-", profileImage: "-")
+        self.nowUser = User(userId: Resource.Text.guestUser, nickName: "-", profileImage: "-", signUpDate: Date())
     }
 }
 
@@ -60,6 +60,7 @@ struct User: Codable {
     let userId: String
     let nickName : String
     var profileImage: String
+    let signUpDate: Date
 }
 
 
