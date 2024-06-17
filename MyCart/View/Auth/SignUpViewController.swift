@@ -13,6 +13,8 @@ import Then
 
 class SignUpViewController: UIViewController {
 
+    var isUpdateView = false
+    
     var delegate: AuthViewController?
         
     var selectedPhoto: UIImage?
@@ -61,7 +63,6 @@ class SignUpViewController: UIViewController {
         $0.addTarget(self, action: #selector(signUpAndGoMain), for: .touchUpInside)
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBarUI()
@@ -70,8 +71,9 @@ class SignUpViewController: UIViewController {
         configView()
     }
     
-    func configBaseSetting() {
-       
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configUpdateViewToggle()
     }
     
     func configHierarchy() {
@@ -132,7 +134,6 @@ class SignUpViewController: UIViewController {
     
     func configView() {
         view.backgroundColor = .white
-        navigationItem.title = Resource.Text.profileSetting
         
         if let selectedPhoto {
             profileImageView.image = selectedPhoto
@@ -143,6 +144,18 @@ class SignUpViewController: UIViewController {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(goSelectPhotoView))
         profileView.addGestureRecognizer(tapGesture)
+    }
+    
+    func configUpdateViewToggle() {
+        var naviTitle =  Resource.Text.profileSetting
+        completeButton.isHidden = false
+        if isUpdateView {
+            naviTitle = Resource.Text.editProfileTitle
+            completeButton.isHidden = true
+            let barButtonItem = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(updateAndGoSetting))
+            navigationItem.rightBarButtonItem = barButtonItem
+        }
+        navigationItem.title = naviTitle
     }
 
     @objc func checkNickName(_ sender: UITextField) {
@@ -175,17 +188,28 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func signUpAndGoMain() {
-        print(#function, messageLabel.text, Resource.Text.nickNameSuccess.message)
         if let message = messageLabel.text, message != Resource.Text.nickNameSuccess.message {
             return
         }
-        print(#function)
         guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
         print(#function, nickName, image)
         delegate?.signUpNewUser(nickName: nickName, profileImage: image)
         
         let nextView = AuthViewController()
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVCWithNavi(nextView, animated: false)
+    }
+    
+    @objc func updateAndGoSetting() {
+        print(#function)
+        if let message = messageLabel.text, message != Resource.Text.nickNameSuccess.message {
+            return
+        }
+        guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
+        print(#function, nickName, image)
+        
+        delegate?.updateUserProfile(nickName: nickName, profileImage: image)
+        
+        popBeforeView(animated: true)
     }
 }
 

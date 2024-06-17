@@ -50,7 +50,11 @@ class SelectPhotoCollectionViewController: UIViewController {
         configHierarchy()
         configLayout()
         configView()
-
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configUpdateViewToggle()
     }
     
     func collectionViewLayout() -> UICollectionViewLayout {
@@ -123,6 +127,15 @@ class SelectPhotoCollectionViewController: UIViewController {
         view.backgroundColor = .white
         profileImageView.image = selectedPhoto
         navigationItem.title = Resource.Text.profileSetting
+    }
+    
+    func configUpdateViewToggle() {
+        guard let delegate else {return}
+        var naviTitle =  Resource.Text.profileSetting
+        if delegate.isUpdateView {
+            naviTitle = Resource.Text.editProfileTitle
+        }
+        navigationItem.title = naviTitle
     }
 }
 

@@ -101,11 +101,9 @@ class SettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setAuth()
         configHierarchy()
         configLayout()
         setNavigationBarUI()
-        configView()
     }
     
     override func viewDidLayoutSubviews() {
@@ -124,25 +122,16 @@ class SettingViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        var cartCount = 0
-        if let count = searchDelegate?.getLikedListCount(), count > 0 {
-           cartCount = count
-           myCartIcon.image = Resource.NamedImage.likeSelected?.withRenderingMode(.alwaysOriginal)
-        } else {
-            myCartIcon.image = Resource.NamedImage.likeUnselected?.withRenderingMode(.alwaysOriginal)
-        }
-        var countText = String(cartCount) + Resource.Text.myCartCountLabel
-        var attributedStr = NSMutableAttributedString(string: countText)
-        attributedStr.addAttribute(.font, value: Resource.Font.boldSystem16,
-                                   range: (countText as NSString).range(of: "\(cartCount)개"))
-        myCartCountLabel.attributedText = attributedStr
+        setAuth()
+        configView()
+        configCartCount()
     }
     
     func setAuth() {
         authDelegate?.configModel()
         authDelegate?.signIn()
         user = authDelegate?.getNowUser()
+        print(#function, user)
     }
     
     func configHierarchy() {
@@ -276,6 +265,7 @@ class SettingViewController: UIViewController {
         navigationItem.title = Resource.Text.settingViewTitle
         
         guard let user else {return}
+        print(#function, user)
         photoView.image = UIImage(named: user.profileImage)
         nickNamLabel.text = user.nickName
         
@@ -291,8 +281,25 @@ class SettingViewController: UIViewController {
         secessionView.addGestureRecognizer(tapGesture2)
     }
     
+    func configCartCount() {
+        var cartCount = 0
+        if let count = searchDelegate?.getLikedListCount(), count > 0 {
+           cartCount = count
+           myCartIcon.image = Resource.NamedImage.likeSelected?.withRenderingMode(.alwaysOriginal)
+        } else {
+            myCartIcon.image = Resource.NamedImage.likeUnselected?.withRenderingMode(.alwaysOriginal)
+        }
+        var countText = String(cartCount) + Resource.Text.myCartCountLabel
+        var attributedStr = NSMutableAttributedString(string: countText)
+        attributedStr.addAttribute(.font, value: Resource.Font.boldSystem16,
+                                   range: (countText as NSString).range(of: "\(cartCount)개"))
+        myCartCountLabel.attributedText = attributedStr
+    }
+    
     @objc func goUpdateProfile() {
-        let vc = UpdateProfileViewController()
+        let vc = SignUpViewController()
+        vc.isUpdateView = true
+        vc.selectedPhoto = photoView.image
         vc.delegate = self.authDelegate
         pushAfterView(view: vc, backButton: true, animated: true)
     }

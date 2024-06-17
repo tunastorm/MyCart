@@ -71,8 +71,14 @@ class AuthViewController: UIViewController {
     }
     
     func updateUserProfile(nickName: String, profileImage: UIImage) {
+        let thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
+        let newMappingKey = nickName + thisName
+        guard let oldMappingKey = model?.mappingKey else {return}
         
-        
+        if oldMappingKey == newMappingKey {
+            return
+        }
+        model?.updateUser(newMappingKey, nickName, thisName)
     }
     
     func deleteUser() {

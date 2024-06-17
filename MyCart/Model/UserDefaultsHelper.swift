@@ -62,7 +62,7 @@ class UserDefaultsHelper {
         
         print(#function, userIdKey)
         
-        // 최근 사용자로 저장
+        // 로그인한 유저의 매핑 키를 최근 사용자로 저장
         UserDefaultsHelper.standard.currentUser = mappingKey
         
         // userIdKey 조회 성공 시 userIdKey : User 쌍 조회, 없으면 return nil
@@ -109,6 +109,25 @@ class UserDefaultsHelper {
         
         setSearchedList(userId, [])
         setLikedList(userId, [])
+    }
+    
+    static func updateUser(_ oldKey: String, _ newKey: String, _ newUser: User) {
+        let userIdKey = newUser.userId
+        // 1. 기존 유저 구조체 삭제
+        UserDefaults.standard.removeObject(forKey: userIdKey)
+        // 2. 기존 매핑키:userId 쌍 삭제
+        var userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
+        userIdKeyMapper.removeValue(forKey: oldKey)
+        // 3. 새 매핑키:userId 쌍 저장
+        userIdKeyMapper[newKey] = userIdKey
+        UserDefaults.standard.removeObject(forKey: Key.userIdKeyMapper.rawValue)
+        UserDefaults.standard.setValue(userIdKeyMapper, forKey: Key.userIdKeyMapper.rawValue)
+        // 4. 새 유저 구조체 저장
+        guard let userId = userIdKeyMapper[newKey] else {return}
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(newUser) {
+            UserDefaults.standard.setValue(encoded, forKey: userId as! String)
+        }
     }
     
     static func deleteUser(userId: String)  {

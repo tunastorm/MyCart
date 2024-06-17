@@ -24,7 +24,12 @@ class UserModel {
         }
         set {
             user = newValue
+            print(#function, nowUser)
         }
+    }
+    
+    var mappingKey: String? {
+        return currentUser
     }
     
     func signUp(_ nickName: String, profileImage: String) {
@@ -42,10 +47,24 @@ class UserModel {
         
     func signIn() {
         print(#function, self.currentUser)
-        if let currentUser, let nowUser = UserDefaultsHelper.signIn(currentUser) {
-            print(#function, nowUser)
-            self.nowUser = nowUser
+        if let currentUser, let user = UserDefaultsHelper.signIn(currentUser) {
+            print(#function, currentUser, user)
+            self.nowUser = user
+            print(#function, self.nowUser)
         }
+    }
+    
+    func updateUser(_ newMappingKey: String, _ nickName: String, _ profile: String) {
+        var newUser = nowUser
+        newUser.nickName = nickName
+        newUser.profileImage = profile
+        
+        guard let oldKey = mappingKey else {return}
+        UserDefaultsHelper.updateUser(oldKey, newMappingKey, newUser)
+//        nowUser = newUser
+        currentUser = newMappingKey
+        
+        print(#function, currentUser)
     }
     
     func deleteUser() {
@@ -58,7 +77,7 @@ class UserModel {
 
 struct User: Codable {
     let userId: String
-    let nickName : String
+    var nickName : String
     var profileImage: String
     let signUpDate: Date
 }
