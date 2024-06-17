@@ -42,6 +42,7 @@
 		BC9503142C1BE086004070B8 /* ReusableIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9503132C1BE086004070B8 /* ReusableIdentifier.swift */; };
 		BCBDE7922C1F2E4B00B551F6 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBDE7912C1F2E4B00B551F6 /* MainTableViewCell.swift */; };
 		BCBDE7C82C2004A000B551F6 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBDE7C72C2004A000B551F6 /* SettingViewController.swift */; };
+		BCBDE7CC2C20670800B551F6 /* MainTableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBDE7CB2C20670800B551F6 /* MainTableViewExtension.swift */; };
 		BCF731AF2C1BEB85003FC583 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731AE2C1BEB85003FC583 /* Resource.swift */; };
 		BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */; };
 		BCF731B42C1C14DB003FC583 /* ViewTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B32C1C14DB003FC583 /* ViewTransition.swift */; };
@@ -81,6 +82,7 @@
 		BC9503132C1BE086004070B8 /* ReusableIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableIdentifier.swift; sourceTree = "<group>"; };
 		BCBDE7912C1F2E4B00B551F6 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		BCBDE7C72C2004A000B551F6 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		BCBDE7CB2C20670800B551F6 /* MainTableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewExtension.swift; sourceTree = "<group>"; };
 		BCF731AE2C1BEB85003FC583 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColorExtension.swift"; sourceTree = "<group>"; };
 		BCF731B32C1C14DB003FC583 /* ViewTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTransition.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				BC3B9C652C1D6CCB008DCD18 /* MainTableViewController.swift */,
+				BCBDE7CB2C20670800B551F6 /* MainTableViewExtension.swift */,
 				BCBDE7912C1F2E4B00B551F6 /* MainTableViewCell.swift */,
 				BC95030C2C1BDA41004070B8 /* SearchCollectionViewController.swift */,
 				BC95030E2C1BDA83004070B8 /* SearchCollectionViewExtension.swift */,
@@ -354,6 +357,7 @@
 				BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */,
 				BC3B9C5A2C1D3612008DCD18 /* UserModel.swift in Sources */,
 				BCBDE7C82C2004A000B551F6 /* SettingViewController.swift in Sources */,
+				BCBDE7CC2C20670800B551F6 /* MainTableViewExtension.swift in Sources */,
 				BC9502FE2C1AF862004070B8 /* APIClient.swift in Sources */,
 				BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */,
 				BCF731AF2C1BEB85003FC583 /* Resource.swift in Sources */,

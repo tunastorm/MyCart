@@ -21,7 +21,6 @@ enum APIRouter: URLRequestConvertible {
         urlRequest.headers = APIRouter.headers
         
         if let parameters = parameters {
-            print(#function, parameters)
             return try encoding.encode(urlRequest, with: parameters)
         }
         

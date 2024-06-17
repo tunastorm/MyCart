@@ -18,7 +18,6 @@ class APIClient {
                            success: @escaping onSuccess<T>,
                            failure: @escaping onFailure) where T:
     Decodable {
-        print(#function, router)
         AF.request(router)
             .responseDecodable(of: object) { response in
                 switch response.result {

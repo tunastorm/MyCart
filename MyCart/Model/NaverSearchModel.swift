@@ -26,12 +26,11 @@ class NaverSearchShopModel {
         APIClient.request(SearchResponse<ShopItem>.self,
                           router: APIRouter.searchShoppings(query, sort: sort),
                           success: {(response: SearchResponse<ShopItem>) -> () in
-                               print(#function, response.display, response.items.count)
                                self.setNewResponse(response)
                                callback()
                           },
                           failure: {(error: Error) -> () in
-                               print(error)
+                               print(error) // 
                           }
         )
     }
@@ -39,7 +38,6 @@ class NaverSearchShopModel {
     func pageNation() -> Bool {
         page += 1
         start = ((page - 1) * 30) + 1
-        print(#function, page, start, total)
         if start > maxStart {
             isEnd.toggle()
             return false
