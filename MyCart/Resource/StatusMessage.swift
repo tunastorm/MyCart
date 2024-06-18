@@ -10,6 +10,8 @@ import Foundation
 
 enum StatusMessage: Error {
     
+    static let incorrectCase = "잘못된 케이스가 전달되었습니다"
+    
     enum APIError: Error {
         
         case requestAPIFailed

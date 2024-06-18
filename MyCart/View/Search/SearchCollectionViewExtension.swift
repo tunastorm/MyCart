@@ -34,6 +34,7 @@ extension SearchCollectionViewController: UICollectionViewDelegate, UICollection
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         
         guard let itemSize = itemList?.count else {return}
+        
         indexPaths.forEach {
             if let isEnd = delegate?.getIsEnd(), !isEnd, itemSize - 2 == $0.row, let nowSort {
                 delegate?.searchScrollDown(nowSort)

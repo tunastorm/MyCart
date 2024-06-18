@@ -24,7 +24,6 @@ class NickNameFilter {
         guard spaceFilter(inputText) else {
             return nil
         }
-        print(#function, inputText.trimmingCharacters(in: .whitespacesAndNewlines))
         return StatusMessage.NickNameFilterError.haveSpace.message
     }
     

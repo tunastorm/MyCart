@@ -70,7 +70,6 @@ class SelectPhotoCollectionViewController: UIViewController {
         
         let width = UIScreen.main.bounds.width - (inset * 2) - (itemSpacing * horizontalCount-1)
         let height = collectionViewHeight - (inset * 2) - (lineSpacing * verticalCount-1)
-        print(#function, UIScreen.main.bounds.width - 80)
         
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: width / horizontalCount,
@@ -178,7 +177,6 @@ extension SelectPhotoCollectionViewController: UICollectionViewDelegate, UIColle
         
         if let selectedCell {
             let lastCell = collectionView.cellForItem(at: selectedCell) as! SelectPhotoCollectionViewCell
-            print(#function, selectedCell)
             lastCell.configUnselectedUI()
         }
       

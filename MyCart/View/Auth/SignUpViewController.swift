@@ -197,7 +197,6 @@ class SignUpViewController: UIViewController {
             return
         }
         guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
-        print(#function, nickName, image)
         delegate?.signUpNewUser(nickName: nickName, profileImage: image)
         
         let nextView = AuthViewController()
@@ -205,12 +204,10 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func updateAndGoSetting() {
-        print(#function)
         if let message = messageLabel.text, message != Resource.Text.nickNameSuccess {
             return
         }
         guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
-        print(#function, nickName, image)
         
         delegate?.updateUserProfile(nickName: nickName, profileImage: image)
         
@@ -224,6 +221,3 @@ extension SignUpViewController: DataReceiveDelegate {
         profileImageView.image = selectedPhoto
     }
 }
-
-
-//extension SignUpViewController: UITextFieldDelegate {}

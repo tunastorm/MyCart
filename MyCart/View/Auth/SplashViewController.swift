@@ -55,7 +55,7 @@ class SplashViewController: UIViewController {
             let tabBar = TabBarController()
             nextView = tabBar
             withNavi = false
-        default: print("Error")
+        default: print(self.self, #function, StatusMessage.incorrectCase)
         }
         
         // 2초 간 대기후 화면 전환

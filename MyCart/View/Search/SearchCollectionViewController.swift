@@ -203,7 +203,7 @@ class SearchCollectionViewController: UIViewController {
             makeToastWithImage(message: message,duration: 3.0, position: .bottom,
                                title: title, image: image)
             hideToastActivity()
-        default: print("Error")
+        default: print(self.self, #function, StatusMessage.incorrectCase)
         }
     }
     

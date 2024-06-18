@@ -40,23 +40,18 @@ class SelectPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     func configCell(image: UIImage) {
-        
-        
-    
         imageView.layer.cornerRadius = contentView.frame.height * 0.5
         imageView.image = image
         
     }
     
     func configUnselectedUI() {
-        print(#function)
         imageView.layer.borderWidth = Resource.Border.width1
         imageView.layer.borderColor = Resource.MyColor.lightGray.cgColor
         imageView.alpha = Resource.Alpha.half
     }
     
     func configSelectedUI() {
-        print(#function)
         imageView.layer.borderWidth = Resource.Border.width3
         imageView.layer.borderColor = Resource.MyColor.orange.cgColor
         imageView.alpha = Resource.Alpha.full
