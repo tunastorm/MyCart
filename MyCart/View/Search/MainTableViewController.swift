@@ -76,6 +76,7 @@ class MainTableViewController: UIViewController {
         self.navigationItem.searchController = searchController
         searchController.hidesNavigationBarDuringPresentation = false
         searchBar = searchController.searchBar
+        searchBar?.setShowsCancelButton(false, animated: false)
         searchBar?.delegate = self
         
         tableView.delegate = self
