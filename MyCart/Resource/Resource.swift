@@ -59,7 +59,7 @@ enum Resource {
         static let magnifyingGlass = UIImage(systemName: "magnifyingglass")
         static let xmark = UIImage(systemName: "xmark")
         static let person = UIImage(systemName: "person")
-        
+        static let networkSlash = UIImage(systemName: "network.slash")
     }
     
     enum NamedImage {

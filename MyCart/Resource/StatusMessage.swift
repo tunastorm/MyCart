@@ -13,11 +13,14 @@ enum StatusMessage: Error {
     enum APIError: Error {
         
         case networkFailed
+        case productURLNotExist
         
         var message: String {
             switch self {
             case .networkFailed:
                 return "[서버 연결 실패]\n네트워크 상태를 확인하세요"
+            case .productURLNotExist:
+                return "앗... 이 상품의 링크가 사라졌어요"
             }
         }
     }

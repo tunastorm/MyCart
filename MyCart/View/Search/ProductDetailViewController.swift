@@ -18,15 +18,18 @@ class ProductDetailViewController: UIViewController {
     var product: ShopItem?
     
     let webView = WKWebView()
+    let noURLErrorView = UIView()
+    
     var likeButton: UIBarButtonItem?
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configWebView()
+        configNoURLErrorView()
         configHierarchy()
         configLayout()
         configView()
+        viewToggle(isError: false)
         configLikeButton()
     }
     
@@ -34,6 +37,7 @@ class ProductDetailViewController: UIViewController {
         super.viewWillAppear(animated)
         let title = product?.title.replacingOccurrences(of: "<b>", with: "")
         navigationItem.title = title?.replacingOccurrences(of: "</b>", with: "")
+        configWebView()
     }
     
     func configHierarchy() {
@@ -51,10 +55,59 @@ class ProductDetailViewController: UIViewController {
     }
     
     func configWebView() {
-        guard let link = product?.link else {return}
-        guard let url = URL(string: link) else {return}
+        print(#function, product?.link)
+        guard let link = product?.link,
+              let url = URL(string: link) else {
+            print(#function, "빨간징징이")
+            viewToggle(isError: true)
+            return
+        }
+        
         let request = URLRequest(url: url)
         webView.load(request)
+    }
+    
+    func configNoURLErrorView() {
+        let errorImage = UIImageView(image: Resource.SystemImage.networkSlash).then {
+            $0.tintColor = Resource.MyColor.lightGray
+            $0.contentMode = .scaleAspectFit
+        }
+        let errorLabel = UILabel().then {
+            $0.font = Resource.Font.boldSystem16
+            $0.textAlignment = .center
+            $0.textColor = Resource.MyColor.lightGray
+            $0.text = StatusMessage.APIError.productURLNotExist.message
+        }
+        
+        view.addSubview(noURLErrorView)
+        noURLErrorView.addSubview(errorImage)
+        noURLErrorView.addSubview(errorLabel)
+        
+        noURLErrorView.snp.makeConstraints {
+            $0.size.equalTo(300)
+            $0.center.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        errorImage.snp.makeConstraints {
+            $0.height.equalToSuperview().multipliedBy(0.8)
+            $0.top.horizontalEdges.equalToSuperview()
+        }
+        
+        errorLabel.snp.makeConstraints {
+            $0.top.equalTo(errorImage.snp.bottom)
+            $0.bottom.horizontalEdges.equalToSuperview()
+        }
+    }
+    
+    
+    func viewToggle(isError: Bool) {
+        if isError {
+            webView.isHidden = true
+            noURLErrorView.isHidden = false
+        } else {
+            webView.isHidden = false
+            noURLErrorView.isHidden = true
+        }
     }
     
     func configLikeButton() {
