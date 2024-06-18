@@ -64,7 +64,10 @@ class MainTableViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        delegate?.setUser()
         searchedList = delegate?.getSearchedList()
+        guard let nickName = delegate?.getUserNickName() else {return}
+        navigationItem.title = "\(nickName)\(Resource.Text.mainViewTitle)"
         searchedListToggle()
     }
     
@@ -133,7 +136,6 @@ class MainTableViewController: UIViewController {
     func configView() {
         setNavigationBarUI()
         view.backgroundColor = Resource.MyColor.white
-        navigationItem.title = "\(delegate?.getUserNickName() ?? "")\(Resource.Text.mainViewTitle)"
         searchBar?.placeholder = Resource.Text.searchBarPlaceHolder
     }
     

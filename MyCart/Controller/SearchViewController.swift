@@ -9,7 +9,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    private let user = UserModel.model.nowUser
+    private var user: User?
     private let model = NaverSearchShopModel.model
     
     var vc = SearchCollectionViewController()
@@ -19,8 +19,9 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-        vc.delegate = self
+        setUser()
         setNavigationBarUI()
+        vc.delegate = self
     }
     
     func requestSearch(_ sort: APIRouter.Sorting) {
@@ -45,7 +46,15 @@ class SearchViewController: UIViewController {
         model.clearSearchResponse()
     }
     
+    func setUser() {
+        user = UserModel.model.nowUser
+        print(#function, user)
+    }
+    
     func getUserNickName() -> String {
+        guard let user else {
+            return Resource.Text.guestUser
+        }
         return user.nickName
     }
     
@@ -54,11 +63,12 @@ class SearchViewController: UIViewController {
     }
     
     func getSearchedList() -> [String] {
+        guard let user else {return []}
         return model.getSearchedList(userId: user.userId)
     }
     
     func setSearchedList(newWord: String) {
-        guard let query else {return}
+        guard let query, let user else {return}
         var searchedList = model.getSearchedList(userId: user.userId)
         if searchedList.contains(query) {
             return
@@ -68,18 +78,22 @@ class SearchViewController: UIViewController {
     }
     
     func deleteSearchedWord(deleteWord: String) {
+        guard let user else {return}
         model.deleteSearchedWord(userId: user.userId, deleteWord: deleteWord)
     }
     
     func deleteSearchedList() {
+        guard let user else {return}
         model.setSearchedList(userId: user.userId, list: [])
     }
     
     func getLikedList() -> [String] {
+        guard let user else {return []}
         return model.getLikedList(userId: user.userId)
     }
     
     func getLikedListCount() -> Int {
+        guard let user else {return 0}
         let list = model.getLikedList(userId: user.userId)
         return list.count
     }
@@ -105,11 +119,13 @@ class SearchViewController: UIViewController {
     }
     
     func getIsLiked(productId: String) -> Bool {
+        guard let user else {return false}
         var likedList = model.getLikedList(userId: user.userId)
         return likedList.contains(productId)
     }
     
     func setIsLiked(_ productId: String) {
+        guard let user else {return}
         var likedList = model.getLikedList(userId: user.userId)
         if likedList.contains(productId),
            let index = likedList.firstIndex(of: productId) {
