@@ -13,7 +13,6 @@ extension MainTableViewController: UISearchBarDelegate {
         delegate?.query = searchBar.text
         
         guard let query = delegate?.query else {return}
-        delegate?.setSearchedList(newWord: query)
         delegate?.requestSearch(.sim)
         
         guard let nextVC = delegate?.vc else { return }

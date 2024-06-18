@@ -14,6 +14,7 @@ enum Resource {
         static let system14 = UIFont.systemFont(ofSize: 14)
         static let system15 = UIFont.systemFont(ofSize: 15)
         static let system16 = UIFont.systemFont(ofSize: 16)
+        
         static let boldSystem13 = UIFont.boldSystemFont(ofSize: 13)
         static let boldSystem14 = UIFont.boldSystemFont(ofSize: 14)
         static let boldSystem15 = UIFont.boldSystemFont(ofSize: 15)
@@ -84,11 +85,12 @@ enum Resource {
     }
     
     enum Text {
+        case nickNameHaveSpace
         case nickNameNoSpecial
         case nickNameNoNumber
         case nickNameCountOver
         case nickNameSuccess
-       
+        
         static let appTitle = "MyCart"
         static let applicantName = "유철원"
         static let startButton = "시작하기"
@@ -121,6 +123,8 @@ enum Resource {
        
         var message: String {
             switch self {
+            case .nickNameHaveSpace:
+                return "닉네임에는 공백이 포함될 수 없어요"
             case .nickNameNoSpecial:
                 return "닉네임에 @, #, $, %는 포함할 수 없어요"
             case .nickNameNoNumber:

@@ -117,6 +117,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         
         mallNameLabel.text = data.mallName
         
+        // 이 부분은 인코딩을 통해 풀 수도 있다
         var itemName = data.title.replacingOccurrences(of: "<b>", with: "")
         itemNameLabel.text = itemName.replacingOccurrences(of: "</b>", with: "")
         

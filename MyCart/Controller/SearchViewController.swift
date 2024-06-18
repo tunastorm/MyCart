@@ -26,8 +26,9 @@ class SearchViewController: UIViewController {
     func requestSearch(_ sort: APIRouter.Sorting) {
         guard let query else {return}
         print(#function, sort)
+        
         model.requestSearch(query, sort: sort,
-                            callback: {() -> () in
+        callback: {
             self.setSearchedList(newWord: query)
             
             self.vc.nowSort = sort
@@ -38,8 +39,8 @@ class SearchViewController: UIViewController {
                 self.vc.totalLabel.text = Int(self.getTotal()).formatted(.number)
                                           + Resource.Text.searchTotal
             }
-            
-            
+        }, errorCallback: {
+            self.setErrorToast()
         })
     }
     
@@ -114,28 +115,29 @@ class SearchViewController: UIViewController {
     
     func setIsLiked(_ productId: String) {
         var likedList = model.getLikedList(userId: user.userId)
-        print(#function, "likedList: \(likedList)")
         if likedList.contains(productId),
            let index = likedList.firstIndex(of: productId) {
-            print(#function, productId, index)
             likedList.remove(at: index)
-            print(#function, likedList)
         } else {
             likedList.append(productId)
-            print(#function, likedList)
         }
         model.setLikedList(userId: user.userId, list: likedList)
         vc.likedList = model.getLikedList(userId: user.userId)
-        print(#function, "vc: \(vc.likedList)")
     }
     
     func searchScrollDown(_ sort: APIRouter.Sorting) {
         if let query, model.pageNation() {
             model.requestSearch(query, sort: sort,
-                                callback: {() -> () in
-                print(#function, self.model.responseItems.count)
+            callback: {() -> () in
                 self.vc.itemList = self.model.responseItems
+            },
+            errorCallback: {
+                self.setErrorToast()
             })
         }
+    }
+    
+    func setErrorToast() {
+        self.vc.popUpToast(messageEnum: ErrorMessage.API.NetworkFailed)
     }
 }

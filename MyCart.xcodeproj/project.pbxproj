@@ -20,6 +20,9 @@
 		BC3B9C732C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C722C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift */; };
 		BC3B9C752C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C742C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift */; };
 		BC3B9C772C1ECF4A008DCD18 /* CALayer+PartialBorderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C762C1ECF4A008DCD18 /* CALayer+PartialBorderExtension.swift */; };
+		BC6110062C212BFA009EA24F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6110052C212BFA009EA24F /* Toast.swift */; };
+		BC6110092C212C68009EA24F /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = BC6110082C212C68009EA24F /* Toast */; };
+		BC61100B2C2134B4009EA24F /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC61100A2C2134B4009EA24F /* ErrorMessage.swift */; };
 		BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D42C1AEA21004070B8 /* AppDelegate.swift */; };
 		BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */; };
 		BC9502DE2C1AEA22004070B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC9502DD2C1AEA22004070B8 /* Assets.xcassets */; };
@@ -63,6 +66,8 @@
 		BC3B9C722C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCollectionViewController.swift; sourceTree = "<group>"; };
 		BC3B9C742C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		BC3B9C762C1ECF4A008DCD18 /* CALayer+PartialBorderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+PartialBorderExtension.swift"; sourceTree = "<group>"; };
+		BC6110052C212BFA009EA24F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		BC61100A2C2134B4009EA24F /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		BC9502D12C1AEA21004070B8 /* MyCart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC9502D42C1AEA21004070B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC6110092C212C68009EA24F /* Toast in Frameworks */,
 				BC9502FB2C1AF087004070B8 /* Then in Frameworks */,
 				BC9502F52C1AF05B004070B8 /* Kingfisher in Frameworks */,
 				BC9502F82C1AF07F004070B8 /* SnapKit in Frameworks */,
@@ -194,6 +200,7 @@
 		BC9503062C1B4FC7004070B8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BC6110052C212BFA009EA24F /* Toast.swift */,
 				BC3B9C672C1D786B008DCD18 /* TabBarController.swift */,
 				BC3B9C5D2C1D6663008DCD18 /* Auth */,
 				BC9503072C1B5246004070B8 /* Search */,
@@ -220,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				BCF731AE2C1BEB85003FC583 /* Resource.swift */,
+				BC61100A2C2134B4009EA24F /* ErrorMessage.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -266,6 +274,7 @@
 				BC9502F42C1AF05B004070B8 /* Kingfisher */,
 				BC9502F72C1AF07F004070B8 /* SnapKit */,
 				BC9502FA2C1AF087004070B8 /* Then */,
+				BC6110082C212C68009EA24F /* Toast */,
 			);
 			productName = MyCart;
 			productReference = BC9502D12C1AEA21004070B8 /* MyCart.app */;
@@ -301,6 +310,7 @@
 				BC9502F32C1AF05B004070B8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				BC9502F62C1AF07F004070B8 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				BC9502F92C1AF087004070B8 /* XCRemoteSwiftPackageReference "Then" */,
+				BC6110072C212C68009EA24F /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			productRefGroup = BC9502D22C1AEA21004070B8 /* Products */;
 			projectDirPath = "";
@@ -347,7 +357,9 @@
 				BC3B9C732C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift in Sources */,
 				BC3B9C582C1C71E0008DCD18 /* ProductDetailViewController.swift in Sources */,
 				BCBDE7922C1F2E4B00B551F6 /* MainTableViewCell.swift in Sources */,
+				BC61100B2C2134B4009EA24F /* ErrorMessage.swift in Sources */,
 				BC3B9C662C1D6CCB008DCD18 /* MainTableViewController.swift in Sources */,
+				BC6110062C212BFA009EA24F /* Toast.swift in Sources */,
 				BC3B9C612C1D674B008DCD18 /* OnboadingViewController.swift in Sources */,
 				BC9502EC2C1AEBB9004070B8 /* APIKey.swift in Sources */,
 				BC3B9C712C1DBFBA008DCD18 /* NickNameFilter.swift in Sources */,
@@ -585,6 +597,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BC6110072C212C68009EA24F /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
 		BC9502ED2C1AF04B004070B8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
@@ -628,6 +648,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BC6110082C212C68009EA24F /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC6110072C212C68009EA24F /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
 		BC9502EE2C1AF04B004070B8 /* IQKeyboardManagerSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BC9502ED2C1AF04B004070B8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;

@@ -22,15 +22,17 @@ class NaverSearchShopModel {
     
     var maxStart = 1000
  
-    func requestSearch(_ query: String, sort: APIRouter.Sorting, callback: @escaping () -> ()) {
+    func requestSearch(_ query: String, sort: APIRouter.Sorting, callback: @escaping () -> (), errorCallback: @escaping () -> ()) {
         APIClient.request(SearchResponse<ShopItem>.self,
                           router: APIRouter.searchShoppings(query, sort: sort),
                           success: {(response: SearchResponse<ShopItem>) -> () in
-                               self.setNewResponse(response)
-                               callback()
+                              self.setNewResponse(response)
+                              callback()
                           },
                           failure: {(error: Error) -> () in
-                               print(error) // 
+                              print(error)
+                              // 에러 타입을 받아서 메시지를 리턴해주면 좋을 듯
+                              errorCallback()
                           }
         )
     }

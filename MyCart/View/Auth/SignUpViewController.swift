@@ -162,6 +162,11 @@ class SignUpViewController: UIViewController {
         guard let inputText = sender.text else {return}
         let filter = NickNameFilter.filter
         
+        if let spaceMessage = filter.filterSpace(inputText) {
+            messageLabel.text = spaceMessage
+            return
+        }
+        
         if let countMessage = filter.filterCount(inputText) {
             messageLabel.text = countMessage
             return

@@ -198,4 +198,8 @@ class SearchCollectionViewController: UIViewController {
         guard let nowSort else {return}
         delegate?.requestSearch(nowSort)
     }
+    
+    func popUpToast(messageEnum: ErrorMessage.API) {
+        makeToast2(message: messageEnum.message, duration: 3.0, position: .center)
+    }
 }

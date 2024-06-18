@@ -13,31 +13,39 @@ class NickNameFilter {
     
     static let filter = NickNameFilter()
     
+    private var spaceFilter = {(text: String) -> Bool in text.contains(" ")}
     private var countFilter = {(text: String) -> Bool in text.count < 2 || text.count >= 10}
     private var specialFilter = Resource.Text.specialFilter
     
-    func filterCount(_ inputText: String) -> String? {
-        if countFilter(inputText) {
-            return Resource.Text.nickNameCountOver.message
+    
+    func filterSpace(_ inputText: String ) -> String? {
+        guard spaceFilter(inputText) else {
+            return nil
         }
-        return nil
+        return Resource.Text.nickNameHaveSpace.message
+    }
+    
+    
+    func filterCount(_ inputText: String) -> String? {
+        guard countFilter(inputText) else {
+            return nil
+        }
+        return Resource.Text.nickNameCountOver.message
     }
     
     func filterSpecial(_ inputText: String) -> String? {
         let specialStr = inputText.filter({ specialFilter.contains($0) })
-        if specialStr.count > 0 {
-            return Resource.Text.nickNameNoSpecial.message
+        guard specialStr.count > 0 else {
+            return nil
         }
-        return nil
+        return Resource.Text.nickNameNoSpecial.message
     }
     
     func filterNumber(_ inputText: String) -> String? {
         let numberStr = inputText.filter({ $0.isNumber })
-        if numberStr.count > 0 {
-            return Resource.Text.nickNameNoNumber.message
+        guard numberStr.count > 0 else {
+            return nil
         }
-        return nil
+        return Resource.Text.nickNameNoNumber.message
     }
-    
-
 }

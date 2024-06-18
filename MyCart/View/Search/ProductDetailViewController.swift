@@ -70,7 +70,6 @@ class ProductDetailViewController: UIViewController {
         likeButton = UIBarButtonItem(image: cartImage,
                                          style: .plain, target: self,
                                          action: #selector(likeButtonClicked))
-        
         guard let likeButton else {return}
         navigationItem.rightBarButtonItems = [likeButton]
     }
