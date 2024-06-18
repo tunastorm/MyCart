@@ -40,8 +40,7 @@ class SignUpViewController: UIViewController {
         $0.tintColor = Resource.MyColor.white
     }
     
-    let nickNameTextfield = UITextField().then {
-        $0.placeholder = Resource.Text.nickNamePlaceholder
+    let nickNameTextField = UITextField().then {
         $0.addTarget(self, action: #selector(checkNickName), for: .editingChanged)
     }
     
@@ -73,6 +72,7 @@ class SignUpViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        delegate?.signIn()
         configUpdateViewToggle()
     }
     
@@ -81,7 +81,7 @@ class SignUpViewController: UIViewController {
         profileView.addSubview(profileImageView)
         profileView.addSubview(cameraIconView)
         cameraIconView.addSubview(cameraIcon)
-        view.addSubview(nickNameTextfield)
+        view.addSubview(nickNameTextField)
         view.addSubview(lineView)
         view.addSubview(messageLabel)
         view.addSubview(completeButton)
@@ -107,7 +107,7 @@ class SignUpViewController: UIViewController {
             $0.edges.equalToSuperview().inset(5)
         }
         
-        nickNameTextfield.snp.makeConstraints {
+        nickNameTextField.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             $0.top.equalTo(profileView.snp.bottom).offset(50)
@@ -116,7 +116,7 @@ class SignUpViewController: UIViewController {
         lineView.snp.makeConstraints {
             $0.height.equalTo(1)
             $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
-            $0.top.equalTo(nickNameTextfield.snp.bottom)
+            $0.top.equalTo(nickNameTextField.snp.bottom)
         }
         
         messageLabel.snp.makeConstraints {
@@ -147,16 +147,20 @@ class SignUpViewController: UIViewController {
     }
     
     func configUpdateViewToggle() {
-        var naviTitle =  Resource.Text.profileSetting
-        completeButton.isHidden = false
         if isUpdateView {
-            naviTitle = Resource.Text.editProfileTitle
-            completeButton.isHidden = true
+            navigationItem.title =  Resource.Text.editProfileTitle
             let barButtonItem = UIBarButtonItem(title: Resource.Text.saveNewProfile,
                                                 style: .plain, target: self, action: #selector(updateAndGoSetting))
             navigationItem.rightBarButtonItem = barButtonItem
+            completeButton.isHidden = true
+            guard let userName = delegate?.getNowUserName() else {return}
+            nickNameTextField.placeholder = nil
+            nickNameTextField.text = userName
+        } else {
+            navigationItem.title = Resource.Text.profileSetting
+            completeButton.isHidden = false
+            nickNameTextField.placeholder = Resource.Text.nickNamePlaceholder
         }
-        navigationItem.title = naviTitle
     }
 
     @objc func checkNickName(_ sender: UITextField) {
@@ -197,7 +201,7 @@ class SignUpViewController: UIViewController {
         guard let message = messageLabel.text, message == Resource.Text.nickNameSuccess else {
             return
         }
-        guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
+        guard let nickName = nickNameTextField.text, let image = selectedPhoto else {return}
         delegate?.signUpNewUser(nickName: nickName, profileImage: image)
         
         let nextView = AuthViewController()
@@ -208,7 +212,7 @@ class SignUpViewController: UIViewController {
         guard let message = messageLabel.text, message == Resource.Text.nickNameSuccess  else {
             return
         }
-        guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
+        guard let nickName = nickNameTextField.text, let image = selectedPhoto else {return}
         
         delegate?.updateUserProfile(nickName: nickName, profileImage: image)
         

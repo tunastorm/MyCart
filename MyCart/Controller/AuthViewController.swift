@@ -40,6 +40,10 @@ class AuthViewController: UIViewController {
         return nowUser
     }
     
+    func getNowUserName() -> String? {
+        return model?.nowUser.nickName
+    }
+    
     func authonticateUser() {
         let vc = SplashViewController()
         vc.delegate = self
