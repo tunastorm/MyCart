@@ -29,7 +29,6 @@ class SplashViewController: UIViewController {
         $0.contentMode = .scaleToFill
     }
     
-    
     let applicantLabel = UILabel().then {
         $0.textAlignment = .center
         $0.font = Resource.Font.boldSystem16

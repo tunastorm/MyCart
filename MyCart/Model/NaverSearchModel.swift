@@ -26,6 +26,7 @@ class NaverSearchShopModel {
         APIClient.request(SearchResponse<ShopItem>.self,
                           router: APIRouter.searchShoppings(query, sort: sort),
                           success: {(response: SearchResponse<ShopItem>) -> () in
+                              print(#function, response)
                               self.setNewResponse(response)
                               callback()
                           },
@@ -40,11 +41,12 @@ class NaverSearchShopModel {
     func pageNation() -> Bool {
         page += 1
         start = ((page - 1) * 30) + 1
-        if start > maxStart {
-            isEnd.toggle()
+        if start > total || start > maxStart {
+            isEnd = true
             return false
         }
         APIRouter.defaultParameters["start"] = start
+       
         return true
     }
     
@@ -59,10 +61,12 @@ class NaverSearchShopModel {
     }
     
     func clearSearchResponse() {
+        print(#function, "SearchResponse 초기화")
         isEnd = false
         page = 1
         searchResponse.start = 1
         searchResponse.items = []
+        print(#function, searchResponse)
     }
     
     var lastBuildDate: String {

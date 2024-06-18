@@ -33,7 +33,7 @@ class AuthViewController: UIViewController {
     }
     
     func getNowUser() -> User {
-        var nowUser = User(userId: "guest", nickName: "-", profileImage: "-", signUpDate: Date())
+        var nowUser = User(userId: Resource.Text.guestUser, nickName: "-", profileImage: "-", signUpDate: Date())
         if let user = model?.nowUser {
             nowUser = user
         }

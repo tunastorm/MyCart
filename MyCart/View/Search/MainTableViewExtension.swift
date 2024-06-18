@@ -12,6 +12,7 @@ extension MainTableViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         delegate?.query = searchBar.text
         guard let query = delegate?.query else {return}
+        delegate?.clearSearchResponse()
         delegate?.requestSearch(.sim)
         guard let nextVC = delegate?.vc else { return }
         nextVC.delegate = self.delegate

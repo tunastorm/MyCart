@@ -105,6 +105,7 @@ enum Resource {
         static let searchTotal = "개의 검색결과"
         
         static let settingViewTitle = "SETTING"
+        static let saveNewProfile = "저장"
         static let myCartLabel = "나의 장바구니 목록"
         static let myCartCountLabel = "개의 상품"
         static let QnALabel = "자주 묻는 질문"

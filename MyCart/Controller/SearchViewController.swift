@@ -122,6 +122,7 @@ class SearchViewController: UIViewController {
     }
     
     func searchScrollDown(_ sort: APIRouter.Sorting) {
+        print(#function, "스크롤 시도")
         if let query, model.pageNation() {
             model.requestSearch(query, sort: sort,
             callback: {() -> () in
@@ -131,6 +132,7 @@ class SearchViewController: UIViewController {
                 self.setErrorToast(messageEnum: StatusMessage.APIError.requestAPIFailed)
             })
         } else {
+            print(#function, "마지막 페이지")
             setStatusToast(messageEnum: StatusMessage.APIStatus.lastPage)
         }
     }

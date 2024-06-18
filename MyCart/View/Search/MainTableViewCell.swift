@@ -92,6 +92,7 @@ class MainTableViewCell: UITableViewCell {
     
     @objc func goDetailview() {
         searchCon?.query = wordLabel.text
+        searchCon?.clearSearchResponse()
         searchCon?.requestSearch(.sim)
         
         guard let nextVC = searchCon?.vc else {return}

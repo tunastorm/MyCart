@@ -152,7 +152,8 @@ class SignUpViewController: UIViewController {
         if isUpdateView {
             naviTitle = Resource.Text.editProfileTitle
             completeButton.isHidden = true
-            let barButtonItem = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(updateAndGoSetting))
+            let barButtonItem = UIBarButtonItem(title: Resource.Text.saveNewProfile,
+                                                style: .plain, target: self, action: #selector(updateAndGoSetting))
             navigationItem.rightBarButtonItem = barButtonItem
         }
         navigationItem.title = naviTitle
