@@ -85,12 +85,6 @@ enum Resource {
     }
     
     enum Text {
-        case nickNameHaveSpace
-        case nickNameNoSpecial
-        case nickNameNoNumber
-        case nickNameCountOver
-        case nickNameSuccess
-        
         static let appTitle = "MyCart"
         static let applicantName = "유철원"
         static let startButton = "시작하기"
@@ -101,8 +95,8 @@ enum Resource {
         static let profileSetting = "PROFILE SETTING"
         static let nickNamePlaceholder = "닉네임을 입력해주세요 :)"
         static let specialFilter = "@#$%"
-        
-        
+        static let nickNameSuccess = "사용할 수 있는 닉네임이에요"
+
         static let mainViewTitle = "님의 MEANING OUT"
         static let noListMessgae = "최근 검색어가 없어요"
         static let searchBarPlaceHolder = "브랜드, 상품 등을 입력하세요"
@@ -119,21 +113,5 @@ enum Resource {
         static let secessionLabel = "탈퇴하기"
         
         static let editProfileTitle = "EDIT PROFILE"
-        
-       
-        var message: String {
-            switch self {
-            case .nickNameHaveSpace:
-                return "닉네임에는 공백이 포함될 수 없어요"
-            case .nickNameNoSpecial:
-                return "닉네임에 @, #, $, %는 포함할 수 없어요"
-            case .nickNameNoNumber:
-                return "닉네임에 숫자는 포함할 수 없어요"
-            case .nickNameCountOver:
-                return "2글자 이상 10글자 미만으로 설정해주세요"
-            case .nickNameSuccess:
-                return "사용할 수 있는 닉네임이에요"
-            }
-        }
     }
 }

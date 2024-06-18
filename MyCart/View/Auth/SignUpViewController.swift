@@ -182,7 +182,7 @@ class SignUpViewController: UIViewController {
             return
         }
         
-        messageLabel.text = Resource.Text.nickNameSuccess.message
+        messageLabel.text = Resource.Text.nickNameSuccess
     }
     
     @objc func goSelectPhotoView() {
@@ -193,7 +193,7 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func signUpAndGoMain() {
-        if let message = messageLabel.text, message != Resource.Text.nickNameSuccess.message {
+        if let message = messageLabel.text, message != Resource.Text.nickNameSuccess {
             return
         }
         guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
@@ -206,7 +206,7 @@ class SignUpViewController: UIViewController {
     
     @objc func updateAndGoSetting() {
         print(#function)
-        if let message = messageLabel.text, message != Resource.Text.nickNameSuccess.message {
+        if let message = messageLabel.text, message != Resource.Text.nickNameSuccess {
             return
         }
         guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
@@ -226,14 +226,4 @@ extension SignUpViewController: DataReceiveDelegate {
 }
 
 
-extension SignUpViewController: UITextFieldDelegate {
-    
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        print(#function)
-//        if textField == nickNameTextfield {
-//            view.endEditing(true)
-//            textField.resignFirstResponder()
-//        }
-//        return true
-//    }
-}
+//extension SignUpViewController: UITextFieldDelegate {}

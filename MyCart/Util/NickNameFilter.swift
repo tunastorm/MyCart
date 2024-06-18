@@ -13,7 +13,9 @@ class NickNameFilter {
     
     static let filter = NickNameFilter()
     
-    private var spaceFilter = {(text: String) -> Bool in text.contains(" ")}
+    // 걸러내야 할 케이스를 클로저 내부에 조건으로 설정
+    private var spaceFilter = {(text: String) -> Bool in text != (text.trimmingCharacters(in: .whitespacesAndNewlines))
+                                                         || (text.filter{ $0.isWhitespace}.count > 1)}
     private var countFilter = {(text: String) -> Bool in text.count < 2 || text.count >= 10}
     private var specialFilter = Resource.Text.specialFilter
     
@@ -22,7 +24,8 @@ class NickNameFilter {
         guard spaceFilter(inputText) else {
             return nil
         }
-        return Resource.Text.nickNameHaveSpace.message
+        print(#function, inputText.trimmingCharacters(in: .whitespacesAndNewlines))
+        return ErrorMessage.NickNameFilter.nickNameHaveSpace.message
     }
     
     
@@ -30,7 +33,7 @@ class NickNameFilter {
         guard countFilter(inputText) else {
             return nil
         }
-        return Resource.Text.nickNameCountOver.message
+        return ErrorMessage.NickNameFilter.nickNameCountOver.message
     }
     
     func filterSpecial(_ inputText: String) -> String? {
@@ -38,7 +41,7 @@ class NickNameFilter {
         guard specialStr.count > 0 else {
             return nil
         }
-        return Resource.Text.nickNameNoSpecial.message
+        return ErrorMessage.NickNameFilter.nickNameNoSpecial.message
     }
     
     func filterNumber(_ inputText: String) -> String? {
@@ -46,6 +49,6 @@ class NickNameFilter {
         guard numberStr.count > 0 else {
             return nil
         }
-        return Resource.Text.nickNameNoNumber.message
+        return ErrorMessage.NickNameFilter.nickNameNoNumber.message
     }
 }

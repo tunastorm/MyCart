@@ -117,7 +117,6 @@
 				BC3B9C602C1D674B008DCD18 /* OnboadingViewController.swift */,
 				BC3B9C622C1D6B0D008DCD18 /* SplashViewController.swift */,
 				BC3B9C6E2C1D8607008DCD18 /* SignUpViewController.swift */,
-				BC3B9C702C1DBFBA008DCD18 /* NickNameFilter.swift */,
 				BC3B9C722C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift */,
 				BC3B9C742C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift */,
 			);
@@ -130,6 +129,15 @@
 				BCBDE7C72C2004A000B551F6 /* SettingViewController.swift */,
 			);
 			path = Setting;
+			sourceTree = "<group>";
+		};
+		BC61100C2C2143FF009EA24F /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				BC9502EA2C1AEBAB004070B8 /* API */,
+				BC3B9C702C1DBFBA008DCD18 /* NickNameFilter.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		BC9502C82C1AEA21004070B8 = {
@@ -152,6 +160,7 @@
 		BC9502D32C1AEA21004070B8 /* MyCart */ = {
 			isa = PBXGroup;
 			children = (
+				BC61100C2C2143FF009EA24F /* Util */,
 				BCF731B52C1C1AD7003FC583 /* Extension */,
 				BCF731B22C1C0BDF003FC583 /* Protocol */,
 				BC9503122C1BDF16004070B8 /* Resource */,
@@ -180,7 +189,6 @@
 		BC9502FC2C1AF850004070B8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				BC9502EA2C1AEBAB004070B8 /* API */,
 				BC9502FF2C1B32CB004070B8 /* NaverSearchModel.swift */,
 				BC3B9C592C1D3612008DCD18 /* UserModel.swift */,
 				BC95030A2C1BD6DA004070B8 /* UserDefaultsHelper.swift */,
