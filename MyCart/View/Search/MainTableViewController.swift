@@ -71,6 +71,7 @@ class MainTableViewController: UIViewController {
     func configBaseSetting() {
         let searchController = UISearchController(searchResultsController: nil)
         self.navigationItem.searchController = searchController
+        searchController.hidesNavigationBarDuringPresentation = false
         searchBar = searchController.searchBar
         searchBar?.delegate = self
         
