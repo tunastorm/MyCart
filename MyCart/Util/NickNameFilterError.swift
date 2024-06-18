@@ -25,7 +25,7 @@ class NickNameFilter {
             return nil
         }
         print(#function, inputText.trimmingCharacters(in: .whitespacesAndNewlines))
-        return ErrorMessage.NickNameFilter.nickNameHaveSpace.message
+        return StatusMessage.NickNameFilterError.haveSpace.message
     }
     
     
@@ -33,7 +33,7 @@ class NickNameFilter {
         guard countFilter(inputText) else {
             return nil
         }
-        return ErrorMessage.NickNameFilter.nickNameCountOver.message
+        return StatusMessage.NickNameFilterError.countOver.message
     }
     
     func filterSpecial(_ inputText: String) -> String? {
@@ -41,7 +41,7 @@ class NickNameFilter {
         guard specialStr.count > 0 else {
             return nil
         }
-        return ErrorMessage.NickNameFilter.nickNameNoSpecial.message
+        return StatusMessage.NickNameFilterError.haveSpecial.message
     }
     
     func filterNumber(_ inputText: String) -> String? {
@@ -49,6 +49,6 @@ class NickNameFilter {
         guard numberStr.count > 0 else {
             return nil
         }
-        return ErrorMessage.NickNameFilter.nickNameNoNumber.message
+        return StatusMessage.NickNameFilterError.haveNumber.message
     }
 }

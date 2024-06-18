@@ -21,17 +21,14 @@ class SearchCollectionViewController: UIViewController {
     
     var itemList: [ShopItem]? {
         didSet {
-            print(#function, "itemList didSet")
-            print(#function, nowSort)
             updateSortingView()
             collectionView.reloadData()
-           
+            hideAllToast()
         }
     }
     
     var likedList: [String]? {
         didSet {
-            print(#function, "likedList didSet")
             collectionView.reloadData()
         }
     }
@@ -138,7 +135,6 @@ class SearchCollectionViewController: UIViewController {
     func configSortingView() {
         for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
             let title = APIRouter.Sorting.allCases[idx].buttonTitle
-            print(#function, title)
             button.setTitle(title, for: .normal)
             button.titleLabel?.font = Resource.Font.system13
             button.layer.masksToBounds = true
@@ -176,7 +172,6 @@ class SearchCollectionViewController: UIViewController {
     func updateSortingView() {
         for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
             guard let nowSort else {return}
-            print(#function, APIRouter.Sorting.allCases[idx], nowSort)
             if APIRouter.Sorting.allCases[idx] == nowSort {
                 button.setTitleColor(Resource.MyColor.white, for: .normal)
                 button.backgroundColor = Resource.MyColor.darkGray
@@ -193,13 +188,21 @@ class SearchCollectionViewController: UIViewController {
     @objc func sortSearching(_ sender: UIButton) {
         nowSort = APIRouter.Sorting.allCases[sender.tag]
         updateSortingView()
-        print(#function,nowSort)
         delegate?.clearSearchResponse()
         guard let nowSort else {return}
         delegate?.requestSearch(nowSort)
     }
     
-    func popUpToast(messageEnum: ErrorMessage.API) {
-        makeToast2(message: messageEnum.message, duration: 3.0, position: .center)
+    func popUpErrorToast(messageEnum: StatusMessage.APIError) {
+        switch messageEnum {
+        case .networkFailed: makeToast(message: messageEnum.message, duration: 3.0, position: .bottom)
+        }
+    }
+    
+    func popUpStatusToast(messageEnum: StatusMessage.APIStatus) {
+        switch messageEnum {
+        case .loading:
+            makeLoadingToast(positon: .center)
+        }
     }
 }

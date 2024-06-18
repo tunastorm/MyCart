@@ -14,7 +14,6 @@ enum Resource {
         static let system14 = UIFont.systemFont(ofSize: 14)
         static let system15 = UIFont.systemFont(ofSize: 15)
         static let system16 = UIFont.systemFont(ofSize: 16)
-        
         static let boldSystem13 = UIFont.boldSystemFont(ofSize: 13)
         static let boldSystem14 = UIFont.boldSystemFont(ofSize: 14)
         static let boldSystem15 = UIFont.boldSystemFont(ofSize: 15)
@@ -49,8 +48,6 @@ enum Resource {
         static let likeButton = CGFloat(10)
         static let sortingButton = CGFloat(17)
         static let settingProfileImage = CGFloat(40)
-        
-        
     }
     
     enum SystemImage {
@@ -62,6 +59,7 @@ enum Resource {
         static let magnifyingGlass = UIImage(systemName: "magnifyingglass")
         static let xmark = UIImage(systemName: "xmark")
         static let person = UIImage(systemName: "person")
+        
     }
     
     enum NamedImage {
@@ -69,6 +67,8 @@ enum Resource {
         static let launch = UIImage(named: "launch")
         static let likeSelected = UIImage(named: "like_selected")
         static let likeUnselected = UIImage(named: "like_unselected")
+        static let loadingApple = UIImage (named: "loading_apple")
+        
         
         static var randomProfile: UIImage {
             return UIImage(named: "profile_\(Int.random(in: 0...11))")!
@@ -81,7 +81,6 @@ enum Resource {
             }
             return list
         }
-        
     }
     
     enum Text {

@@ -126,7 +126,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func likeButtonClicked(_ sender: UIButton) {
-        print(#function, sender.title(for: .normal))
         guard let productId = sender.title(for: .normal) else {return}
         delegate?.setIsLiked(productId)
     }

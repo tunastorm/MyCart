@@ -44,8 +44,6 @@ class SplashViewController: UIViewController {
         configLayout()
         configView()
        
-        print(#function, "\(self.self) 진입")
-        print(#function, delegate)
         switch nextViewType {
         case is OnboadingViewController.Type:
             let nextVC = OnboadingViewController()
@@ -100,7 +98,6 @@ class SplashViewController: UIViewController {
     
     @objc func changeRootview() {
         guard let nextView else {return}
-        print(#function, nextView)
         
         if let withNavi, withNavi {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVCWithNavi(nextView, animated: false)

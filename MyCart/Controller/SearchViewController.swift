@@ -25,16 +25,11 @@ class SearchViewController: UIViewController {
     
     func requestSearch(_ sort: APIRouter.Sorting) {
         guard let query else {return}
-        print(#function, sort)
-        
         model.requestSearch(query, sort: sort,
         callback: {
             self.setSearchedList(newWord: query)
-            
-            self.vc.nowSort = sort
             self.vc.itemList = self.model.responseItems
             self.vc.likedList = self.getLikedList()
-            
             if self.model.page == 1 {
                 self.vc.totalLabel.text = Int(self.getTotal()).formatted(.number)
                                           + Resource.Text.searchTotal
@@ -42,6 +37,8 @@ class SearchViewController: UIViewController {
         }, errorCallback: {
             self.setErrorToast()
         })
+        vc.nowSort = sort
+        setStatusToast()
     }
     
     func clearSearchResponse() {
@@ -62,7 +59,6 @@ class SearchViewController: UIViewController {
     
     func setSearchedList(newWord: String) {
         guard let query else {return}
-        
         var searchedList = model.getSearchedList(userId: user.userId)
         if searchedList.contains(query) {
             return
@@ -138,6 +134,10 @@ class SearchViewController: UIViewController {
     }
     
     func setErrorToast() {
-        self.vc.popUpToast(messageEnum: ErrorMessage.API.NetworkFailed)
+        vc.popUpErrorToast(messageEnum: StatusMessage.APIError.networkFailed)
+    }
+    
+    func setStatusToast() {
+        vc.popUpStatusToast(messageEnum: StatusMessage.APIStatus.loading)
     }
 }

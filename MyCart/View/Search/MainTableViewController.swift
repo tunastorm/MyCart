@@ -105,6 +105,7 @@ class MainTableViewController: UIViewController {
             $0.height.equalTo(40)
             $0.top.equalTo(imageView.snp.bottom).offset(10)
             $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(120)
         }
         
         currentSearchedView.snp.makeConstraints {
@@ -137,7 +138,6 @@ class MainTableViewController: UIViewController {
     
     func searchedListToggle() {
         if let searchedList, searchedList.count > 0 {
-            print(#function, searchedList, searchedList.count)
             imageView.isHidden = true
             noSearchedListLabel.isHidden = true
             currentSearchedView.isHidden = false

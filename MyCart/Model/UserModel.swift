@@ -24,7 +24,6 @@ class UserModel {
         }
         set {
             user = newValue
-            print(#function, nowUser)
         }
     }
     
@@ -46,11 +45,8 @@ class UserModel {
     }
         
     func signIn() {
-        print(#function, self.currentUser)
         if let currentUser, let user = UserDefaultsHelper.signIn(currentUser) {
-            print(#function, currentUser, user)
             self.nowUser = user
-            print(#function, self.nowUser)
         }
     }
     
@@ -61,10 +57,7 @@ class UserModel {
         
         guard let oldKey = mappingKey else {return}
         UserDefaultsHelper.updateUser(oldKey, newMappingKey, newUser)
-//        nowUser = newUser
         currentUser = newMappingKey
-        
-        print(#function, currentUser)
     }
     
     func deleteUser() {

@@ -131,7 +131,6 @@ class SettingViewController: UIViewController {
         authDelegate?.configModel()
         authDelegate?.signIn()
         user = authDelegate?.getNowUser()
-        print(#function, user)
     }
     
     func configHierarchy() {
@@ -265,7 +264,6 @@ class SettingViewController: UIViewController {
         navigationItem.title = Resource.Text.settingViewTitle
         
         guard let user else {return}
-        print(#function, user)
         photoView.image = UIImage(named: user.profileImage)
         nickNamLabel.text = user.nickName
         

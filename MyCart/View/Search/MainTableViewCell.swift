@@ -100,7 +100,6 @@ class MainTableViewCell: UITableViewCell {
     }
     
     @objc func deleteThisCell() {
-        print(#function, "하이")
         guard let searchedWord = wordLabel.text else {return}
         searchCon?.deleteSearchedWord(deleteWord: searchedWord)
         delegate?.searchedList = searchCon?.getSearchedList()

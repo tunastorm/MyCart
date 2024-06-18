@@ -16,13 +16,13 @@
 		BC3B9C662C1D6CCB008DCD18 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C652C1D6CCB008DCD18 /* MainTableViewController.swift */; };
 		BC3B9C682C1D786B008DCD18 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C672C1D786B008DCD18 /* TabBarController.swift */; };
 		BC3B9C6F2C1D8607008DCD18 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C6E2C1D8607008DCD18 /* SignUpViewController.swift */; };
-		BC3B9C712C1DBFBA008DCD18 /* NickNameFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C702C1DBFBA008DCD18 /* NickNameFilter.swift */; };
+		BC3B9C712C1DBFBA008DCD18 /* NickNameFilterError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C702C1DBFBA008DCD18 /* NickNameFilterError.swift */; };
 		BC3B9C732C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C722C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift */; };
 		BC3B9C752C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C742C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift */; };
 		BC3B9C772C1ECF4A008DCD18 /* CALayer+PartialBorderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3B9C762C1ECF4A008DCD18 /* CALayer+PartialBorderExtension.swift */; };
 		BC6110062C212BFA009EA24F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6110052C212BFA009EA24F /* Toast.swift */; };
 		BC6110092C212C68009EA24F /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = BC6110082C212C68009EA24F /* Toast */; };
-		BC61100B2C2134B4009EA24F /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC61100A2C2134B4009EA24F /* ErrorMessage.swift */; };
+		BC61100B2C2134B4009EA24F /* StatusMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC61100A2C2134B4009EA24F /* StatusMessage.swift */; };
 		BC9502D52C1AEA21004070B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D42C1AEA21004070B8 /* AppDelegate.swift */; };
 		BC9502D72C1AEA21004070B8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */; };
 		BC9502DE2C1AEA22004070B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC9502DD2C1AEA22004070B8 /* Assets.xcassets */; };
@@ -62,12 +62,12 @@
 		BC3B9C652C1D6CCB008DCD18 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		BC3B9C672C1D786B008DCD18 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		BC3B9C6E2C1D8607008DCD18 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		BC3B9C702C1DBFBA008DCD18 /* NickNameFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NickNameFilter.swift; sourceTree = "<group>"; };
+		BC3B9C702C1DBFBA008DCD18 /* NickNameFilterError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NickNameFilterError.swift; sourceTree = "<group>"; };
 		BC3B9C722C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCollectionViewController.swift; sourceTree = "<group>"; };
 		BC3B9C742C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		BC3B9C762C1ECF4A008DCD18 /* CALayer+PartialBorderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+PartialBorderExtension.swift"; sourceTree = "<group>"; };
 		BC6110052C212BFA009EA24F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
-		BC61100A2C2134B4009EA24F /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
+		BC61100A2C2134B4009EA24F /* StatusMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMessage.swift; sourceTree = "<group>"; };
 		BC9502D12C1AEA21004070B8 /* MyCart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC9502D42C1AEA21004070B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				BC9502EA2C1AEBAB004070B8 /* API */,
-				BC3B9C702C1DBFBA008DCD18 /* NickNameFilter.swift */,
+				BC3B9C702C1DBFBA008DCD18 /* NickNameFilterError.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -235,7 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				BCF731AE2C1BEB85003FC583 /* Resource.swift */,
-				BC61100A2C2134B4009EA24F /* ErrorMessage.swift */,
+				BC61100A2C2134B4009EA24F /* StatusMessage.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -365,12 +365,12 @@
 				BC3B9C732C1DC6A9008DCD18 /* SelectPhotoCollectionViewController.swift in Sources */,
 				BC3B9C582C1C71E0008DCD18 /* ProductDetailViewController.swift in Sources */,
 				BCBDE7922C1F2E4B00B551F6 /* MainTableViewCell.swift in Sources */,
-				BC61100B2C2134B4009EA24F /* ErrorMessage.swift in Sources */,
+				BC61100B2C2134B4009EA24F /* StatusMessage.swift in Sources */,
 				BC3B9C662C1D6CCB008DCD18 /* MainTableViewController.swift in Sources */,
 				BC6110062C212BFA009EA24F /* Toast.swift in Sources */,
 				BC3B9C612C1D674B008DCD18 /* OnboadingViewController.swift in Sources */,
 				BC9502EC2C1AEBB9004070B8 /* APIKey.swift in Sources */,
-				BC3B9C712C1DBFBA008DCD18 /* NickNameFilter.swift in Sources */,
+				BC3B9C712C1DBFBA008DCD18 /* NickNameFilterError.swift in Sources */,
 				BC3B9C682C1D786B008DCD18 /* TabBarController.swift in Sources */,
 				BC3B9C772C1ECF4A008DCD18 /* CALayer+PartialBorderExtension.swift in Sources */,
 				BC9503002C1B32CB004070B8 /* NaverSearchModel.swift in Sources */,

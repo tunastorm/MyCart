@@ -19,12 +19,8 @@ class AuthViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configModel()
-        print(#function, model?.nowUser)
         guard let model else {return}
-        print(#function, model)
         signIn()
-//        model.deleteUser()
-//        print(#function, model)
         authonticateUser()
     }
     
@@ -49,7 +45,6 @@ class AuthViewController: UIViewController {
         vc.delegate = self
         
         guard let nowUser = model?.nowUser else {return}
-        print(#function, "nowUser: \(nowUser)")
         if nowUser.userId == Resource.Text.guestUser {
             vc.nextViewType = OnboadingViewController.self
         } else {
@@ -60,11 +55,9 @@ class AuthViewController: UIViewController {
     
     func signUpNewUser(nickName: String, profileImage: UIImage) -> Bool {
         var thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
-        print(#function, thisName)
         model?.signUp(nickName, profileImage: thisName)
         guard let newUserId = model?.nowUser.userId else {return false}
         if newUserId != Resource.Text.guestUser {
-            print(#function, "newUserId: \(newUserId)")
             return true
         }
         return false

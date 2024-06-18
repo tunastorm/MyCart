@@ -33,7 +33,7 @@ class UserDefaultsHelper {
         }
     }
     
-    // 모든 유저들의 최근 검색 기록 리스트 키를 담는 딕셔너리
+    // 모든 유저들의 최근 검색 기록 리스트 키(userId)를 담는 딕셔너리
     var searchedListKeys: [String:String] {
         get {
             return userDefaults.dictionary(forKey: Key.searchedList.rawValue) as? [String:String] ?? [:]
@@ -43,7 +43,7 @@ class UserDefaultsHelper {
         }
     }
     
-    // 모든 유저들의 좋아요 리스트 키를 담는 딕셔너리
+    // 모든 유저들의 좋아요 리스트 키(userId)를 담는 딕셔너리
     var likedListKeys: [String:String] {
         get {
             return userDefaults.dictionary(forKey: Key.likedList.rawValue) as? [String:String] ?? [:]
@@ -56,15 +56,9 @@ class UserDefaultsHelper {
     static func signIn(_ mappingKey: String) -> User? {
         // mappingKey : userIdKey 쌍 조회, 없으면 return nil
         let userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
-        print(#function, mappingKey, userIdKeyMapper)
-        
         guard let userIdKey = userIdKeyMapper[mappingKey] else {return nil}
-        
-        print(#function, userIdKey)
-        
         // 로그인한 유저의 매핑 키를 최근 사용자로 저장
         UserDefaultsHelper.standard.currentUser = mappingKey
-        
         // userIdKey 조회 성공 시 userIdKey : User 쌍 조회, 없으면 return nil
         if let savedData = UserDefaults.standard.object(forKey: userIdKey as! String) as? Data {
             let decoder = JSONDecoder()
@@ -81,32 +75,20 @@ class UserDefaultsHelper {
         if let encoded = try? encoder.encode(newUser) {
             UserDefaults.standard.setValue(encoded, forKey: newUser.userId)
         }
-        
-        if let savedData = UserDefaults.standard.object(forKey: newUser.userId as! String) as? Data {
-            let decoder = JSONDecoder()
-            if let nowUser = try? decoder.decode(User.self, from: savedData) {
-                print(#function, nowUser)
-            }
-        }
-        
+        // userId 초기화 및 최근 검색기록 및 좋아요 키 딕셔너리 초기화
         let userId = newUser.userId
         var searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
         var likedListKeys = UserDefaultsHelper.standard.likedListKeys
-        
+        // 가입하는 유저의 기본 "키값 + userId"로 새로운 최근검색/좋아요 리스트 키 생성 후 딕셔너리에 저장
         searchedListKeys[userId] = Key.searchedList.rawValue + " | " + userId
         likedListKeys[userId] = Key.likedList.rawValue + " | " + userId
-        
-        print(#function, searchedListKeys)
-        print(#function, likedListKeys)
-        
+        // 기존 최근검색/좋아요 키 딕셔너리 삭제
         UserDefaults.standard.removeObject(forKey: Key.searchedList.rawValue)
         UserDefaults.standard.removeObject(forKey: Key.likedList.rawValue)
+        // 새로운 최근검색 / 좋아요 키 딕셔너리 저장
         UserDefaultsHelper.standard.searchedListKeys = searchedListKeys
         UserDefaultsHelper.standard.likedListKeys = likedListKeys
-        
-        print(#function, UserDefaultsHelper.standard.searchedListKeys)
-        print(#function, UserDefaultsHelper.standard.likedListKeys)
-        
+        // 새로 생성된 키 : 빈 리스트 쌍 UserDefaults에 저장
         setSearchedList(userId, [])
         setLikedList(userId, [])
     }
@@ -115,10 +97,10 @@ class UserDefaultsHelper {
         let userIdKey = newUser.userId
         // 1. 기존 유저 구조체 삭제
         UserDefaults.standard.removeObject(forKey: userIdKey)
-        // 2. 기존 매핑키:userId 쌍 삭제
+        // 2. 기존 매핑키 : userId 쌍 삭제
         var userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
         userIdKeyMapper.removeValue(forKey: oldKey)
-        // 3. 새 매핑키:userId 쌍 저장
+        // 3. 새 매핑키 : userId 쌍 저장
         userIdKeyMapper[newKey] = userIdKey
         UserDefaults.standard.removeObject(forKey: Key.userIdKeyMapper.rawValue)
         UserDefaults.standard.setValue(userIdKeyMapper, forKey: Key.userIdKeyMapper.rawValue)
@@ -131,15 +113,12 @@ class UserDefaultsHelper {
     }
     
     static func deleteUser(userId: String)  {
-        print(#function, userId)
+      
         var searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
         var likedListKeys = UserDefaultsHelper.standard.likedListKeys
         
         guard let mySearchKey = getSearchedListkey(userId) else {return}
         guard let myLikeKey = getLikedListKey(userId) else {return}
-        
-        print(#function, mySearchKey)
-        print(#function, myLikeKey)
         
         UserDefaults.standard.removeObject(forKey: mySearchKey)
         UserDefaults.standard.removeObject(forKey: myLikeKey)
@@ -147,30 +126,19 @@ class UserDefaultsHelper {
         searchedListKeys.removeValue(forKey: userId)
         likedListKeys.removeValue(forKey: userId)
         
-        print(#function, searchedListKeys)
-        print(#function, likedListKeys)
-        
         UserDefaults.standard.removeObject(forKey: Key.searchedList.rawValue)
         UserDefaults.standard.removeObject(forKey: Key.likedList.rawValue)
         UserDefaultsHelper.standard.searchedListKeys = searchedListKeys
         UserDefaultsHelper.standard.likedListKeys = likedListKeys
         
         UserDefaults.standard.removeObject(forKey: Key.currentUser.rawValue)
-        print(#function, UserDefaultsHelper.standard.currentUser)
         UserDefaults.standard.removeObject(forKey: userId)
-        if let savedData = UserDefaults.standard.object(forKey: userId as! String) as? Data {
-            let decoder = JSONDecoder()
-            if let nowUser = try? decoder.decode(User.self, from: savedData) {
-                print(#function, nowUser)
-            }
-        }
     }
     
     static func makeUserIdKey(mappingKey: String)  -> String? {
         // mappingKey : userIdKey 쌍 조회
         var userIdKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) ?? [:]
         var userIdKey = ""
-        
         // 일치하는 것 없을 때까지 반복 생성
         while (userIdKey.count != 10) {
             let newUserIdKey = mappingKey.createRandomStr(length: 10)
@@ -186,19 +154,16 @@ class UserDefaultsHelper {
         userIdKeyMapper[mappingKey] = userIdKey
         UserDefaults.standard.setValue(userIdKeyMapper , forKey: Key.userIdKeyMapper.rawValue)
         let newKeyMapper = UserDefaults.standard.dictionary(forKey: Key.userIdKeyMapper.rawValue) as! [String:String]
-        print(#function, newKeyMapper)
         return newKeyMapper[mappingKey]
     }
     
     static func getSearchedListkey(_ userId: String) -> String? {
         let searchedListKeys = UserDefaultsHelper.standard.searchedListKeys
-        print(#function, searchedListKeys)
         return searchedListKeys[userId]
     }
     
     static func getLikedListKey(_ userId: String) -> String? {
         let likedListKeys = UserDefaultsHelper.standard.likedListKeys
-        print(#function, likedListKeys)
         return likedListKeys[userId]
     }
     
@@ -211,7 +176,6 @@ class UserDefaultsHelper {
         guard let myKey = getSearchedListkey(userId) else {return}
         UserDefaults.standard.removeObject(forKey: myKey)
         UserDefaults.standard.setValue(list, forKey: myKey)
-        print(#function, getSearchedList(userId))
     }
         
     static func getLikedList(_ userId: String) -> [String]? {
@@ -223,50 +187,5 @@ class UserDefaultsHelper {
         guard let myKey = getLikedListKey(userId)  else {return}
         UserDefaults.standard.removeObject(forKey: myKey)
         UserDefaults.standard.setValue(list, forKey: myKey)
-//        print(#function, getLikedList(userId))
-        
     }
 }
-
-
-//struct UserDefaultsManager {
-//    
-//    static var userDBKey = "userDB"
-//    
-//    @UserDefaultWrapper(key: userDBKey, defaultValue: nil)
-//    static var userDB: [String:User]?
-//
-//    static func removeValue(_ key: String) {
-//        UserDefaults.standard.removeObject(forKey: key)
-//    }
-//}
-//
-//
-//@propertyWrapper
-//struct UserDefaultWrapper<T: Codable> {
-//    private let key: String
-//    private let defaultValue: T?
-//    
-//    init(key: String, defaultValue: T?) {
-//        self.key = key
-//        self.defaultValue = defaultValue
-//    }
-//    
-//    var wrappedValue: T? {
-//        get {
-//            if let savedData = UserDefaults.standard.object(forKey: key) as? Data {
-//                let decoder = JSONDecoder()
-//                if let lodedObejct = try? decoder.decode(T.self, from: savedData) {
-//                    return lodedObejct
-//                }
-//            }
-//            return defaultValue
-//        }
-//        set {
-//            let encoder = JSONEncoder()
-//            if let encoded = try? encoder.encode(newValue) {
-//                UserDefaults.standard.setValue(encoded, forKey: key)
-//            }
-//        }
-//    }
-//}
