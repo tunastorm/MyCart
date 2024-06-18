@@ -9,6 +9,16 @@ import UIKit
 
 
 extension MainTableViewController: UISearchBarDelegate {
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.placeholder = nil
+        return true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.placeholder = Resource.Text.searchBarPlaceHolder
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         delegate?.query = searchBar.text
         guard let query = delegate?.query else {return}
