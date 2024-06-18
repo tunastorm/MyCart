@@ -29,7 +29,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
         $0.titleLabel?.layer.opacity = 0
         $0.titleLabel?.font = .systemFont(ofSize: 0)
         $0.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
-    
     }
     
     let mallNameLabel = UILabel().then {
@@ -99,6 +98,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
     }
     
     func configCell(_ data: ShopItem, _ isLiked: Bool) {
+        guard let query = delegate?.query else {return}
+        
         let url = URL(string: data.image)
         imageView.kf.setImage(with: url)
     
@@ -115,13 +116,23 @@ class SearchCollectionViewCell: UICollectionViewCell {
             likeButton.alpha = Resource.Alpha.half
         }
         
-        mallNameLabel.text = data.mallName
+        let mallName = data.mallName
+        // 검색어에 해당하는 텍스트 하이라이팅
+        var attributedText = NSMutableAttributedString(string: mallName)
+        attributedText.addAttribute(.foregroundColor, value: Resource.MyColor.orange,
+                                   range: (mallName as NSString).range(of: query))
+        mallNameLabel.attributedText = attributedText
         
         // 이 부분은 인코딩을 통해 풀 수도 있다
         var itemName = data.title.replacingOccurrences(of: "<b>", with: "")
-        itemNameLabel.text = itemName.replacingOccurrences(of: "</b>", with: "")
+        itemName = itemName.replacingOccurrences(of: "</b>", with: "")
+        // 검색어에 해당하는 텍스트 하이라이팅
+        attributedText = NSMutableAttributedString(string: itemName)
+        attributedText.addAttribute(.foregroundColor, value: Resource.MyColor.orange,
+                                   range: (itemName as NSString).range(of: query))
+        itemNameLabel.attributedText = attributedText
         
-        guard let intPrice = Int(data.lprice) else {return}
+        let intPrice = Int(data.lprice) ?? 0
         priceLabel.text = intPrice.formatted(.number) + "원"
     }
     
