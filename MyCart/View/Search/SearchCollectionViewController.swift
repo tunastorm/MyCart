@@ -23,7 +23,7 @@ class SearchCollectionViewController: UIViewController {
         didSet {
             updateSortingView()
             collectionView.reloadData()
-            hideAllToast()
+            hideToastActivity()
         }
     }
     
@@ -193,17 +193,27 @@ class SearchCollectionViewController: UIViewController {
         delegate?.requestSearch(nowSort)
     }
     
-    func popUpErrorToast(messageEnum: StatusMessage.APIError) {
+    func popUpErrorToast(_ messageEnum: StatusMessage.APIError) {
         switch messageEnum {
-        case .requestAPIFailed: makeToast(message: messageEnum.message, duration: 3.0, position: .bottom)
+        case .requestAPIFailed: 
+            let messageList = StatusMessage.APIError.requestAPIFailed.message.components(separatedBy: " | ")
+            guard let title = messageList.first else {return}
+            guard let message = messageList.last else {return}
+            guard let image = Resource.SystemImage.wifiExclamationmark else {return}
+            makeToastWithImage(message: message,duration: 3.0, position: .bottom,
+                               title: title, image: image)
+            hideToastActivity()
         default: print("Error")
         }
     }
     
-    func popUpStatusToast(messageEnum: StatusMessage.APIStatus) {
+    func popUpStatusToast(_ messageEnum: StatusMessage.APIStatus) {
         switch messageEnum {
         case .loading:
             makeLoadingToast(positon: .center)
+        case .lastPage:
+            makeToast(message: StatusMessage.APIStatus.lastPage.message,
+                      duration: 3.0, position: .bottom)
         }
     }
 }

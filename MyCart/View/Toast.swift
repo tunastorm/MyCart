@@ -16,10 +16,21 @@ func makeToast(message: String, duration: CGFloat, position: ToastPosition) {
     
     if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
         let keyWindow = scene.windows.first(where: { $0.isKeyWindow })
-        
         keyWindow?.rootViewController?.view.makeToast(message, duration: duration, position: position)
     }
 }
+
+// MARK: - Image, Title Toast, Message 내용 / duration 지속시간 / position Toast위치 / title 타이틀 / image 이미지
+///Image, Title Toast, Message 내용 / duration 지속시간 / position Toast위치 / title 타이틀 / image 이미지
+func makeToastWithImage(message: String, duration: CGFloat, position: ToastPosition, title: String, image: UIImage) {
+    
+    if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+        let keyWindow = scene.windows.first(where: { $0.isKeyWindow })
+        
+        keyWindow?.rootViewController?.view.makeToast(message, duration: duration, position: position, title: title, image: image)
+    }
+}
+
 
 func makeLoadingToast(positon: ToastPosition) {
     if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
@@ -28,7 +39,7 @@ func makeLoadingToast(positon: ToastPosition) {
     }
 }
 
-func hideAllToast() {
+func hideToastActivity() {
     if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
         let keyWindow = scene.windows.first(where: { $0.isKeyWindow })
         keyWindow?.rootViewController?.view.hideToastActivity()

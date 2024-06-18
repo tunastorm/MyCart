@@ -35,10 +35,10 @@ class SearchViewController: UIViewController {
                                           + Resource.Text.searchTotal
             }
         }, errorCallback: {
-            self.setErrorToast()
+            self.setErrorToast(messageEnum: StatusMessage.APIError.requestAPIFailed)
         })
         vc.nowSort = sort
-        setStatusToast()
+        setStatusToast(messageEnum: StatusMessage.APIStatus.loading)
     }
     
     func clearSearchResponse() {
@@ -128,16 +128,18 @@ class SearchViewController: UIViewController {
                 self.vc.itemList = self.model.responseItems
             },
             errorCallback: {
-                self.setErrorToast()
+                self.setErrorToast(messageEnum: StatusMessage.APIError.requestAPIFailed)
             })
+        } else {
+            setStatusToast(messageEnum: StatusMessage.APIStatus.lastPage)
         }
     }
     
-    func setErrorToast() {
-        vc.popUpErrorToast(messageEnum: StatusMessage.APIError.requestAPIFailed)
+    func setErrorToast(messageEnum: StatusMessage.APIError) {
+        vc.popUpErrorToast(messageEnum)
     }
     
-    func setStatusToast() {
-        vc.popUpStatusToast(messageEnum: StatusMessage.APIStatus.loading)
+    func setStatusToast(messageEnum: StatusMessage.APIStatus) {
+        vc.popUpStatusToast(messageEnum)
     }
 }

@@ -19,7 +19,7 @@ enum StatusMessage: Error {
         var message: String {
             switch self {
             case .requestAPIFailed:
-                return "[서버 연결 실패]\n네트워크 상태를 확인하세요"
+                return "API 요청 실패 | 네트워크 상태를 확인하세요"
             case .productURLNotExist:
                 return "앗... 이 상품의 링크가 사라졌어요"
             case .productConnectionFailed:
@@ -30,6 +30,16 @@ enum StatusMessage: Error {
     
     enum APIStatus {
         case loading
+        case lastPage
+        
+        var message: String {
+            switch self {
+            case .loading:
+                return "로딩중..."
+            case .lastPage:
+                return "마지막 페이지 입니다"
+            }
+        }
     }
     
     enum NickNameFilterError: Error {

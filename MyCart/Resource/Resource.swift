@@ -60,6 +60,7 @@ enum Resource {
         static let xmark = UIImage(systemName: "xmark")
         static let person = UIImage(systemName: "person")
         static let networkSlash = UIImage(systemName: "network.slash")
+        static let wifiExclamationmark = UIImage(systemName: "wifi.exclamationmark")?.withTintColor(Resource.MyColor.white, renderingMode: .alwaysOriginal)
     }
     
     enum NamedImage {
