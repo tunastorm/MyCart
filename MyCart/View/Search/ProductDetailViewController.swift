@@ -18,17 +18,23 @@ class ProductDetailViewController: UIViewController {
     var product: ShopItem?
     
     let webView = WKWebView()
-    let noURLErrorView = UIView()
+    let errorView = UIView()
+    let errorLabel = UILabel().then {
+        $0.font = Resource.Font.boldSystem16
+        $0.textAlignment = .center
+        $0.textColor = Resource.MyColor.lightGray
+    }
     
     var likeButton: UIBarButtonItem?
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configNoURLErrorView()
+        configBaseSetting()
         configHierarchy()
         configLayout()
         configView()
+        configErrorView()
         viewToggle(isError: false)
         configLikeButton()
     }
@@ -38,6 +44,10 @@ class ProductDetailViewController: UIViewController {
         let title = product?.title.replacingOccurrences(of: "<b>", with: "")
         navigationItem.title = title?.replacingOccurrences(of: "</b>", with: "")
         configWebView()
+    }
+    
+    func configBaseSetting() {
+        webView.navigationDelegate = self
     }
     
     func configHierarchy() {
@@ -55,10 +65,9 @@ class ProductDetailViewController: UIViewController {
     }
     
     func configWebView() {
-        print(#function, product?.link)
         guard let link = product?.link,
               let url = URL(string: link) else {
-            print(#function, "빨간징징이")
+            errorLabel.text = StatusMessage.APIError.productURLNotExist.message
             viewToggle(isError: true)
             return
         }
@@ -67,23 +76,17 @@ class ProductDetailViewController: UIViewController {
         webView.load(request)
     }
     
-    func configNoURLErrorView() {
+    func configErrorView() {
         let errorImage = UIImageView(image: Resource.SystemImage.networkSlash).then {
             $0.tintColor = Resource.MyColor.lightGray
             $0.contentMode = .scaleAspectFit
         }
-        let errorLabel = UILabel().then {
-            $0.font = Resource.Font.boldSystem16
-            $0.textAlignment = .center
-            $0.textColor = Resource.MyColor.lightGray
-            $0.text = StatusMessage.APIError.productURLNotExist.message
-        }
         
-        view.addSubview(noURLErrorView)
-        noURLErrorView.addSubview(errorImage)
-        noURLErrorView.addSubview(errorLabel)
+        view.addSubview(errorView)
+        errorView.addSubview(errorImage)
+        errorView.addSubview(errorLabel)
         
-        noURLErrorView.snp.makeConstraints {
+        errorView.snp.makeConstraints {
             $0.size.equalTo(300)
             $0.center.equalTo(view.safeAreaLayoutGuide)
         }
@@ -103,10 +106,10 @@ class ProductDetailViewController: UIViewController {
     func viewToggle(isError: Bool) {
         if isError {
             webView.isHidden = true
-            noURLErrorView.isHidden = false
+            errorView.isHidden = false
         } else {
             webView.isHidden = false
-            noURLErrorView.isHidden = true
+            errorView.isHidden = true
         }
     }
     
@@ -132,4 +135,14 @@ class ProductDetailViewController: UIViewController {
         delegate?.setIsLiked(productId)
         configLikeButton()
     }
+}
+
+extension ProductDetailViewController: WKNavigationDelegate {
+    
+    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: any Error) {
+        errorLabel.text = StatusMessage.APIError.productConnectionFailed.message
+        viewToggle(isError: true)
+    }
+    
+    
 }

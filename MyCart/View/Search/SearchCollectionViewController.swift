@@ -195,7 +195,7 @@ class SearchCollectionViewController: UIViewController {
     
     func popUpErrorToast(messageEnum: StatusMessage.APIError) {
         switch messageEnum {
-        case .networkFailed: makeToast(message: messageEnum.message, duration: 3.0, position: .bottom)
+        case .requestAPIFailed: makeToast(message: messageEnum.message, duration: 3.0, position: .bottom)
         default: print("Error")
         }
     }

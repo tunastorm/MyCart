@@ -134,7 +134,7 @@ class SearchViewController: UIViewController {
     }
     
     func setErrorToast() {
-        vc.popUpErrorToast(messageEnum: StatusMessage.APIError.networkFailed)
+        vc.popUpErrorToast(messageEnum: StatusMessage.APIError.requestAPIFailed)
     }
     
     func setStatusToast() {
