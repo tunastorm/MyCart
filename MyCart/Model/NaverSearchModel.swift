@@ -26,7 +26,6 @@ class NaverSearchShopModel {
         APIClient.request(SearchResponse<ShopItem>.self,
                           router: APIRouter.searchShoppings(query, sort: sort),
                           success: {(response: SearchResponse<ShopItem>) -> () in
-                              print(#function, response)
                               self.setNewResponse(response)
                               callback()
                           },
