@@ -80,6 +80,7 @@ class MainTableViewCell: UITableViewCell {
     }
 
     func configCell(data: String) {
+        self.selectionStyle = .none
         wordLabel.text = data
         
         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(goDetailview))

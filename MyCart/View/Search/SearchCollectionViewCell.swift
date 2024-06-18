@@ -121,6 +121,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
         var attributedText = NSMutableAttributedString(string: mallName)
         attributedText.addAttribute(.foregroundColor, value: Resource.MyColor.orange,
                                    range: (mallName as NSString).range(of: query))
+        attributedText.addAttribute(.font, value: Resource.Font.boldSystem13,
+                                   range: (mallName as NSString).range(of: query))
         mallNameLabel.attributedText = attributedText
         
         // 이 부분은 인코딩을 통해 풀 수도 있다
@@ -129,6 +131,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
         // 검색어에 해당하는 텍스트 하이라이팅
         attributedText = NSMutableAttributedString(string: itemName)
         attributedText.addAttribute(.foregroundColor, value: Resource.MyColor.orange,
+                                   range: (itemName as NSString).range(of: query))
+        attributedText.addAttribute(.font, value: Resource.Font.boldSystem14,
                                    range: (itemName as NSString).range(of: query))
         itemNameLabel.attributedText = attributedText
         
