@@ -194,7 +194,7 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func signUpAndGoMain() {
-        if let message = messageLabel.text, message != Resource.Text.nickNameSuccess {
+        guard let message = messageLabel.text, message == Resource.Text.nickNameSuccess else {
             return
         }
         guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
@@ -205,7 +205,7 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func updateAndGoSetting() {
-        if let message = messageLabel.text, message != Resource.Text.nickNameSuccess {
+        guard let message = messageLabel.text, message == Resource.Text.nickNameSuccess  else {
             return
         }
         guard let nickName = nickNameTextfield.text, let image = selectedPhoto else {return}
