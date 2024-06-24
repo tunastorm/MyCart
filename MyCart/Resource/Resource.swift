@@ -112,6 +112,8 @@ enum Resource {
         static let customerVoiceLabel = "1:1 문의"
         static let notificationLabel = "알림 설정"
         static let secessionLabel = "탈퇴하기"
+        static let secessionAlertTitle = "탈퇴하기"
+        static let secessionAlertMessage = "탈퇴를 하면 데이터가 모두 초기화됩니다. 탈퇴하시겠습니까?"
         
         static let editProfileTitle = "EDIT PROFILE"
     }

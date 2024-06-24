@@ -303,17 +303,10 @@ class SettingViewController: UIViewController {
     }
     
     @objc func alertSecession() {
-        let alert = UIAlertController(title: "탈퇴하기",
-                                      message: "탈퇴를 하면 데이터가 모두 초기화됩니다. 탈퇴하시겠습니까?",
-                                      preferredStyle: .alert)
-        let delete = UIAlertAction(title: "확인",
-                                   style: .destructive,
-                                   handler: {_ in self.deleteUser()})
-        let cancle = UIAlertAction(title: "취소",
-                                   style: .cancel)
-        alert.addAction(cancle)
-        alert.addAction(delete)
-        present(alert, animated: false)
+        showAlert(style: .alert, title: Resource.Text.secessionAlertTitle,
+                  message: Resource.Text.secessionAlertMessage) { _ in
+            self.deleteUser()
+        }
     }
     
     func deleteUser() {
