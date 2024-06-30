@@ -45,14 +45,12 @@ class OnboardingView: BaseView {
             $0.height.equalTo(300)
             $0.center.equalTo(safeAreaLayoutGuide)
         }
-        
         appTitle.snp.makeConstraints {
             $0.height.equalTo(60)
             $0.width.equalTo(imageView)
             $0.bottom.equalTo(imageView.snp.top).offset(-60)
             $0.centerX.equalTo(safeAreaLayoutGuide)
         }
-        
         startButton.snp.makeConstraints {
             $0.height.equalTo(60)
             $0.bottom.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)

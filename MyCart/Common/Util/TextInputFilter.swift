@@ -17,37 +17,37 @@ class TextInputFilter {
     private var spaceFilter = {(text: String) -> Bool in text != (text.trimmingCharacters(in: .whitespacesAndNewlines))
                                                          || (text.filter{ $0.isWhitespace}.count > 1)}
     private var countFilter = {(text: String) -> Bool in text.count < 2 || text.count >= 10}
-    private var specialFilter = Resource.Text.specialFilter
+    private var specialFilter = "@#$%"
     
     
-    func filterSpace(_ inputText: String ) -> String? {
+    func filterSpace(_ inputText: String ) -> TextinputFilterError? {
         guard spaceFilter(inputText) else {
             return nil
         }
-        return StatusMessage.NickNameFilterError.haveSpace.message
+        return TextinputFilterError.haveSpace
     }
     
     
-    func filterCount(_ inputText: String) -> String? {
+    func filterCount(_ inputText: String) -> TextinputFilterError? {
         guard countFilter(inputText) else {
             return nil
         }
-        return StatusMessage.NickNameFilterError.countOver.message
+        return TextinputFilterError.countOver
     }
     
-    func filterSpecial(_ inputText: String) -> String? {
+    func filterSpecial(_ inputText: String) -> TextinputFilterError? {
         let specialStr = inputText.filter({ specialFilter.contains($0) })
         guard specialStr.count > 0 else {
             return nil
         }
-        return StatusMessage.NickNameFilterError.haveSpecial.message
+        return TextinputFilterError.haveSpecial
     }
     
-    func filterNumber(_ inputText: String) -> String? {
+    func filterNumber(_ inputText: String) -> TextinputFilterError? {
         let numberStr = inputText.filter({ $0.isNumber })
         guard numberStr.count > 0 else {
             return nil
         }
-        return StatusMessage.NickNameFilterError.haveNumber.message
+        return TextinputFilterError.haveNumber
     }
 }

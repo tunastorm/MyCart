@@ -100,6 +100,12 @@ class SelectPhotoView: BaseView {
     
     override func configView() {
         self.backgroundColor = .white
-        profileImageView.image = delegate?.getSelectedPhoto()
+    }
+    
+    override func configInteraction() {
+        guard let delegate else {
+            return
+        }
+        delegate.configInteraction()
     }
 }

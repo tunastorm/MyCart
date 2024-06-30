@@ -11,7 +11,7 @@ import Alamofire
 
 enum APIRouter: URLRequestConvertible {
     
-    case searchShoppings(_ query: String, sort: Sorting)
+    case searchShoppings(_ query: String, sort: Sorting, start: Int)
     
     func asURLRequest() throws -> URLRequest {
         let url = NaverSearchAPI.baseURL.appendingPathComponent(path)
@@ -29,7 +29,7 @@ enum APIRouter: URLRequestConvertible {
     
     var method: HTTPMethod {
         switch self {
-        case .searchShoppings(let query, let sort):
+        case .searchShoppings:
             return .get
         }
     }
@@ -41,7 +41,7 @@ enum APIRouter: URLRequestConvertible {
     
     private var path: String {
         switch self {
-        case .searchShoppings(let query, let sort):
+        case .searchShoppings(let query, let sort, let start):
             return "/shop.json"
         }
     }
@@ -53,9 +53,10 @@ enum APIRouter: URLRequestConvertible {
     
     private var parameters: Parameters? {
         switch self {
-        case .searchShoppings(let query, let sort):
+        case .searchShoppings(let query, let sort, let start):
             APIRouter.defaultParameters["query"] = query
             APIRouter.defaultParameters["sort"] = sort.rawValue
+            APIRouter.defaultParameters["start"] = start
             return  APIRouter.defaultParameters
         }
     }
@@ -82,7 +83,7 @@ enum APIRouter: URLRequestConvertible {
     
     var encoding: ParameterEncoding {
         switch self {
-        case .searchShoppings(let query, let sort):
+        case .searchShoppings:
             return URLEncoding.default
         }
     }

@@ -1,8 +1,8 @@
 //
-//  SettingMainViewController.swift
+//  SettingView.swift
 //  MyCart
 //
-//  Created by 유철원 on 6/17/24.
+//  Created by 유철원 on 7/1/24.
 //
 
 import UIKit
@@ -11,12 +11,9 @@ import SnapKit
 import Then
 
 
-class SettingViewController: UIViewController {
-
-    var authDelegate: BaseAuthViewController?
-    var searchDelegate: SearchViewController?
+class SettingView: BaseView {
     
-    var user: User?
+    var delegate: SettingViewDelegate?
     
     let profileView = UIView()
     
@@ -97,97 +94,62 @@ class SettingViewController: UIViewController {
         $0.font = Resource.Font.system15
         $0.text = Resource.Text.secessionLabel
     }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configHierarchy()
-        configLayout()
-        setNavigationBarUI()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        for view in [myCartView, QnAView, customerVoiceView, notificationView, secessionView] {
-            if view == secessionView {
-                view.layer.addBorder([.top, .bottom], color: Resource.MyColor.gray,
-                                        width: Resource.Border.width1)
-            } else {
-                view.layer.addBorder([.top], color: Resource.MyColor.gray,
-                                      width: Resource.Border.width1)
-            }
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setAuth()
-        configView()
-        configCartCount()
-    }
-    
-    func setAuth() {
-        authDelegate?.configModel()
-        authDelegate?.signIn()
-        user = authDelegate?.getNowUser()
-    }
-    
-    func configHierarchy() {
-        view.addSubview(profileView)
+   
+    override func configHierarchy() {
+        self.addSubview(profileView)
         profileView.addSubview(photoView)
         profileView.addSubview(nickNamLabel)
         profileView.addSubview(signUpDateLabel)
         profileView.addSubview(goUpdateProfileIcon)
-        view.addSubview(myCartView)
+        self.addSubview(myCartView)
         myCartView.addSubview(myCartLabel)
         myCartView.addSubview(myCartIcon)
         myCartView.addSubview(myCartCountLabel)
-        view.addSubview(QnAView)
+        self.addSubview(QnAView)
         QnAView.addSubview(QnALabel)
-        view.addSubview(customerVoiceView)
+        self.addSubview(customerVoiceView)
         customerVoiceView.addSubview(customerVoiceLabel)
-        view.addSubview(notificationView)
+        self.addSubview(notificationView)
         notificationView.addSubview(notificationLabel)
-        view.addSubview(secessionView)
+        self.addSubview(secessionView)
         secessionView.addSubview(secessionLabel)
     }
     
-    func configLayout() {
+    override func configLayout() {
         profileView.snp.makeConstraints {
             $0.height.equalTo(120)
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
         }
         
         myCartView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(profileView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
         }
         
         QnAView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(myCartView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
         }
         
         customerVoiceView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(QnAView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
         }
         
         notificationView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(customerVoiceView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
         }
         
         secessionView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(notificationView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
         }
         
         photoView.snp.makeConstraints {
@@ -259,59 +221,48 @@ class SettingViewController: UIViewController {
         }
     }
     
-    func configView() {
-        view.backgroundColor = .white
-        navigationItem.title = Resource.Text.settingViewTitle
-        
-        guard let user else {return}
-        photoView.image = UIImage(named: user.profileImage)
-        nickNamLabel.text = user.nickName
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy. MM. dd 가입"
-        
-        signUpDateLabel.text = dateFormatter.string(from: user.signUpDate)
-        
+    override func configView() {
+        super.configView()
+        guard let delegate else {
+            return
+        }
+        delegate.configProfile()
+        delegate.configCartCount()
+    }
+    
+    override func configInteraction() {
         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(goUpdateProfile))
         profileView.addGestureRecognizer(tapGesture1)
         
-        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(alertSecession))
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(showAlertSecession))
         secessionView.addGestureRecognizer(tapGesture2)
     }
     
-    func configCartCount() {
-        var cartCount = 0
-        if let count = searchDelegate?.getLikedListCount(), count > 0 {
-           cartCount = count
-           myCartIcon.image = Resource.NamedImage.likeSelected?.withRenderingMode(.alwaysOriginal)
-        } else {
-            myCartIcon.image = Resource.NamedImage.likeUnselected?.withRenderingMode(.alwaysOriginal)
+    func configUnderline() {
+        for view in [myCartView, QnAView, customerVoiceView, notificationView, secessionView] {
+            if view == secessionView {
+                view.layer.addBorder([.top, .bottom], color: Resource.MyColor.gray,
+                                        width: Resource.Border.width1)
+            } else {
+                view.layer.addBorder([.top], color: Resource.MyColor.gray,
+                                      width: Resource.Border.width1)
+            }
         }
-        var countText = String(cartCount) + Resource.Text.myCartCountLabel
-        var attributedStr = NSMutableAttributedString(string: countText)
-        attributedStr.addAttribute(.font, value: Resource.Font.boldSystem16,
-                                   range: (countText as NSString).range(of: "\(cartCount)개"))
-        myCartCountLabel.attributedText = attributedStr
     }
     
     @objc func goUpdateProfile() {
-        let vc = SignUpViewController()
-        vc.isUpdateView = true
-        vc.selectedPhoto = photoView.image
-        vc.delegate = self.authDelegate
-        pushAfterView(view: vc, backButton: true, animated: true)
-    }
-    
-    @objc func alertSecession() {
-        showAlert(style: .alert, title: Resource.Text.secessionAlertTitle,
-                  message: Resource.Text.secessionAlertMessage) { _ in
-            self.deleteUser()
+        guard let delegate else {
+            print(#function, delegate)
+            return
         }
+        delegate.pushUpdateProfile()
     }
     
-    func deleteUser() {
-        authDelegate?.deleteUser()
-        let nextView = SplashViewController()
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVCWithNavi(nextView, animated: false)
+    @objc func showAlertSecession() {
+        guard let delegate else {
+            print(#function, delegate)
+            return
+        }
+        delegate.alertSecession()
     }
 }

@@ -12,8 +12,7 @@ import Then
 
 class MainTableViewCell: UITableViewCell {
     
-    var searchCon: SearchViewController?
-    var delegate: MainViewController?
+    var delegate: MainTableViewCellDelegate?
     
     let selectView = UIView().then {
         $0.isUserInteractionEnabled = true
@@ -83,29 +82,24 @@ class MainTableViewCell: UITableViewCell {
         self.selectionStyle = .none
         wordLabel.text = data
         
-        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(goDetailview))
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(goSearchResultView))
         selectView.addGestureRecognizer(tapGesture1)
         
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(deleteThisCell))
         xMarkImageView.addGestureRecognizer(tapGesture2)
     }
     
-    @objc func goDetailview() {
-        searchCon?.query = wordLabel.text
-        searchCon?.clearSearchResponse()
-        searchCon?.requestSearch(.sim)
-        
-        guard let nextVC = searchCon?.detailVC else {return}
-        nextVC.delegate = searchCon
-        
-        delegate?.pushAfterView(view: nextVC, backButton: true, animated: true)
+    @objc func goSearchResultView() {
+        guard let delegate, let searchText = wordLabel.text else {
+            return
+        }
+        delegate.goSearchResultView(query: searchText)
     }
     
     @objc func deleteThisCell() {
-        guard let searchedWord = wordLabel.text else {return}
-        searchCon?.deleteSearchedWord(deleteWord: searchedWord)
-        delegate?.searchedList = searchCon?.getSearchedList()
-        delegate?.searchedListToggle()
+        guard let searchedWord = wordLabel.text, let delegate else {return}
+        delegate.deleteSearchedWord(deleteWord: searchedWord)
+        delegate.updateSearchedList()
     }
 
 }

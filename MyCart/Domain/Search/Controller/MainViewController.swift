@@ -14,20 +14,26 @@ import Then
 protocol MainViewDelegate {
     func configBaseSetting()
     
-    func deleteSearchedList()
+    func getSearchedListCount() -> Int
     
-    func searchedListToggle()
+    func deleteSearchedList()
 }
 
 protocol MainTableViewCellDelegate {
+    
+    func goSearchResultView(query: String)
+    
     func deleteSearchedWord(deleteWord: String)
+    
+    func updateSearchedList()
 }
 
 
-class MainViewController: BaseViewController {
+class MainViewController: BaseViewController<MainView> {
     
-    let rootView = MainView()
-    let query: String?
+    var searchResultVC: SearchResultViewController?
+    var productDetailVC: ProductDetailViewController?
+    
     var searchedList: [String]? {
         didSet {
             rootView.tableView.reloadData()
@@ -35,7 +41,7 @@ class MainViewController: BaseViewController {
     }
     
     override func loadView() {
-        view = rootView
+        super.loadView()
         rootView.delegate = self
     }
     
@@ -46,10 +52,8 @@ class MainViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        delegate?.setUser()
-        searchedList = delegate?.getSearchedList()
-        navigationItem.title = "\(userModel?.nowUser.nickName)\(Resource.Text.mainViewTitle)"
-        rootView.searchedListToggle()
+        searchedList = userModel.getSearchedList()
+        navigationItem.title = "\(userModel.nowUser.nickName)\(Resource.Text.mainViewTitle)"
     }
     
     override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
@@ -62,11 +66,29 @@ class MainViewController: BaseViewController {
     }
     
     func getSearchedList() -> [String]? {
-        return userModel?.getSearchedList()
+        return userModel.getSearchedList()
     }
     
     func setSearchedList(newWord: String) {
-        userModel?.setSearchedList(newWord: newWord)
+        userModel.setSearchedList(newWord: newWord)
+    }
+    
+    func updateSearchedList() {
+        searchedList = getSearchedList()
+        rootView.searchedListToggle()
+    }
+    
+    func goSearchResultView(query: String) {
+        if searchResultVC == nil {
+            searchResultVC = SearchResultViewController()
+        }
+        guard let searchResultVC else {
+            return
+        }
+        searchResultVC.query = query
+        searchResultVC.clearSearchRecord()
+        searchResultVC.requestSearch()
+        pushAfterView(view: searchResultVC, backButton: true, animated: true)
     }
 }
 
@@ -80,29 +102,22 @@ extension MainViewController: MainViewDelegate {
                            forCellReuseIdentifier: MainTableViewCell.identifier)
     }
     
-    func deleteSearchedList() {
-        userModel?.setSearchedList(newWord: nil)
+    func getSearchedListCount() -> Int {
+        guard let searchedList, searchedList.count > 0 else {
+            return 0
+        }
+        return searchedList.count
     }
     
-    func searchedListToggle() {
-        if let searchedList, searchedList.count > 0 {
-            rootView.imageView.isHidden = true
-            rootView.noSearchedListLabel.isHidden = true
-            rootView.currentSearchedView.isHidden = false
-            rootView.tableView.isHidden = false
-        } else {
-            rootView.imageView.isHidden = false
-            rootView.noSearchedListLabel.isHidden = false
-            rootView.currentSearchedView.isHidden = true
-            rootView.tableView.isHidden = true
-        }
+    func deleteSearchedList() {
+        userModel.setSearchedList(newWord: nil)
     }
+  
 }
 
 extension MainViewController: MainTableViewCellDelegate {
     
     func deleteSearchedWord(deleteWord: String) {
-        userModel?.deleteSearchedWord(deleteWord: deleteWord)
+        userModel.deleteSearchedWord(deleteWord: deleteWord)
     }
-    
 }

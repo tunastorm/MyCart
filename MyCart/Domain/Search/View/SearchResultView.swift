@@ -9,29 +9,14 @@ import UIKit
 
 import SnapKit
 import Then
+import Toast
 
 
-class SearchResultView: UIView {
-        
-    var delegate: SearResultViewDelegate?
-
+class SearchResultView: BaseView {
+    
+    var delegate: SearchResultViewDelegate?
+    
     private var total: Int?
-    
-    var nowSort: APIRouter.Sorting?
-    
-    var itemList: [ShopItem]? {
-        didSet {
-            updateSortingView()
-            collectionView.reloadData()
-            hideToastActivity()
-        }
-    }
-    
-    var likedList: [String]? {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
     
     let totalLabel = UILabel().then {
         $0.textAlignment = .left
@@ -54,10 +39,6 @@ class SearchResultView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configBaseSetting()
-        configHierarchy()
-        configLayout()
-        configView()
         configSortingView()
     }
     
@@ -82,28 +63,24 @@ class SearchResultView: UIView {
                                  height: height / verticalCount)
         layout.minimumLineSpacing = lineSpacing
         layout.minimumInteritemSpacing = itemSpacing
-        layout.sectionInset = UIEdgeInsets(top: inset,
-                                           left: inset,
-                                           bottom: inset,
-                                           right: inset)
+        layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         return layout
     }
     
-    func configBaseSetting() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.prefetchDataSource = self
-        collectionView.register(SearchCollectionViewCell.self,
-                                forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
+    override func configInteraction() {
+        guard let delegate else {
+            return
+        }
+        delegate.configInteraction()
     }
     
-    func configHierarchy() {
+    override func configHierarchy() {
         self.addSubview(totalLabel)
         self.addSubview(sortingView)
         self.addSubview(collectionView)
     }
     
-    func configLayout() {
+    override func configLayout() {
         totalLabel.snp.makeConstraints{
             $0.height.equalTo(30)
             $0.top.horizontalEdges.equalTo(self.safeAreaLayoutGuide).inset(20)
@@ -121,8 +98,9 @@ class SearchResultView: UIView {
         }
     }
     
-    func configView() {
+    override func configView() {
         self.backgroundColor = Resource.MyColor.white
+        configSortingView()
     }
     
     func configSortingView() {
@@ -147,15 +125,12 @@ class SearchResultView: UIView {
     }
     
     func configSortButtonLayout() {
-        
         dateButton.snp.makeConstraints {
             $0.leading.equalTo(simButton.snp.trailing).offset(6)
         }
-        
         dscButton.snp.makeConstraints {
             $0.leading.equalTo(dateButton.snp.trailing).offset(6)
         }
-        
         ascButton.snp.makeConstraints {
             $0.leading.equalTo(dscButton.snp.trailing).offset(6)
         }
@@ -164,7 +139,7 @@ class SearchResultView: UIView {
     
     func updateSortingView() {
         for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
-            guard let nowSort else {return}
+            guard let nowSort = delegate?.getNowSort() else {return}
             if APIRouter.Sorting.allCases[idx] == nowSort {
                 button.setTitleColor(Resource.MyColor.white, for: .normal)
                 button.backgroundColor = Resource.MyColor.darkGray
@@ -179,24 +154,22 @@ class SearchResultView: UIView {
     }
     
     @objc func sortSearching(_ sender: UIButton) {
-        nowSort = APIRouter.Sorting.allCases[sender.tag]
+        guard let delegate else {
+            return
+        }
+        delegate.setNowSort(sort: APIRouter.Sorting.allCases[sender.tag])
         updateSortingView()
-        delegate?.clearSearchResponse()
-        guard let nowSort else {return}
-        delegate?.requestSearch(nowSort)
+        delegate.clearSearchRecord()
+        delegate.requestSearch()
     }
     
-    func popUpErrorToast(_ messageEnum: StatusMessage.APIError) {
-        switch messageEnum {
-        case .requestAPIFailed: 
-            let messageList = StatusMessage.APIError.requestAPIFailed.message.components(separatedBy: " | ")
-            guard let title = messageList.first else {return}
-            guard let message = messageList.last else {return}
+    func popUpErrorToast(_ error: APIError) {
+        switch error {
+        case .networkError:
             let image = Resource.SystemImage.wifiExclamationmark
-            makeToastWithImage(message: message,duration: 3.0, position: .bottom,
-                               title: title, image: image)
-            hideToastActivity()
-        default: print(self.self, #function, StatusMessage.incorrectCase)
+            makeToastWithImage(message: error.message,duration: 3.0, position: .bottom,
+                               title: error.title, image: image)
+        default: makeBasicToast(message: error.message, duration: 3.0 , position: .bottom, title: error.title)
         }
     }
     
@@ -205,9 +178,7 @@ class SearchResultView: UIView {
         case .loading:
             makeLoadingToast(positon: .center)
         case .lastPage:
-            print("lastPage")
-//            makeToast(message: StatusMessage.APIStatus.lastPage.message,
-//                      duration: 3.0, position: .bottom, title: "")
+            makeBasicToast(message: StatusMessage.APIStatus.lastPage.message, duration: 3.0, position: .bottom)
         }
     }
 }

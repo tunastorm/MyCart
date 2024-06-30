@@ -16,39 +16,41 @@ protocol SignUpViewDelegate {
     
     func getUserName() -> String?
     
-    func goSelectPhotoView()
+    func pushSelectPhotoView()
     
-    func signUpAndGoMain(message: String, nickName: String, selectedPhoto: UIImage)
+    func signUpAndpushMain(message: String, nickName: String)
     
-    func updateAndGoSetting(message: String, nickName: String, selectedPhoto: UIImage)
+    func updateAndGoSetting(message: String, nickName: String)
 }
 
 
-class SignUpViewController: BaseViewController {
+class SignUpViewController: BaseViewController<SignUpView> {
    
     var isUpdateView = false
     
-    let rootView = SignUpView()
+    var selectPhotoVC: SelectPhotoViewController?
+    
+    var selectedPhoto: UIImage?
     
     override func loadView() {
-        view = rootView
+        super.loadView()
+        rootView.delegate = self
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        userModel?.signIn()
-        configUpdateViewToggle()
-        setNavigationBarUI()
+        userModel.signIn()
+        configProfile()
+        rootView.configUpdateViewToggle() 
     }
-    
+
     override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
         super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
-        navigationItem.title = Resource.Text.profileSetting
+        configUpdateViewToggle()
     }
     
     func configUpdateViewToggle() {
@@ -57,24 +59,16 @@ class SignUpViewController: BaseViewController {
             let barButtonItem = UIBarButtonItem(title: Resource.Text.saveNewProfile,
                                                 style: .plain, target: self, action: #selector(updateAndGoSetting))
             navigationItem.rightBarButtonItem = barButtonItem
-            rootView.completeButton.isHidden = true
-            guard let userName = userModel?.nowUser.nickName else {return}
-            rootView.nickNameTextField.placeholder = nil
-            rootView.nickNameTextField.text = userName
         } else {
             navigationItem.title = Resource.Text.profileSetting
-            rootView.completeButton.isHidden = false
-            rootView.nickNameTextField.placeholder = Resource.Text.nickNamePlaceholder
         }
     }
     
     func signUpNewUser(nickName: String, profileImage: UIImage) -> Bool {
         var thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
-        userModel?.signUp(nickName, profileImage: thisName)
-        guard let newUserId = userModel?.nowUser.userId else {
-            return false
-        }
-        if newUserId == Resource.Text.guestUser {
+        userModel.signUp(nickName, profileImage: thisName)
+        
+        guard userModel.nowUser.userId != Resource.Text.guestUser else {
             return false
         }
         return true
@@ -83,13 +77,13 @@ class SignUpViewController: BaseViewController {
     func updateUserProfile(nickName: String, profileImage: UIImage) -> Bool {
         let thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
         let newMappingKey = nickName + thisName
-        guard let oldMappingKey = userModel?.mappingKey else {
+        guard let oldMappingKey = userModel.mappingKey else {
             return false
         }
         guard oldMappingKey != newMappingKey else {
             return false
         }
-        userModel?.updateUser(newMappingKey, nickName, thisName)
+        userModel.updateUser(newMappingKey, nickName, thisName)
         return true
     }
     
@@ -108,33 +102,49 @@ extension SignUpViewController: SignUpViewDelegate {
     }
     
     func getUserName() -> String? {
-        return userModel?.nowUser.nickName
+        return userModel.nowUser.nickName
     }
     
-    func goSelectPhotoView() {
-        let vc = SelectPhotoViewController()
-        vc.delegate = self
-        vc.selectedPhoto = rootView.profileImageView.image
-        pushAfterView(view: vc, backButton: true, animated: true)
+    func configProfile() {
+        if let selectedPhoto {
+            rootView.profileImageView.image = selectedPhoto
+        } else {
+            selectedPhoto = Resource.NamedImage.randomProfile
+            rootView.profileImageView.image = selectedPhoto
+        }
     }
     
-    func signUpAndGoMain(message: String, nickName: String, selectedPhoto: UIImage) {
+    func pushSelectPhotoView() {
+        if selectPhotoVC == nil {
+            selectPhotoVC = SelectPhotoViewController()
+        }
+        guard let selectPhotoVC else {
+            return
+        }
+        selectPhotoVC.delegate = self
+        selectPhotoVC.selectedPhoto = rootView.profileImageView.image
+        pushAfterView(view: selectPhotoVC, backButton: true, animated: true)
+    }
+    
+    func signUpAndpushMain(message: String, nickName: String) {
         guard message == Resource.Text.nickNameSuccess else {
             return
         }
-        guard signUpNewUser(nickName: nickName, profileImage: selectedPhoto) else {
+        guard let selectedPhoto, signUpNewUser(nickName: nickName, profileImage: selectedPhoto) else {
             return
         }
-        
-        let nextView = BaseAuthViewController()
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVCWithNavi(nextView, animated: false)
+        let nextVC = SplashViewController()
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+            return
+        }
+        sceneDelegate.changeRootVCWithNavi(nextVC, animated: false)
     }
     
-    @objc func updateAndGoSetting(message: String, nickName: String, selectedPhoto: UIImage) {
+    @objc func updateAndGoSetting(message: String, nickName: String) {
         guard message == Resource.Text.nickNameSuccess else {
             return
         }
-        guard updateUserProfile(nickName: nickName, profileImage: selectedPhoto) else {
+        guard let selectedPhoto, updateUserProfile(nickName: nickName, profileImage: selectedPhoto) else {
             return
         }
         popBeforeView(animated: true)

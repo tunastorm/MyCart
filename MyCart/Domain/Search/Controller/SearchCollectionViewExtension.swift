@@ -8,7 +8,7 @@
 import UIKit
 
 
-extension SearchResultView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
+extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return itemList?.count ?? 1
@@ -24,7 +24,7 @@ extension SearchResultView: UICollectionViewDelegate, UICollectionViewDataSource
             
             let isLiked = likedList.contains(data.productId)
             
-            cell.delegate = self.delegate
+            cell.delegate = self
             cell.configCell(data, isLiked)
         }
         
@@ -36,20 +36,18 @@ extension SearchResultView: UICollectionViewDelegate, UICollectionViewDataSource
         guard let itemSize = itemList?.count else {return}
         
         indexPaths.forEach {
-            if let isEnd = delegate?.getIsEnd(), !isEnd, itemSize - 2 == $0.row, let nowSort {
-                delegate?.searchScrollDown(nowSort)
+            if isEnd, itemSize - 2 == $0.row {
+                scrollDown()
             }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = ProductDetailViewController()
-        vc.delegate = self.delegate
+        let nextVC = ProductDetailViewController()
         
         if let dataList = itemList, dataList.count > 0 {
-            vc.product = dataList[indexPath.row]
+            nextVC .product = dataList[indexPath.row]
         }
-//        setNavigationBarUI()
-//        pushAfterView(view: vc, backButton: true, animated: true)
+        pushAfterView(view: nextVC, backButton: true, animated: true)
     }
 }

@@ -71,12 +71,15 @@ class UserModel {
     }
     
     func setSearchedList(newWord: String?) {
-        var searchedList: [String]
+        var searchedList: [String]?
         if newWord == nil {
             searchedList = []
         } else if let newWord {
             searchedList = getSearchedList()
-            searchedList.insert(newWord, at: 0)
+            searchedList?.insert(newWord, at: 0)
+        }
+        guard let searchedList else {
+            return
         }
         UserDefaultsHelper.setSearchedList(user.userId, searchedList)
     }
@@ -96,17 +99,25 @@ class UserModel {
     func setLikedList(list: [String]) {
         UserDefaultsHelper.setLikedList(user.userId, list)
     }
+    
+    func getLikedListCount() -> Int {
+        let list = getLikedList()
+        return list.count
+    }
+    
+    func getIsLiked(productId: String) -> Bool {
+        var likedList = getLikedList()
+        return likedList.contains(productId)
+    }
+    
+    func setIsLiked(_ productId: String){
+        var likedList = getLikedList()
+        if likedList.contains(productId),
+           let index = likedList.firstIndex(of: productId) {
+            likedList.remove(at: index)
+        } else {
+            likedList.append(productId)
+        }
+        setLikedList(list: likedList)
+    }
 }
-
-
-struct User: Codable {
-    let userId: String
-    var nickName : String
-    var profileImage: String
-    let signUpDate: Date
-}
-
-
-
-
-

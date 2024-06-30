@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+
+struct User: Codable {
+    let userId: String
+    var nickName : String
+    var profileImage: String
+    let signUpDate: Date
+}

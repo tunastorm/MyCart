@@ -14,7 +14,7 @@ import Then
 
 class SearchCollectionViewCell: UICollectionViewCell {
     
-    var delegate: SearchViewController?
+    var delegate: SearchResultCollectionViewCellDelegate?
     
     let imageView = UIImageView().then {
         $0.backgroundColor = Resource.MyColor.lightGray
@@ -98,7 +98,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
     }
     
     func configCell(_ data: ShopItem, _ isLiked: Bool) {
-        guard let query = delegate?.query else {return}
+        guard let query = delegate?.getQuery() else {return}
         
         let url = URL(string: data.image)
         imageView.kf.setImage(with: url)
@@ -144,7 +144,9 @@ class SearchCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func likeButtonClicked(_ sender: UIButton) {
-        guard let productId = sender.title(for: .normal) else {return}
-        delegate?.setIsLiked(productId)
+        guard let productId = sender.title(for: .normal), let delegate else {
+            return
+        }
+        delegate.setIsLiked(productId: productId)
     }
 }

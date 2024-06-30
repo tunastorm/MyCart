@@ -16,6 +16,8 @@ class BaseView: UIView {
         configHierarchy()
         configLayout()
         configView()
+        configInteraction()
+        configExternalResource()
     }
     
     required init?(coder: NSCoder) {
@@ -31,6 +33,14 @@ class BaseView: UIView {
     }
     
     func configView() {
+        self.backgroundColor = Resource.MyColor.white
+    }
+    
+    func configInteraction() {
+        
+    }
+    
+    func configExternalResource() {
         
     }
 }

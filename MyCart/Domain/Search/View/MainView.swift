@@ -63,29 +63,24 @@ class MainView: BaseView {
             $0.top.equalTo(safeAreaLayoutGuide).inset(120)
             $0.centerX.equalTo(safeAreaLayoutGuide)
         }
-        
         noSearchedListLabel.snp.makeConstraints {
             $0.height.equalTo(40)
             $0.top.equalTo(imageView.snp.bottom).offset(10)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
             $0.bottom.equalTo(safeAreaLayoutGuide).inset(120)
         }
-        
         currentSearchedView.snp.makeConstraints {
             $0.height.equalTo(60)
             $0.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
         }
-        
         currentSearchedlabel.snp.makeConstraints {
             $0.width.equalTo(80)
             $0.leading.verticalEdges.equalToSuperview().inset(20)
         }
-        
         allDeleteButton.snp.makeConstraints {
             $0.width.equalTo(60)
             $0.trailing.verticalEdges.equalToSuperview().inset(20)
         }
-        
         tableView.snp.makeConstraints {
             $0.top.equalTo(currentSearchedView.snp.bottom)
             $0.bottom.horizontalEdges.equalTo(safeAreaLayoutGuide)
@@ -94,11 +89,35 @@ class MainView: BaseView {
     
     override func configView() {
         self.backgroundColor = Resource.MyColor.white
-        searchBar?.placeholder = Resource.Text.searchBarPlaceHolder
+        guard let searchBar, let delegate else {
+            return
+        }
+        searchBar.placeholder = Resource.Text.searchBarPlaceHolder
+        searchedListToggle()
+    }
+    
+    func searchedListToggle() {
+        guard let delegate else {
+            return
+        }
+        if delegate.getSearchedListCount() > 0 {
+            imageView.isHidden = true
+            noSearchedListLabel.isHidden = true
+            currentSearchedView.isHidden = false
+            tableView.isHidden = false
+        } else {
+            imageView.isHidden = false
+            noSearchedListLabel.isHidden = false
+            currentSearchedView.isHidden = true
+            tableView.isHidden = true
+        }
     }
     
     @objc func deleteAllWords() {
-        delegate?.deleteSearchedList()
-        delegate?.searchedListToggle()
+        guard let delegate else {
+            return
+        }
+        delegate.deleteSearchedList()
+        searchedListToggle()
     }
 }

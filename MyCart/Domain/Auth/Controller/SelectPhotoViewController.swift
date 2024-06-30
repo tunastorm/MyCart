@@ -11,43 +11,38 @@ import SnapKit
 
 
 protocol SelectPhotoViewDelegate {
-    func getSelectedPhoto() -> UIImage?
+    
+    func configInteraction()
 }
 
 
-class SelectPhotoViewController: UIViewController {
+class SelectPhotoViewController: BaseViewController<SelectPhotoView>{
     
     var isUpdateView = false
-    
     var delegate: DataReceiveDelegate?
-    
-    let rootView = SelectPhotoView()
-    
     var selectedCell: IndexPath?
     var selectedPhoto: UIImage?
     
     let photoList = Resource.NamedImage.allProfile
     
     override func loadView() {
-        view = rootView
+        super.loadView()
         rootView.delegate = self
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configBaseSetting()
+        configInteraction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        configProfileImage()
         configUpdateViewToggle()
     }
     
-    func configBaseSetting() {
-        rootView.collectiomView.delegate = self
-        rootView.collectiomView.dataSource = self
-        rootView.collectiomView.register(SelectPhotoCollectionViewCell.self,
-                                forCellWithReuseIdentifier: SelectPhotoCollectionViewCell.identifier)
+    func configProfileImage() {
+        rootView.profileImageView.image = selectedPhoto
     }
     
     func configUpdateViewToggle() {
@@ -60,8 +55,12 @@ class SelectPhotoViewController: UIViewController {
 }
 
 extension SelectPhotoViewController: SelectPhotoViewDelegate {
-    func getSelectedPhoto() -> UIImage? {
-        return selectedPhoto
+
+    func configInteraction() {
+        rootView.collectiomView.delegate = self
+        rootView.collectiomView.dataSource = self
+        rootView.collectiomView.register(SelectPhotoCollectionViewCell.self,
+                                forCellWithReuseIdentifier: SelectPhotoCollectionViewCell.identifier)
     }
 }
  

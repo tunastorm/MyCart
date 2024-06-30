@@ -16,16 +16,14 @@ protocol OnboardingViewDelegate {
 }
 
 
-class OnboadingViewController: BaseViewController {
+class OnboadingViewController: BaseViewController<OnboardingView> {
     
     var model: UserModel?
-    let rootView = OnboardingView()
-    
-    let signUpVC = SignUpViewController()
-    
+    var signUpVC: SignUpViewController?
     
     override func loadView() {
-        view = rootView
+        super.loadView()
+        rootView.delegate = self
     }
     
     override func viewDidLoad() {
@@ -33,20 +31,22 @@ class OnboadingViewController: BaseViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
+        configNavigationbar(navigationColor: Resource.MyColor.white, shadowImage: false)
     }
     
-    @objc func goSignUpView() {
-        let vc = SignUpViewController()
-        pushAfterView(view: vc, backButton: true, animated: true)
+    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
+        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
     }
 }
 
 extension OnboadingViewController: OnboardingViewDelegate {
     func pushToSignUpView() {
+        if signUpVC == nil {
+            signUpVC = SignUpViewController()
+        }
+        guard let signUpVC else {
+            return
+        }
         pushAfterView(view: signUpVC, backButton: true, animated: true)
     }
-    
-    func
 }

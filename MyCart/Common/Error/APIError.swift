@@ -55,7 +55,7 @@ enum APIError {
         case .networkError:
             let image = Resource.SystemImage.wifiExclamationmark
             makeToastWithImage(message: self.message, duration: 3.0, position: .bottom, title: self.title, image: image)
-        default: makeToast(message: self.message, duration: 3.0, position: .bottom, title: self.title)
+        default: makeBasicToast(message: self.message, duration: 3.0, position: .bottom, title: self.title)
         }
     }
 }

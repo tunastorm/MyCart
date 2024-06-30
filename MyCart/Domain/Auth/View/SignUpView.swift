@@ -12,7 +12,7 @@ class SignUpView: BaseView {
     
     var delegate: SignUpViewDelegate?
      
-    var selectedPhoto: UIImage?
+    var selectPhotoVC: SelectPhotoViewController?
     
     let profileView = UIView()
     
@@ -74,38 +74,31 @@ class SignUpView: BaseView {
             $0.top.equalTo(safeAreaLayoutGuide).inset(20)
             $0.centerX.equalTo(safeAreaLayoutGuide)
         }
-        
         profileImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        
         cameraIconView.snp.makeConstraints {
             $0.size.equalTo(30)
             $0.bottom.trailing.equalToSuperview()
         }
-        
         cameraIcon.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(5)
         }
-        
         nickNameTextField.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
             $0.top.equalTo(profileView.snp.bottom).offset(50)
         }
-        
         lineView.snp.makeConstraints {
             $0.height.equalTo(1)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
             $0.top.equalTo(nickNameTextField.snp.bottom)
         }
-        
         messageLabel.snp.makeConstraints {
             $0.height.equalTo(20)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
             $0.top.equalTo(lineView.snp.bottom).offset(20)
         }
-        
         completeButton.snp.makeConstraints {
             $0.height.equalTo(60)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
@@ -114,15 +107,10 @@ class SignUpView: BaseView {
     }
     
     override func configView() {
-        self.backgroundColor = .white
-        
-        if let selectedPhoto {
-            profileImageView.image = selectedPhoto
-        } else {
-            profileImageView.image = Resource.NamedImage.randomProfile
-            selectedPhoto = profileImageView.image
-        }
-        
+        super.configView()
+    }
+    
+    override func configInteraction() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(goSelectPhotoView))
         profileView.addGestureRecognizer(tapGesture)
     }
@@ -141,28 +129,24 @@ class SignUpView: BaseView {
     
     @objc func checkNickName(_ sender: UITextField) {
         guard let inputText = sender.text else {return}
-        let filter = TextInputFilter .filter
+        let filter = TextInputFilter.filter
         
-        if let spaceMessage = filter.filterSpace(inputText) {
-            messageLabel.text = spaceMessage
+        if let error = filter.filterSpace(inputText) {
+            messageLabel.text = error.nickNameMessage
             return
         }
-        
-        if let countMessage = filter.filterCount(inputText) {
-            messageLabel.text = countMessage
+        if let error = filter.filterCount(inputText) {
+            messageLabel.text = error.nickNameMessage
             return
         }
-        
-        if let specialMessage = filter.filterSpecial(inputText) {
-            messageLabel.text = specialMessage
+        if let error = filter.filterSpecial(inputText) {
+            messageLabel.text = error.nickNameMessage
             return
         }
-        
-        if let numberMessage = filter.filterNumber(inputText) {
-            messageLabel.text = numberMessage
+        if let error = filter.filterNumber(inputText) {
+            messageLabel.text = error.nickNameMessage
             return
         }
-        
         messageLabel.text = Resource.Text.nickNameSuccess
     }
     
@@ -170,10 +154,16 @@ class SignUpView: BaseView {
         guard let message = messageLabel.text, message == Resource.Text.nickNameSuccess else {
             return
         }
-        delegate?.signUpAndGoMain(message: <#T##String#>, nickName: <#T##String#>, selectedPhoto: <#T##UIImage#>)
+        guard let delegate, let nickName = nickNameTextField.text else {
+            return
+        }
+        delegate.signUpAndpushMain(message: message, nickName: nickName)
     }
     
     @objc func goSelectPhotoView() {
-        
+        guard let delegate else {
+            return
+        }
+        delegate.pushSelectPhotoView()
     }
 }

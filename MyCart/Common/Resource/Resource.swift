@@ -66,8 +66,8 @@ enum Resource {
     enum NamedImage {
         static let empty = UIImage(named: "empty")
         static let launch = UIImage(named: "launch")
-        static let likeSelected = UIImage(named: "like_selected")
-        static let likeUnselected = UIImage(named: "like_unselected")
+        static let likeSelected = UIImage(named: "like_selected")!.withRenderingMode(.alwaysOriginal)
+        static let likeUnselected = UIImage(named: "like_unselected")!.withRenderingMode(.alwaysOriginal)
         static let loadingApple = UIImage (named: "loading_apple")
         
         
@@ -84,6 +84,20 @@ enum Resource {
         }
     }
     
+    enum IsLike {
+        case like
+        case unLike
+        
+        var image: UIImage {
+            switch self {
+            case .like:
+                return NamedImage.likeSelected
+            case .unLike:
+                return NamedImage.likeUnselected
+            }
+        }
+    }
+    
     enum Text {
         static let appTitle = "MyCart"
         static let applicantName = "유철원"
@@ -94,7 +108,6 @@ enum Resource {
         
         static let profileSetting = "PROFILE SETTING"
         static let nickNamePlaceholder = "닉네임을 입력해주세요 :)"
-        static let specialFilter = "@#$%"
         static let nickNameSuccess = "사용할 수 있는 닉네임이에요"
 
         static let mainViewTitle = "님의 MEANING OUT"
