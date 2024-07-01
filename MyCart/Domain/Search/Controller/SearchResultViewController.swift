@@ -13,7 +13,7 @@ protocol SearchResultViewDelegate {
     func setNowSort(sort: APIRouter.Sorting)
     func clearSearchRecord()
     func requestSearch()
-    func scrollDown()
+    func requestURLSessionSearch()
 }
 
 protocol SearchResultCollectionViewCellDelegate {
@@ -24,13 +24,14 @@ protocol SearchResultCollectionViewCellDelegate {
 
 class SearchResultViewController: BaseViewController<SearchResultView> {
     
-    var isEnd = false
-    var page = 1
     var responseInfo = SearchResponse<ShopItem>(total: 0, start: 1, display: 30)
     var query: String?
     var nowSort: APIRouter.Sorting = .sim
     var itemList: [ShopItem]? {
         didSet {
+            guard itemList?.count ?? 0 > 0 else {
+                return
+            }
             rootView.updateSortingView()
             rootView.collectionView.reloadData()
             hideToastActivity()
@@ -39,36 +40,50 @@ class SearchResultViewController: BaseViewController<SearchResultView> {
     
     var likedList: [String]? {
         didSet {
-            rootView.collectionView.reloadData()
+            guard let indexPaths = likedIndexPaths(), indexPaths.count > 0 else {
+                return
+            }
+            print(#function, indexPaths)
+            rootView.collectionView.reloadItems(at: indexPaths)
         }
     }
     
     override func loadView() {
         super.loadView()
         rootView.delegate = self
+        configInteraction()
     }
     
-    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
-        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
+    func configInteraction() {
+        rootView.collectionView.delegate = self
+        rootView.collectionView.dataSource = self
+        rootView.collectionView.prefetchDataSource = self
+        rootView.collectionView.register(SearchCollectionViewCell.self,
+                                forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
     }
-    
+
     func clearSearchRecord() {
         itemList = []
         responseInfo.total = 0
         responseInfo.start = 1
     }
     
-    func pageNation() {
-        let start = responseInfo.start + 30
-        if start > responseInfo.total || start > 1000 {
-            isEnd = true
+    func pageNation() -> Int? {
+        print(#function, responseInfo)
+        guard responseInfo.start > 1 else {
+            print(#function, "최초 검색")
+            return responseInfo.start
         }
-        isEnd = false
+        let start = responseInfo.start
+        if start > responseInfo.total || start > 1000 {
+            return nil
+        }
+        return start
     }
     
     func setNewResponse(_ response: SearchResponse<ShopItem>) {
         if responseInfo.start > 1, itemList != nil, let items = response.items {
-            responseInfo.start = response.start
+            responseInfo.start = response.start + response.display
             itemList?.append(contentsOf: items)
         } else if responseInfo.start == 1 {
             responseInfo = response
@@ -77,11 +92,45 @@ class SearchResultViewController: BaseViewController<SearchResultView> {
         }
     }
     
+    func likedIndexPaths() -> [IndexPath]? {
+        guard let itemList, let likedList, itemList.count > 0, likedList.count > 0 else {
+            return nil
+        }
+        let indexPaths = itemList.enumerated().map {idx, item in
+            var indexPath = IndexPath.init()
+            if likedList.contains(item.productId) {
+                indexPath = IndexPath(row: idx, section: 0)
+            }
+            return indexPath
+        }
+        return indexPaths
+    }
+    
     func requestSearch() {
-        guard !isEnd, let query else {
+       
+    }
+    
+    func requestURLSessionSearch() {
+        rootView.popUpStatusToast(StatusMessage.APIStatus.loading)
+        guard let start = pageNation(), let query else {
+            print(#function, "start: \(responseInfo.start) | query: \(query)")
+            hideToastActivity()
             return
         }
-        
+        URLSessionManager.shared.callRequest(query: query, sort: nowSort, start: start) { search, error in
+            guard error == nil, let search else {
+                hideToastActivity()
+                self.rootView.popUpErrorToast(error)
+                return
+            }
+            self.userModel.setSearchedList(newWord: query)
+            self.setNewResponse(search)
+            self.likedList = self.userModel.getLikedList()
+            if self.responseInfo.start == 1 {
+                self.rootView.totalLabel.text = Int(self.responseInfo.total).formatted(.number) + Resource.Text.searchTotal
+            }
+        }
+
 //        model.requestSearch(query, sort: sort,
 //        callback: {
 //            self.setSearchedList(newWord: query)
@@ -99,6 +148,10 @@ class SearchResultViewController: BaseViewController<SearchResultView> {
     }
     
     func scrollDown() {
+        guard let query else {
+            return
+        }
+        requestURLSessionSearch()
 //        if let query, model.pageNation() {
 //            model.requestSearch(query, sort: sort,
 //            callback: {() -> () in
@@ -114,14 +167,6 @@ class SearchResultViewController: BaseViewController<SearchResultView> {
 }
 
 extension SearchResultViewController: SearchResultViewDelegate {
-    
-    func configInteraction() {
-        rootView.collectionView.delegate = self
-        rootView.collectionView.dataSource = self
-        rootView.collectionView.prefetchDataSource = self
-        rootView.collectionView.register(SearchCollectionViewCell.self,
-                                forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
-    }
     
     func getNowSort() -> APIRouter.Sorting {
         return nowSort
@@ -143,5 +188,4 @@ extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
     func setIsLiked(productId: String) {
         userModel.setIsLiked(productId)
     }
-    
 }

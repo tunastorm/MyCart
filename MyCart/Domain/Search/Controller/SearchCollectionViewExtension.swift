@@ -15,7 +15,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as! SearchCollectionViewCell
         
         if let dataList = itemList, dataList.count > 0 {
@@ -36,8 +36,8 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         guard let itemSize = itemList?.count else {return}
         
         indexPaths.forEach {
-            if isEnd, itemSize - 2 == $0.row {
-                scrollDown()
+            if itemSize - 2 == $0.row {
+                requestURLSessionSearch()
             }
         }
     }

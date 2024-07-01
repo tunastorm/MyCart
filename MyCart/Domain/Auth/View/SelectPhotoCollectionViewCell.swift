@@ -11,8 +11,7 @@ import SnapKit
 import Then
 
 class SelectPhotoCollectionViewCell: UICollectionViewCell {
-    
-    
+
     let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.layer.masksToBounds = true

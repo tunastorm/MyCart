@@ -81,10 +81,8 @@ class MainTableViewCell: UITableViewCell {
     func configCell(data: String) {
         self.selectionStyle = .none
         wordLabel.text = data
-        
         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(goSearchResultView))
         selectView.addGestureRecognizer(tapGesture1)
-        
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(deleteThisCell))
         xMarkImageView.addGestureRecognizer(tapGesture2)
     }

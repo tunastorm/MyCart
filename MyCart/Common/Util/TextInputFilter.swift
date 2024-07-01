@@ -18,7 +18,12 @@ class TextInputFilter {
                                                          || (text.filter{ $0.isWhitespace}.count > 1)}
     private var countFilter = {(text: String) -> Bool in text.count < 2 || text.count >= 10}
     private var specialFilter = "@#$%"
+    private var serialSpaceFilter = "/ +(?= )/"
     
+    func removeSpace(_ inputText: String) -> String {
+        let trim = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trim.replacingOccurrences(of: serialSpaceFilter, with: "")
+    }
     
     func filterSpace(_ inputText: String ) -> TextinputFilterError? {
         guard spaceFilter(inputText) else {

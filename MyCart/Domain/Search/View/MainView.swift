@@ -93,7 +93,6 @@ class MainView: BaseView {
             return
         }
         searchBar.placeholder = Resource.Text.searchBarPlaceHolder
-        searchedListToggle()
     }
     
     func searchedListToggle() {

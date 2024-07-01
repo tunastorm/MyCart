@@ -21,14 +21,15 @@ extension MainViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = searchBar.text, let query = searchBarFilter(searchText: searchText) else {
+            print(#function, searchBar.text)
             return
-        } //
+        }
+        print(#function, query)
         goSearchResultView(query: query)
     }
     
     func searchBarFilter(searchText: String) -> String? {
-        var filteredText: String?
-        
-        return filteredText
+        let filter = TextInputFilter.filter
+        return filter.removeSpace(searchText)
     }
 }

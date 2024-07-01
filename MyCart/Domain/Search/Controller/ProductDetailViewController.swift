@@ -58,7 +58,9 @@ class ProductDetailViewController: BaseViewController<ProductDetailView> {
     }
     
     @objc func likeButtonClicked(_ sender: UIButton) {
-        guard let productId = product?.productId else {return}
+        guard let productId = product?.productId else {
+            return
+        }
         userModel.setIsLiked(productId)
         configLikeButton()
     }

@@ -12,8 +12,6 @@ import Then
 
 
 protocol MainViewDelegate {
-    func configInteraction()
-    
     func getSearchedListCount() -> Int
     
     func deleteSearchedList()
@@ -53,18 +51,24 @@ class MainViewController: BaseViewController<MainView> {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         userModel.signIn()
-        print(#function, userModel.nowUser)
         searchedList = userModel.getSearchedList()
+        rootView.searchedListToggle()
         navigationItem.title = "\(userModel.nowUser.nickName)\(Resource.Text.mainViewTitle)"
     }
     
-    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
-        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
+    func configInteraction() {
         let searchController = UISearchController(searchResultsController: nil)
         self.navigationItem.searchController = searchController
         searchController.hidesNavigationBarDuringPresentation = false
         rootView.searchBar = searchController.searchBar
         rootView.searchBar?.setShowsCancelButton(false, animated: false)
+        rootView.searchBar?.delegate = self
+        
+        print(#function, rootView.searchBar?.delegate)
+        rootView.tableView.delegate = self
+        rootView.tableView.dataSource = self
+        rootView.tableView.register(MainTableViewCell.self,
+                           forCellReuseIdentifier: MainTableViewCell.identifier)
     }
     
     func getSearchedList() -> [String]? {
@@ -88,21 +92,15 @@ class MainViewController: BaseViewController<MainView> {
             return
         }
         searchResultVC.query = query
+        searchResultVC.nowSort = .sim
         searchResultVC.clearSearchRecord()
-        searchResultVC.requestSearch()
+        searchResultVC.requestURLSessionSearch()
+//        searchResultVC.requestSearch()
         pushAfterView(view: searchResultVC, backButton: true, animated: true)
     }
 }
 
 extension MainViewController: MainViewDelegate {
-    
-    func configInteraction() {
-        rootView.searchBar?.delegate = self
-        rootView.tableView.delegate = self
-        rootView.tableView.dataSource = self
-        rootView.tableView.register(MainTableViewCell.self,
-                           forCellReuseIdentifier: MainTableViewCell.identifier)
-    }
     
     func getSearchedListCount() -> Int {
         guard let searchedList, searchedList.count > 0 else {

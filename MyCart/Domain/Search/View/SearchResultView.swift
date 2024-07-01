@@ -160,10 +160,14 @@ class SearchResultView: BaseView {
         delegate.setNowSort(sort: APIRouter.Sorting.allCases[sender.tag])
         updateSortingView()
         delegate.clearSearchRecord()
-        delegate.requestSearch()
+        delegate.requestURLSessionSearch()
+//        delegate.requestSearch()
     }
     
-    func popUpErrorToast(_ error: APIError) {
+    func popUpErrorToast(_ error: APIError?) {
+        guard let error else {
+            return
+        }
         switch error {
         case .networkError:
             let image = Resource.SystemImage.wifiExclamationmark

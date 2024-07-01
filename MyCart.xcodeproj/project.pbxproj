@@ -45,7 +45,7 @@
 		BCBDE7C82C2004A000B551F6 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBDE7C72C2004A000B551F6 /* SettingViewController.swift */; };
 		BCBDE7CC2C20670800B551F6 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBDE7CB2C20670800B551F6 /* MainTableViewController.swift */; };
 		BCEC000E2C314A1E00C96564 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEC000D2C314A1E00C96564 /* APIError.swift */; };
-		BCEC00102C314AFE00C96564 /* URLSessionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEC000F2C314AFE00C96564 /* URLSessionClient.swift */; };
+		BCEC00102C314AFE00C96564 /* URLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEC000F2C314AFE00C96564 /* URLSessionManager.swift */; };
 		BCEC001A2C3155FC00C96564 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEC00192C3155FC00C96564 /* BaseViewController.swift */; };
 		BCEC001C2C31569600C96564 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEC001B2C31569600C96564 /* SignUpView.swift */; };
 		BCEC001E2C315B6500C96564 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEC001D2C315B6500C96564 /* SearchResultViewController.swift */; };
@@ -104,7 +104,7 @@
 		BCBDE7C72C2004A000B551F6 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		BCBDE7CB2C20670800B551F6 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		BCEC000D2C314A1E00C96564 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
-		BCEC000F2C314AFE00C96564 /* URLSessionClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionClient.swift; sourceTree = "<group>"; };
+		BCEC000F2C314AFE00C96564 /* URLSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionManager.swift; sourceTree = "<group>"; };
 		BCEC00192C3155FC00C96564 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		BCEC001B2C31569600C96564 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		BCEC001D2C315B6500C96564 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
@@ -212,7 +212,7 @@
 				BC9502FD2C1AF862004070B8 /* APIClient.swift */,
 				BC9502EB2C1AEBB9004070B8 /* APIKey.swift */,
 				BC9503012C1B3532004070B8 /* APIRouter.swift */,
-				BCEC000F2C314AFE00C96564 /* URLSessionClient.swift */,
+				BCEC000F2C314AFE00C96564 /* URLSessionManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -512,7 +512,7 @@
 				BCEC001A2C3155FC00C96564 /* BaseViewController.swift in Sources */,
 				BC3B9C612C1D674B008DCD18 /* OnboadingViewController.swift in Sources */,
 				BC9502EC2C1AEBB9004070B8 /* APIKey.swift in Sources */,
-				BCEC00102C314AFE00C96564 /* URLSessionClient.swift in Sources */,
+				BCEC00102C314AFE00C96564 /* URLSessionManager.swift in Sources */,
 				BC3B9C712C1DBFBA008DCD18 /* TextInputFilter.swift in Sources */,
 				BC3B9C682C1D786B008DCD18 /* TabBarController.swift in Sources */,
 				BCEC00372C31B8D600C96564 /* MapKitError.swift in Sources */,
