@@ -28,21 +28,29 @@ class SelectPhotoViewController: BaseViewController<SelectPhotoView>{
     override func loadView() {
         super.loadView()
         rootView.delegate = self
+        configProfileImage()
+        configInteraction()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configInteraction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configProfileImage()
+       
         configUpdateViewToggle()
     }
     
     func configProfileImage() {
         rootView.profileImageView.image = selectedPhoto
+    }
+    
+    func configInteraction() {
+        rootView.collectionView.delegate = self
+        rootView.collectionView.dataSource = self
+        rootView.collectionView.register(SelectPhotoCollectionViewCell.self,
+                                forCellWithReuseIdentifier: SelectPhotoCollectionViewCell.identifier)
     }
     
     func configUpdateViewToggle() {
@@ -56,11 +64,6 @@ class SelectPhotoViewController: BaseViewController<SelectPhotoView>{
 
 extension SelectPhotoViewController: SelectPhotoViewDelegate {
 
-    func configInteraction() {
-        rootView.collectiomView.delegate = self
-        rootView.collectiomView.dataSource = self
-        rootView.collectiomView.register(SelectPhotoCollectionViewCell.self,
-                                forCellWithReuseIdentifier: SelectPhotoCollectionViewCell.identifier)
-    }
+   
 }
  

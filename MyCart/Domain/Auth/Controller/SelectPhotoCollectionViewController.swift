@@ -10,13 +10,13 @@ import UIKit
 
 extension SelectPhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(#function, photoList.count)
         return photoList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectPhotoCollectionViewCell.identifier,
                                                       for: indexPath) as! SelectPhotoCollectionViewCell
-        
         
         let thisPhoto = photoList[indexPath.row]
         cell.configCell(image: thisPhoto)
@@ -50,6 +50,7 @@ extension SelectPhotoViewController: UICollectionViewDelegate, UICollectionViewD
         selectedPhoto = cell.imageView.image
         rootView.profileImageView.image = selectedPhoto
         guard let delegate else {
+            print(#function, "DataRecive 실패")
             return
         }
         delegate.receiveData(data: selectedPhoto)

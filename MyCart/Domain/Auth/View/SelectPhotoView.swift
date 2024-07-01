@@ -57,8 +57,7 @@ class SelectPhotoView: BaseView {
         return layout
     }
     
-    
-    lazy var collectiomView = UICollectionView(frame: .zero,
+    lazy var collectionView = UICollectionView(frame: .zero,
                                           collectionViewLayout: collectionViewLayout())
 
     override func configHierarchy() {
@@ -66,7 +65,7 @@ class SelectPhotoView: BaseView {
         profileView.addSubview(profileImageView)
         profileView.addSubview(cameraIconView)
         cameraIconView.addSubview(cameraIcon)
-        self.addSubview(collectiomView)
+        self.addSubview(collectionView)
     }
     
     override func configLayout() {
@@ -91,7 +90,7 @@ class SelectPhotoView: BaseView {
         }
         
         let collectionViewHeight = UIScreen.main.bounds.width - 90
-        collectiomView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.height.equalTo(collectionViewHeight)
             $0.top.equalTo(profileView.snp.bottom).offset(50)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide)
@@ -100,12 +99,5 @@ class SelectPhotoView: BaseView {
     
     override func configView() {
         self.backgroundColor = .white
-    }
-    
-    override func configInteraction() {
-        guard let delegate else {
-            return
-        }
-        delegate.configInteraction()
     }
 }

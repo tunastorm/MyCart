@@ -15,7 +15,6 @@ class BaseViewController<T:BaseView>: UIViewController {
     var rootView = T()
     
     override func loadView() {
-        userModel = UserModel.shared
         view = rootView
     }
     

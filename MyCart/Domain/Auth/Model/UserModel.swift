@@ -71,16 +71,12 @@ class UserModel {
     }
     
     func setSearchedList(newWord: String?) {
-        var searchedList: [String]?
-        if newWord == nil {
-            searchedList = []
-        } else if let newWord {
-            searchedList = getSearchedList()
-            searchedList?.insert(newWord, at: 0)
-        }
-        guard let searchedList else {
+        var searchedList: [String] = []
+        guard let newWord else {
             return
         }
+        searchedList = getSearchedList()
+        searchedList.insert(newWord, at: 0)
         UserDefaultsHelper.setSearchedList(user.userId, searchedList)
     }
     

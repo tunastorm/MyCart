@@ -38,6 +38,7 @@ class SettingViewController: BaseViewController<SettingView> {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         rootView.setNeedsLayout()
+        userModel.signIn()
         configCartCount()
         configProfile()
     }
@@ -97,7 +98,7 @@ extension SettingViewController: SettingViewDelegate {
         }
         signUpVC.isUpdateView = true
         signUpVC.selectedPhoto = rootView.photoView.image
-        print(#function, signUpVC.selectedPhoto)
+        print(#function, signUpVC.isUpdateView, signUpVC.selectedPhoto)
         pushAfterView(view: signUpVC, backButton: true, animated: true)
     }
     

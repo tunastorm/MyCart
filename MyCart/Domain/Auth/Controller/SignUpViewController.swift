@@ -18,9 +18,7 @@ protocol SignUpViewDelegate {
     
     func pushSelectPhotoView()
     
-    func signUpAndpushMain(message: String, nickName: String)
-    
-    func updateAndGoSetting(message: String, nickName: String)
+    func signUpAndpushMain(nickName: String)
 }
 
 
@@ -35,6 +33,8 @@ class SignUpViewController: BaseViewController<SignUpView> {
     override func loadView() {
         super.loadView()
         rootView.delegate = self
+        print(#function, isUpdateView)
+        configProfile()
     }
     
     override func viewDidLoad() {
@@ -43,8 +43,6 @@ class SignUpViewController: BaseViewController<SignUpView> {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        userModel.signIn()
-        configProfile()
         rootView.configUpdateViewToggle() 
     }
 
@@ -53,9 +51,18 @@ class SignUpViewController: BaseViewController<SignUpView> {
         configUpdateViewToggle()
     }
     
+    func configProfile() {
+        if let selectedPhoto {
+            rootView.profileImageView.image = selectedPhoto
+        } else {
+            selectedPhoto = Resource.NamedImage.randomProfile
+            rootView.profileImageView.image = selectedPhoto
+        }
+    }
+    
     func configUpdateViewToggle() {
         if isUpdateView {
-            navigationItem.title =  Resource.Text.editProfileTitle
+            navigationItem.title = Resource.Text.editProfileTitle
             let barButtonItem = UIBarButtonItem(title: Resource.Text.saveNewProfile,
                                                 style: .plain, target: self, action: #selector(updateAndGoSetting))
             navigationItem.rightBarButtonItem = barButtonItem
@@ -74,6 +81,17 @@ class SignUpViewController: BaseViewController<SignUpView> {
         return true
     }
     
+    @objc func updateAndGoSetting() {
+        print(#function, "hihihihi")
+        guard let message = rootView.messageLabel.text, message == Resource.Text.nickNameSuccess else {
+            return
+        }
+        guard let selectedPhoto, let nickName = rootView.nickNameTextField.text, updateUserProfile(nickName: nickName, profileImage: selectedPhoto) else {
+            return
+        }
+        popBeforeView(animated: true)
+    }
+    
     func updateUserProfile(nickName: String, profileImage: UIImage) -> Bool {
         let thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
         let newMappingKey = nickName + thisName
@@ -86,17 +104,11 @@ class SignUpViewController: BaseViewController<SignUpView> {
         userModel.updateUser(newMappingKey, nickName, thisName)
         return true
     }
+}
+
+
+extension SignUpViewController: SignUpViewDelegate, DataReceiveDelegate {
     
-}
-
-extension SignUpViewController: DataReceiveDelegate {
-    func receiveData<T>(data: T) {
-        rootView.profileImageView.image = data as? UIImage
-    }
-}
-
-extension SignUpViewController: SignUpViewDelegate {
-   
     func getIsUpdateView() -> Bool {
         return isUpdateView
     }
@@ -105,13 +117,8 @@ extension SignUpViewController: SignUpViewDelegate {
         return userModel.nowUser.nickName
     }
     
-    func configProfile() {
-        if let selectedPhoto {
-            rootView.profileImageView.image = selectedPhoto
-        } else {
-            selectedPhoto = Resource.NamedImage.randomProfile
-            rootView.profileImageView.image = selectedPhoto
-        }
+    func receiveData<T>(data: T) {
+        selectedPhoto = data as? UIImage
     }
     
     func pushSelectPhotoView() {
@@ -122,14 +129,12 @@ extension SignUpViewController: SignUpViewDelegate {
             return
         }
         selectPhotoVC.delegate = self
+        selectPhotoVC.isUpdateView = true
         selectPhotoVC.selectedPhoto = rootView.profileImageView.image
         pushAfterView(view: selectPhotoVC, backButton: true, animated: true)
     }
     
-    func signUpAndpushMain(message: String, nickName: String) {
-        guard message == Resource.Text.nickNameSuccess else {
-            return
-        }
+    func signUpAndpushMain(nickName: String) {
         guard let selectedPhoto, signUpNewUser(nickName: nickName, profileImage: selectedPhoto) else {
             return
         }
@@ -139,15 +144,4 @@ extension SignUpViewController: SignUpViewDelegate {
         }
         sceneDelegate.changeRootVCWithNavi(nextVC, animated: false)
     }
-    
-    @objc func updateAndGoSetting(message: String, nickName: String) {
-        guard message == Resource.Text.nickNameSuccess else {
-            return
-        }
-        guard let selectedPhoto, updateUserProfile(nickName: nickName, profileImage: selectedPhoto) else {
-            return
-        }
-        popBeforeView(animated: true)
-    }
-    
 }

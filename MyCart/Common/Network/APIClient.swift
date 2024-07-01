@@ -35,9 +35,9 @@ class APIClient {
         switch error {
         case .sessionDeinitialized:
             apiError = APIError.networkError
-        case .sessionInvalidated(let error):
+        case .sessionInvalidated:
             apiError = APIError.networkError
-        case .sessionTaskFailed(let error):
+        case .sessionTaskFailed:
             apiError = APIError.networkError
         case .responseSerializationFailed:
             apiError = APIError.noResultError
@@ -55,7 +55,7 @@ class APIClient {
             apiError = APIError.clientError
         case 500 ..< 600:
             apiError = APIError.serverError
-        default: APIError.networkError
+        default: apiError = APIError.networkError
         }
         return apiError
     }

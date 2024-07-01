@@ -12,7 +12,7 @@ import Then
 
 
 protocol MainViewDelegate {
-    func configBaseSetting()
+    func configInteraction()
     
     func getSearchedListCount() -> Int
     
@@ -43,15 +43,17 @@ class MainViewController: BaseViewController<MainView> {
     override func loadView() {
         super.loadView()
         rootView.delegate = self
+        configInteraction()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configBaseSetting()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        userModel.signIn()
+        print(#function, userModel.nowUser)
         searchedList = userModel.getSearchedList()
         navigationItem.title = "\(userModel.nowUser.nickName)\(Resource.Text.mainViewTitle)"
     }
@@ -94,7 +96,7 @@ class MainViewController: BaseViewController<MainView> {
 
 extension MainViewController: MainViewDelegate {
     
-    func configBaseSetting() {
+    func configInteraction() {
         rootView.searchBar?.delegate = self
         rootView.tableView.delegate = self
         rootView.tableView.dataSource = self
@@ -112,7 +114,6 @@ extension MainViewController: MainViewDelegate {
     func deleteSearchedList() {
         userModel.setSearchedList(newWord: nil)
     }
-  
 }
 
 extension MainViewController: MainTableViewCellDelegate {

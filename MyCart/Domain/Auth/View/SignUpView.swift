@@ -116,13 +116,16 @@ class SignUpView: BaseView {
     }
     
     func configUpdateViewToggle() {
-        if let isUpdateView = delegate?.getIsUpdateView(), let userName = delegate?.getUserName() {
+        if let isUpdateView = delegate?.getIsUpdateView(), isUpdateView, let userName = delegate?.getUserName() {
             completeButton.isHidden = true
             nickNameTextField.placeholder = nil
             nickNameTextField.text = userName
+            print(#function, "???????")
         } else {
             completeButton.isHidden = false
             nickNameTextField.placeholder = Resource.Text.nickNamePlaceholder
+            nickNameTextField.text = nil
+            print(#function, "hihihihi")
         }
     }
     
@@ -157,7 +160,7 @@ class SignUpView: BaseView {
         guard let delegate, let nickName = nickNameTextField.text else {
             return
         }
-        delegate.signUpAndpushMain(message: message, nickName: nickName)
+        delegate.signUpAndpushMain(nickName: nickName)
     }
     
     @objc func goSelectPhotoView() {
