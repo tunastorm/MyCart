@@ -12,23 +12,16 @@ import SnapKit
 import Then
 
 
-protocol ProductDetailViewDelegate {
-    func configExternalResource()
-}
 
-class ProductDetailViewController: BaseViewController<ProductDetailView> {
+final class ProductDetailViewController: BaseViewController<ProductDetailView> {
 
     var product: ShopItem?
     
     var likeButton: UIBarButtonItem?
     
-    override func loadView() {
-        super.loadView()
-        rootView.delegate = self
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        configExternalResource()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,7 +35,19 @@ class ProductDetailViewController: BaseViewController<ProductDetailView> {
         configLikeButton()
     }
     
-    func configLikeButton() {
+    private func configExternalResource() {
+        rootView.webView.navigationDelegate = self
+        guard let link = product?.link, let url = URL(string: link) else {
+            print(#function, "아아날ㅇ나ㅣㅁ러리ㅏㅁ너라ㅣㅁ너라ㅣㄴㅁ럼나ㅣㄹㄴㅁㄹ")
+            rootView.errorLabel.text = MapKitError.productURLNotExist.message
+            rootView.viewToggle(error: MapKitError.productURLNotExist)
+            return
+        }
+        let request = URLRequest(url: url)
+        rootView.webView.load(request)
+    }
+    
+    private func configLikeButton() {
         var cartImage = Resource.IsLike.unLike.image
         guard let id = product?.productId else {
             return
@@ -57,26 +62,12 @@ class ProductDetailViewController: BaseViewController<ProductDetailView> {
         navigationItem.rightBarButtonItems = [likeButton]
     }
     
-    @objc func likeButtonClicked(_ sender: UIButton) {
+    @objc private func likeButtonClicked(_ sender: UIButton) {
         guard let productId = product?.productId else {
             return
         }
         userModel.setIsLiked(productId)
         configLikeButton()
-    }
-}
-
-extension ProductDetailViewController: ProductDetailViewDelegate {
-    
-    func configExternalResource() {
-        rootView.webView.navigationDelegate = self
-        guard let link = product?.link, let url = URL(string: link) else {
-            rootView.errorLabel.text = MapKitError.productURLNotExist.message
-            rootView.viewToggle(error: MapKitError.productURLNotExist)
-            return
-        }
-        let request = URLRequest(url: url)
-        rootView.webView.load(request)
     }
 }
 

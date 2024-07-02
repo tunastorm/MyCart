@@ -11,8 +11,6 @@ import WebKit
 
 class ProductDetailView: BaseView {
     
-    var delegate: ProductDetailViewDelegate?
-    
     let webView = WKWebView()
     let errorView = UIView()
     let errorLabel = UILabel().then {
@@ -20,7 +18,6 @@ class ProductDetailView: BaseView {
         $0.textAlignment = .center
         $0.textColor = Resource.MyColor.lightGray
     }
-    
 
     override func configHierarchy() {
         self.addSubview(webView)
@@ -35,16 +32,6 @@ class ProductDetailView: BaseView {
     override func configView() {
         self.backgroundColor = Resource.MyColor.white
         configErrorView()
-        guard let delegate else {
-            return
-        }
-    }
-    
-    override func configExternalResource() {
-        guard let delegate else {
-            return
-        }
-        delegate.configExternalResource()
     }
     
     func configErrorView() {
@@ -52,6 +39,7 @@ class ProductDetailView: BaseView {
             $0.tintColor = Resource.MyColor.lightGray
             $0.contentMode = .scaleAspectFit
         }
+        errorImage.isHidden = true
         
         self.addSubview(errorView)
         errorView.addSubview(errorImage)
@@ -80,7 +68,7 @@ class ProductDetailView: BaseView {
             errorView.isHidden = false
         default:
             webView.isHidden = false
-           errorView.isHidden = true
+            errorView.isHidden = true
         }
     }
 }

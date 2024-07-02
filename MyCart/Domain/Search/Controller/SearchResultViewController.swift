@@ -107,7 +107,8 @@ class SearchResultViewController: BaseViewController<SearchResultView> {
     }
     
     func requestSearch() {
-       
+        rootView.popUpStatusToast(StatusMessage.APIStatus.loading)
+        APIClient.request(<#T##object: Decodable.Type##Decodable.Type#>, router: <#T##APIRouter#>, success: <#T##((Decodable) -> Void)##((Decodable) -> Void)##(Decodable) -> Void#>, failure: <#T##APIClient.onFailure##APIClient.onFailure##(_ error: any Error) -> Void#>)
     }
     
     func requestURLSessionSearch() {
