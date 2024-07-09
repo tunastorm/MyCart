@@ -9,7 +9,6 @@ import UIKit
 
 import Toast
 
-
 // MARK: - Normal Toast, Message 내용 / duration 지속시간 / position Toast위치
 /// Normal Toast  2, Message 내용 / duration 지속시간 / position Toast위치
 func makeBasicToast(message: String, duration: CGFloat, position: ToastPosition, title: String? = nil) {

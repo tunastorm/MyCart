@@ -69,7 +69,3 @@ protocol CellTransitionDelegate {
     
     func presentAlert(_ alert: UIAlertController, animated: Bool)
 }
-
-protocol DataReceiveDelegate {
-    func receiveData<T>(data: T)
-}

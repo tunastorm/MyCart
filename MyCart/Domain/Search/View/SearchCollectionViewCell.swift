@@ -147,6 +147,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
         guard let productId = sender.title(for: .normal), let delegate else {
             return
         }
-        delegate.setIsLiked(productId: productId)
+        delegate.setIsLiked(row: sender.tag, productId: productId)
     }
 }

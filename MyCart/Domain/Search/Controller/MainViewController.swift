@@ -37,15 +37,11 @@ class MainViewController: BaseViewController<MainView> {
             rootView.tableView.reloadData()
         }
     }
-    
-    override func loadView() {
-        super.loadView()
-        rootView.delegate = self
-        configInteraction()
-    }
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
+        rootView.delegate = self
+        configInteraction()
     }
     
     override func viewWillAppear(_ animated: Bool) {

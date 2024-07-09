@@ -18,7 +18,7 @@ class ProductDetailView: BaseView {
         $0.textAlignment = .center
         $0.textColor = Resource.MyColor.lightGray
     }
-
+    
     override func configHierarchy() {
         self.addSubview(webView)
     }

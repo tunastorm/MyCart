@@ -111,7 +111,7 @@ class UserModel {
     func setIsLiked(_ productId: String){
         var likedList = getLikedList()
         if likedList.contains(productId),
-           let index = likedList.firstIndex(of: productId) {
+            let index = likedList.firstIndex(of: productId) {
             likedList.remove(at: index)
         } else {
             likedList.append(productId)

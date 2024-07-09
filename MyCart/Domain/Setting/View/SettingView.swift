@@ -40,9 +40,9 @@ class SettingView: BaseView {
         $0.tintColor = Resource.MyColor.gray
     }
     
-    let myCartView = UIView().then {
-        $0.isUserInteractionEnabled = false
-    }
+    let myCartView = UIView() //.then {
+//        $0.isUserInteractionEnabled = false
+//    }
     
     let myCartLabel = UILabel().then {
         $0.font = Resource.Font.system15
@@ -236,6 +236,9 @@ class SettingView: BaseView {
         
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(showAlertSecession))
         secessionView.addGestureRecognizer(tapGesture2)
+        
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(goLikedItems))
+        myCartView.addGestureRecognizer(tapGesture3)
     }
     
     func configUnderline() {
@@ -248,6 +251,14 @@ class SettingView: BaseView {
                                       width: Resource.Border.width1)
             }
         }
+    }
+    
+    @objc func goLikedItems() {
+        guard myCartLabel.text != "0" else {
+            return
+        }
+        let vc = SearchResultViewController()
+        vc.nowSort = .sim
     }
     
     @objc func goUpdateProfile() {

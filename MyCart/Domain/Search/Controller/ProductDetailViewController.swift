@@ -15,6 +15,9 @@ import Then
 
 final class ProductDetailViewController: BaseViewController<ProductDetailView> {
 
+    var delegate: SearchResultCollectionViewCellDelegate?
+    
+    var row: Int?
     var product: ShopItem?
     
     var likeButton: UIBarButtonItem?
@@ -26,6 +29,15 @@ final class ProductDetailViewController: BaseViewController<ProductDetailView> {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let delegate, let productId = product?.productId else {
+            return
+        }
+        delegate.updateLikedList()
+        
     }
     
     override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
@@ -49,7 +61,7 @@ final class ProductDetailViewController: BaseViewController<ProductDetailView> {
     
     private func configLikeButton() {
         var cartImage = Resource.IsLike.unLike.image
-        guard let id = product?.productId else {
+        guard let id = product?.productId, let row else {
             return
         }
         if userModel.getIsLiked(productId: id) {
@@ -58,15 +70,16 @@ final class ProductDetailViewController: BaseViewController<ProductDetailView> {
         likeButton = UIBarButtonItem(image: cartImage,
                                          style: .plain, target: self,
                                          action: #selector(likeButtonClicked))
+        likeButton?.tag = row
         guard let likeButton else {return}
         navigationItem.rightBarButtonItems = [likeButton]
     }
     
     @objc private func likeButtonClicked(_ sender: UIButton) {
-        guard let productId = product?.productId else {
+        guard let productId = product?.productId, let row = likeButton?.tag else {
             return
         }
-        userModel.setIsLiked(productId)
+        delegate?.setIsLiked(row: row, productId: productId)
         configLikeButton()
     }
 }

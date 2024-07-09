@@ -6,11 +6,60 @@
 //
 
 import Foundation
+import RealmSwift
 
 
-struct User: Codable {
-    let userId: String
-    var nickName : String
-    var profileImage: String
-    let signUpDate: Date
+//struct User: Codable {
+//    let userId: String
+//    var nickName : String
+//    var profileImage: String
+//    let signUpDate: Date
+//}
+
+
+class User: Object {
+    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted var nickname: String
+    @Persisted var profilImage: String
+    @Persisted var signUpdate: Date
+    
+    convenience init(id: ObjectId, nickname: String, profilImage: String, signUpdate: Date) {
+        self.init()
+        self.nickname = nickname
+        self.profilImage = profilImage
+        self.signUpdate = signUpdate
+    }
+    
+    enum Column: String, ColumnManager {
+        case nickname
+        case profiileImage
+        case signUpdate
+        
+        var name: String {
+            return self.rawValue
+        }
+        
+        var krName: String {
+            switch self {
+            case .nickname:
+                return "닉네임"
+            case .profiileImage:
+                return "프로필 이미지"
+            case .signUpdate:
+                return "가입일"
+            }
+        }
+        
+        var inputErrorMessage: String {
+            return "\(self.krName) 값이 없거나 유효하지 않습니다."
+        }
+        
+        var updatePropertySuccessMessage: String {
+            return "\(self.krName) 의 수정이 완료되었습니다."
+        }
+        
+        var updatePropertyErrorMessage: String {
+            return "\(self.krName) 의 수정에 실패하였습니다."
+        }
+    }
 }

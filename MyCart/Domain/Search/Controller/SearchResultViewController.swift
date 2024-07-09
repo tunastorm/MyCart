@@ -18,7 +18,8 @@ protocol SearchResultViewDelegate {
 
 protocol SearchResultCollectionViewCellDelegate {
     func getQuery() -> String?
-    func setIsLiked(productId: String)
+    func setIsLiked(row: Int, productId: String)
+    func updateLikedList()
 }
 
 
@@ -43,13 +44,14 @@ class SearchResultViewController: BaseViewController<SearchResultView> {
             guard let indexPaths = likedIndexPaths(), indexPaths.count > 0 else {
                 return
             }
+            print(#function, likedList)
             print(#function, indexPaths)
             rootView.collectionView.reloadItems(at: indexPaths)
         }
     }
     
-    override func loadView() {
-        super.loadView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         rootView.delegate = self
         configInteraction()
     }
@@ -96,19 +98,17 @@ class SearchResultViewController: BaseViewController<SearchResultView> {
         guard let itemList, let likedList, itemList.count > 0, likedList.count > 0 else {
             return nil
         }
-        let indexPaths = itemList.enumerated().map {idx, item in
-            var indexPath = IndexPath.init()
+        var indexPaths: [IndexPath] = []
+        itemList.enumerated().forEach {idx, item in
             if likedList.contains(item.productId) {
-                indexPath = IndexPath(row: idx, section: 0)
+                indexPaths.append(IndexPath(row: idx, section: 0))
             }
-            return indexPath
         }
         return indexPaths
     }
     
     func requestSearch() {
         rootView.popUpStatusToast(StatusMessage.APIStatus.loading)
-        APIClient.request(<#T##object: Decodable.Type##Decodable.Type#>, router: <#T##APIRouter#>, success: <#T##((Decodable) -> Void)##((Decodable) -> Void)##(Decodable) -> Void#>, failure: <#T##APIClient.onFailure##APIClient.onFailure##(_ error: any Error) -> Void#>)
     }
     
     func requestURLSessionSearch() {
@@ -186,7 +186,16 @@ extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
         return query
     }
     
-    func setIsLiked(productId: String) {
+    func setIsLiked(row: Int, productId: String) {
         userModel.setIsLiked(productId)
+        updateLikedList()
+        if let likedList, !likedList.contains(productId) {
+            print(#function, "삭제후 리로드", row)
+            rootView.collectionView.reloadItems(at: [IndexPath(row: row, section: 0)])
+        }
+    }
+    
+    func updateLikedList() {
+        likedList = userModel.getLikedList()
     }
 }

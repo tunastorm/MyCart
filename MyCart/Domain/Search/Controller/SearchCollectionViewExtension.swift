@@ -25,6 +25,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
             let isLiked = likedList.contains(data.productId)
             
             cell.delegate = self
+            cell.likeButton.tag = indexPath.row
             cell.configCell(data, isLiked)
         }
         
@@ -44,7 +45,8 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let nextVC = ProductDetailViewController()
-        
+        nextVC.delegate = self
+        nextVC.row = indexPath.row
         if let dataList = itemList, dataList.count > 0 {
             nextVC .product = dataList[indexPath.row]
         }
