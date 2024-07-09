@@ -13,7 +13,6 @@ import Then
 
 class OnboadingViewController: BaseViewController {
     
-    var model: UserModel?
     var signUpVC: SignUpViewController?
 
     let appTitle = UILabel().then {

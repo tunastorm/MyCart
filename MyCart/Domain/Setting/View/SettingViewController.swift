@@ -1,8 +1,8 @@
 //
-//  SettingView.swift
+//  SettingMainViewController.swift
 //  MyCart
 //
-//  Created by 유철원 on 7/1/24.
+//  Created by 유철원 on 6/17/24.
 //
 
 import UIKit
@@ -11,9 +11,11 @@ import SnapKit
 import Then
 
 
-class SettingView: BaseView {
+class SettingViewController: BaseViewController {
     
-    var delegate: SettingViewDelegate?
+    let viewModel = SettingViewModel()
+    
+    var signUpVC: SignUpViewController?
     
     let profileView = UIView()
     
@@ -40,9 +42,7 @@ class SettingView: BaseView {
         $0.tintColor = Resource.MyColor.gray
     }
     
-    let myCartView = UIView() //.then {
-//        $0.isUserInteractionEnabled = false
-//    }
+    let myCartView = UIView()
     
     let myCartLabel = UILabel().then {
         $0.font = Resource.Font.system15
@@ -94,62 +94,62 @@ class SettingView: BaseView {
         $0.font = Resource.Font.system15
         $0.text = Resource.Text.secessionLabel
     }
-   
+    
     override func configHierarchy() {
-        self.addSubview(profileView)
+        view.addSubview(profileView)
         profileView.addSubview(photoView)
         profileView.addSubview(nickNamLabel)
         profileView.addSubview(signUpDateLabel)
         profileView.addSubview(goUpdateProfileIcon)
-        self.addSubview(myCartView)
+        view.addSubview(myCartView)
         myCartView.addSubview(myCartLabel)
         myCartView.addSubview(myCartIcon)
         myCartView.addSubview(myCartCountLabel)
-        self.addSubview(QnAView)
+        view.addSubview(QnAView)
         QnAView.addSubview(QnALabel)
-        self.addSubview(customerVoiceView)
+        view.addSubview(customerVoiceView)
         customerVoiceView.addSubview(customerVoiceLabel)
-        self.addSubview(notificationView)
+        view.addSubview(notificationView)
         notificationView.addSubview(notificationLabel)
-        self.addSubview(secessionView)
+        view.addSubview(secessionView)
         secessionView.addSubview(secessionLabel)
     }
     
     override func configLayout() {
         profileView.snp.makeConstraints {
             $0.height.equalTo(120)
-            $0.top.equalTo(safeAreaLayoutGuide)
-            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         myCartView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(profileView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         QnAView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(myCartView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         customerVoiceView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(QnAView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         notificationView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(customerVoiceView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         secessionView.snp.makeConstraints {
             $0.height.equalTo(50)
             $0.top.equalTo(notificationView.snp.bottom).offset(1)
-            $0.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         photoView.snp.makeConstraints {
@@ -223,18 +223,41 @@ class SettingView: BaseView {
     
     override func configView() {
         super.configView()
-        guard let delegate else {
-            return
+        configProfile()
+        configCartCount()
+    }
+    
+    override func bindData() {
+        viewModel.outputUser.bind { user in
+            guard let user else {
+                return
+            }
+            self.user = user
+            self.photoView.image = UIImage(named: user.profilImage)
+            self.nickNamLabel.text = user.nickname
+            Utils.dateFormatter.dateFormat = "yyyy. MM. dd 가입"
+            self.signUpDateLabel.text = Utils.dateFormatter.string(from: user.signUpdate)
         }
-        delegate.configProfile()
-        delegate.configCartCount()
+        viewModel.outputLikedListCount.bind { cartCount in
+            print(#function, "cartCount: ", cartCount)
+            guard let cartCount else {
+                return
+            }
+            self.myCartIcon.image = cartCount > 0 ?
+            Resource.IsLike.like.image : Resource.IsLike.unLike.image
+            var countText = String(cartCount) + Resource.Text.myCartCountLabel
+            var attributedStr = NSMutableAttributedString(string: countText)
+            attributedStr.addAttribute(.font, value: Resource.Font.boldSystem16,
+                                       range: (countText as NSString).range(of: "\(cartCount)개"))
+            self.myCartCountLabel.attributedText = attributedStr
+        }
     }
     
     override func configInteraction() {
-        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(goUpdateProfile))
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(pushUpdateProfile))
         profileView.addGestureRecognizer(tapGesture1)
         
-        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(showAlertSecession))
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(alertSecession))
         secessionView.addGestureRecognizer(tapGesture2)
         
         let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(goLikedItems))
@@ -261,19 +284,62 @@ class SettingView: BaseView {
         vc.nowSort = .sim
     }
     
-    @objc func goUpdateProfile() {
-        guard let delegate else {
-            print(#function, delegate)
-            return
-        }
-        delegate.pushUpdateProfile()
+        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configProfile()
+        configCartCount()
     }
     
-    @objc func showAlertSecession() {
-        guard let delegate else {
-            print(#function, delegate)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+       configUnderline()
+        view.layoutIfNeeded()
+    }
+    
+    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
+        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
+        navigationItem.title = Resource.Text.settingViewTitle
+    }
+    
+    func configProfile() {
+        viewModel.inputGetUser.value = ()
+    }
+    
+    func configCartCount() {
+        guard let user else {
             return
         }
-        delegate.alertSecession()
+        viewModel.inputGetLikedList.value = user.id
+    }
+    
+    func deleteUser() {
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+            return
+        }
+//        userModel.deleteUser()
+        let nextVC = SplashViewController()
+        sceneDelegate.changeRootVCWithNavi(nextVC, animated: false)
+    }
+    
+    @objc func pushUpdateProfile() {
+        if signUpVC == nil {
+            signUpVC = SignUpViewController()
+        }
+        guard let signUpVC else {
+            return
+        }
+        signUpVC.isUpdateView = true
+        signUpVC.selectedPhoto = photoView.image
+        print(#function, signUpVC.isUpdateView, signUpVC.selectedPhoto)
+        pushAfterView(view: signUpVC, backButton: true, animated: true)
+    }
+    
+    @objc func alertSecession() {
+        showAlert(style: .alert, title: Resource.Text.secessionAlertTitle,
+                  message: Resource.Text.secessionAlertMessage) { _ in
+            self.deleteUser()
+        }
     }
 }
+

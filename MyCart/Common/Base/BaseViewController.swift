@@ -22,6 +22,7 @@ class BaseViewController: UIViewController {
         configLayout()
         configView()
         configInteraction()
+        bindData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,6 +40,10 @@ class BaseViewController: UIViewController {
     
     func configView() {
         view.backgroundColor = Resource.MyColor.white
+    }
+    
+    func bindData() {
+        
     }
     
     func configInteraction() {

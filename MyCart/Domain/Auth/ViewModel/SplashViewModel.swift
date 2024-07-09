@@ -11,11 +11,8 @@ import RealmSwift
 
 final class SplashViewModel {
     
-    var outputUser: Observable<User?> = Observable(nil)
-//    var inputAddUser: Observable<User?> = Observable(nil)
     var inputGetUser: Observable<Void?> = Observable(nil)
-//    var inputDeleteUser: Observable<Void?> = Observable(nil)
-//    var inputUpdateUser: Observable<User?> = Observable(nil)
+    var outputUser: Observable<User?> = Observable(nil)
     
     private let repository = Repository()
     private let object = User.self

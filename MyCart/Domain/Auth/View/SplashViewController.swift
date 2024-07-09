@@ -37,7 +37,6 @@ class SplashViewController: BaseViewController {
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        bindData()
         viewModel.inputGetUser.value = ()
     }
     
@@ -77,7 +76,7 @@ class SplashViewController: BaseViewController {
         }
     }
 
-    func bindData() {
+    override func bindData() {
         viewModel.outputUser.bind { user in
             print(#function, "인증 결과: ", user)
             self.user = user

@@ -74,7 +74,6 @@ class SignUpViewController: BaseViewController {
         super.viewDidLoad()
         print(#function, isUpdateView)
         configProfile()
-        bindData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -136,7 +135,7 @@ class SignUpViewController: BaseViewController {
         }
     }
     
-    func bindData() {
+    override func bindData() {
         viewModel.outputValidateMessage.bind { result in
             self.messageLabel.text = result
         }
