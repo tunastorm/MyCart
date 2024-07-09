@@ -21,7 +21,9 @@ extension SelectPhotoViewController: UICollectionViewDelegate, UICollectionViewD
         let thisPhoto = photoList[indexPath.row]
         cell.configCell(image: thisPhoto)
         
-        guard let selectedPhoto else {return cell}
+        guard let selectedPhoto else {
+            return cell
+        }
         
         // UIImage 객체 생성 시 입력한 에셋파일의 이름 가져오기
         var selectedName = String(selectedPhoto.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
@@ -30,10 +32,13 @@ extension SelectPhotoViewController: UICollectionViewDelegate, UICollectionViewD
         // 이름이 같을 경우 해당 셀을 선택된 상태로 설정
         // -> 페이지 로드시 이전 화면에서 랜덤 생성된 이미지가 기본 선택됨
         if selectedName == thisName {
+            print(#function, selectedCell)
+            print(#function, selectedName, thisName)
             cell.configSelectedUI()
             selectedCell = indexPath
+        } else {
+            cell.configUnselectedUI()
         }
-        
         return cell
     }
     

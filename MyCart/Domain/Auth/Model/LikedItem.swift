@@ -34,6 +34,7 @@ class LikedItem: Object {
     
     
     enum Column: String, ColumnManager {
+        case id
         case productId
         case link
         case image
@@ -49,6 +50,8 @@ class LikedItem: Object {
         
         var krName: String  {
             return switch self {
+            case .id:
+                "아이디"
             case .productId:
                 "상품 아이디"
             case .link:

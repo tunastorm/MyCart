@@ -150,10 +150,14 @@ class SignUpViewController: BaseViewController {
             let imageName = String(image.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
             
             print(#function, "값 준비 완료: ", nickName, imageName)
-            if self.isUpdateView {
-                print(#function, "업데이트뷰")
-                self.viewModel.inputUpdateUser.value = [User.Column.nickname.name: nickName, User.Column.profiileImage.name: imageName]
+            if self.isUpdateView, let id = self.user?.id  {
+                print(#function, "에딧 뷰")
+                self.viewModel.inputUpdateUser.value = [
+                    User.Column.id.name: id,
+                    User.Column.nickname.name: nickName,
+                    User.Column.profileImage.name: imageName]
             } else {
+                print(#function, "프로필 세팅 뷰")
                 self.viewModel.inputAddUser.value = User(nickname: nickName, profilImage: imageName)
             }
         }
@@ -161,7 +165,8 @@ class SignUpViewController: BaseViewController {
             guard let user, self.isUpdateView else {
                 return
             }
-            self.selectedPhoto = UIImage(named: user.profilImage)
+            self.user = user
+            self.selectedPhoto = UIImage(named: user.profileImage)
             self.nickNameTextField.text = user.nickname
         }
         viewModel.outputAddUserResult.bind { result in
@@ -179,6 +184,7 @@ class SignUpViewController: BaseViewController {
                 return
             }
             makeBasicToast(message: status.message, duration: 3.0, position: .bottom)
+            self.popBeforeView(animated: true)
         }
     }
     
@@ -238,6 +244,7 @@ class SignUpViewController: BaseViewController {
         }
         selectPhotoVC.delegate = self
         selectPhotoVC.isUpdateView = self.isUpdateView
+        print(#function, profileImageView.image)
         selectPhotoVC.selectedPhoto = profileImageView.image
         pushAfterView(view: selectPhotoVC, backButton: true, animated: true)
     }

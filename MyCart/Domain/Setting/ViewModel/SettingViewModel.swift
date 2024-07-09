@@ -38,7 +38,7 @@ class SettingViewModel {
     }
 
     private func getUser() {
-        outputUser.value = repository.fetchAll(obejct: object, sortKey: User.Column.signUpdate).first
+        outputUser.value = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
     }
     
     private func getLikedList() {

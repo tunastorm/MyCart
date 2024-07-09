@@ -212,7 +212,6 @@
 			isa = PBXGroup;
 			children = (
 				BCEC00112C314FA600C96564 /* Common */,
-				BC9502FC2C1AF850004070B8 /* Model */,
 				BC9503062C1B4FC7004070B8 /* Domain */,
 				BC9502D42C1AEA21004070B8 /* AppDelegate.swift */,
 				BC9502D62C1AEA21004070B8 /* SceneDelegate.swift */,
@@ -234,11 +233,12 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		BC9502FC2C1AF850004070B8 /* Model */ = {
+		BC9502FC2C1AF850004070B8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				BCF5E97C2C3D1D1E002D9EA0 /* Observable.swift */,
 			);
-			path = Model;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		BC9503062C1B4FC7004070B8 /* Domain */ = {
@@ -274,6 +274,7 @@
 		BCEC00112C314FA600C96564 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				BC9502FC2C1AF850004070B8 /* ViewModel */,
 				BCF5E97E2C3D1DCD002D9EA0 /* DataBase */,
 				BCEC00352C31B8AE00C96564 /* Error */,
 				BCEC00182C31509C00C96564 /* Base */,
@@ -393,7 +394,6 @@
 		BCF5E97E2C3D1DCD002D9EA0 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
-				BCF5E97C2C3D1D1E002D9EA0 /* Observable.swift */,
 				BCF5E97F2C3D1F4F002D9EA0 /* Repository.swift */,
 				BCF5E9812C3D1FA2002D9EA0 /* RepositoryResult.swift */,
 				BCF5E9852C3D1FF0002D9EA0 /* ResourceManager.swift */,

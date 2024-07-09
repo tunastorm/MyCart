@@ -233,10 +233,10 @@ class SettingViewController: BaseViewController {
                 return
             }
             self.user = user
-            self.photoView.image = UIImage(named: user.profilImage)
+            self.photoView.image = UIImage(named: user.profileImage)
             self.nickNamLabel.text = user.nickname
             Utils.dateFormatter.dateFormat = "yyyy. MM. dd 가입"
-            self.signUpDateLabel.text = Utils.dateFormatter.string(from: user.signUpdate)
+            self.signUpDateLabel.text = Utils.dateFormatter.string(from: user.signUpDate)
         }
         viewModel.outputLikedListCount.bind { cartCount in
             print(#function, "cartCount: ", cartCount)

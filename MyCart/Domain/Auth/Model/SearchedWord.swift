@@ -23,6 +23,7 @@ class SearchedWord: Object {
     }
     
     enum Column: String, ColumnManager {
+        case id
         case word
         case regDate
         
@@ -33,6 +34,8 @@ class SearchedWord: Object {
         
         var krName: String {
             return switch self {
+            case .id:
+                "아이디"
             case .word:
                 "최근 검색어"
             case .regDate:

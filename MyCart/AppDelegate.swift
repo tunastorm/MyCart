@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.resignOnTouchOutside = true
         
-        let config = Realm.Configuration(schemaVersion: 2) { migration, oldSchemaVersion in
+        let config = Realm.Configuration(schemaVersion: 3) { migration, oldSchemaVersion in
             
             if oldSchemaVersion < 1 {
                 
@@ -27,6 +27,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             if oldSchemaVersion < 2 {
                 
+            }
+            
+            if oldSchemaVersion < 3 {
+                migration.renameProperty(onType: User.className(),
+                                        from: "profilImage", to: "profileImage")
+                migration.renameProperty(onType: User.className(),
+                                        from: "signUpdate", to: "signUpDate")
             }
             
         }

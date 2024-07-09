@@ -40,6 +40,9 @@ class SignUpViewModel {
         inputGetUser.bind { _ in
             self.getUser()
         }
+        inputUpdateUser.bind { _ in
+            self.updateUser()
+        }
     }
     
     private func validation(){
@@ -92,13 +95,14 @@ class SignUpViewModel {
     }
     
     private func getUser() {
-        outputUser.value = repository.fetchAll(obejct: object, sortKey: User.Column.signUpdate).first
+        outputUser.value = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
     }
     
     private func updateUser() {
         guard let updateValue = inputUpdateUser.value else {
             return
         }
+        print(#function, "업데이트 내용: ", updateValue)
         repository.updateItem(object: object, value: updateValue) { status, error in
             guard error == nil, let status else {
                 outputUpdateUserResult.value = error!

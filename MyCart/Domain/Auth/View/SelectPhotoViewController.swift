@@ -69,13 +69,13 @@ class SelectPhotoViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configProfileImage()
         configInteraction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configUpdateViewToggle()
+        configProfileImage()
     }
     
     override func configHierarchy() {
@@ -117,6 +117,7 @@ class SelectPhotoViewController: BaseViewController {
     
     func configProfileImage() {
         profileImageView.image = selectedPhoto
+        collectionView.reloadData()
     }
     
     override func configInteraction() {
