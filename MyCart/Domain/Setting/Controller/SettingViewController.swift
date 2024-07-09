@@ -22,7 +22,7 @@ protocol SettingViewDelegate {
 }
 
 
-class SettingViewController: BaseViewController<SettingView> {
+class SettingViewController: MVCViewController<SettingView> {
     
     var signUpVC: SignUpViewController?
     

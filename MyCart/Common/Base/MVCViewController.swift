@@ -2,13 +2,13 @@
 //  BaseViewController.swift
 //  MyCart
 //
-//  Created by 유철원 on 7/9/24.
+//  Created by 유철원 on 6/30/24.
 //
 
 import UIKit
 
 
-class BaseViewController: UIViewController {
+class MVCViewController<T:BaseView>: UIViewController {
     
     deinit {
         print("deinit: ", self.self)
@@ -16,12 +16,14 @@ class BaseViewController: UIViewController {
     
     var user: User?
     
+    var rootView = T()
+    
+    override func loadView() {
+        view = rootView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configHierarchy()
-        configLayout()
-        configView()
-        configInteraction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -29,21 +31,9 @@ class BaseViewController: UIViewController {
         configNavigationbar(navigationColor: Resource.MyColor.white, shadowImage: true)
     }
     
-    func configHierarchy() {
-    
-    }
-    
-    func configLayout() {
-        
-    }
-    
-    func configView() {
-        view.backgroundColor = Resource.MyColor.white
-    }
-    
-    func configInteraction() {
-        
-    }
+//    func signIn() {
+//        userModel.signIn()
+//    }
     
     func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
         let textAttributes = [NSAttributedString.Key.foregroundColor: Resource.MyColor.black]
@@ -73,5 +63,3 @@ class BaseViewController: UIViewController {
         present(alert, animated: false)
     }
 }
-
-

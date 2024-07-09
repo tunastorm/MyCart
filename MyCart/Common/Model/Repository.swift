@@ -52,10 +52,10 @@ final class Repository {
         return Array(value)
     }
     
-    func updateItem<T:Object>(object: T.Type, complitionHandler: RepositoryResult) {
+    func updateItem<T:Object>(object: T.Type, value: [String: Any], complitionHandler: RepositoryResult) {
         do {
             try realm.write {
-                realm.create(object, update: .modified)
+                realm.create(object, value: value, update: .modified)
             }
             complitionHandler(RepositoryStatus.updateSuccess, nil)
         } catch {

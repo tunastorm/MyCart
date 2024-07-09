@@ -13,7 +13,7 @@ import Then
 
 
 
-final class ProductDetailViewController: BaseViewController<ProductDetailView> {
+final class ProductDetailViewController: MVCViewController<ProductDetailView> {
 
     var delegate: SearchResultCollectionViewCellDelegate?
     

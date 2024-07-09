@@ -27,9 +27,9 @@ protocol MainTableViewCellDelegate {
 }
 
 
-class MainViewController: BaseViewController<MainView> {
+class MainViewController: MVCViewController<MainView> {
     
-    var userViewModel = UserViewModel()
+    var userViewModel = SplashViewModel()
     
     var searchResultVC: SearchResultViewController?
     var productDetailVC: ProductDetailViewController?

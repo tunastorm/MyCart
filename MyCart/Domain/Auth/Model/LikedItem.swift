@@ -10,6 +10,7 @@ import RealmSwift
 
 
 class LikedItem: Object {
+    @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var productId: String
     @Persisted var link: String
     @Persisted var image: String
@@ -20,7 +21,7 @@ class LikedItem: Object {
 
     @Persisted(originProperty: User.Column.likedList.name) var main: LinkingObjects<User>
     
-    init(productId: String, link: String, image: String, mallName: String, title: String, lprice: String, regDate: Date, main: LinkingObjects<User>) {
+    convenience init(productId: String, link: String, image: String, mallName: String, title: String, lprice: String, regDate: Date, main: LinkingObjects<User>) {
         self.init()
         self.productId = productId
         self.link = link

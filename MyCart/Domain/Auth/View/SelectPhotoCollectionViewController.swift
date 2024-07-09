@@ -48,7 +48,7 @@ extension SelectPhotoViewController: UICollectionViewDelegate, UICollectionViewD
         cell.configSelectedUI()
         selectedCell = indexPath
         selectedPhoto = cell.imageView.image
-        rootView.profileImageView.image = selectedPhoto
+        profileImageView.image = selectedPhoto
         guard let delegate else {
             print(#function, "DataRecive 실패")
             return

@@ -10,4 +10,5 @@ import Foundation
 
 enum Utils {
     static let resourceManager = ResourceManager()
+    static let textFilter = TextInputFilter.shared
 }

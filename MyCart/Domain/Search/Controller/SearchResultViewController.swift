@@ -23,7 +23,7 @@ protocol SearchResultCollectionViewCellDelegate {
 }
 
 
-class SearchResultViewController: BaseViewController<SearchResultView> {
+class SearchResultViewController: MVCViewController<SearchResultView> {
     
     var responseInfo = SearchResponse<ShopItem>(total: 0, start: 1, display: 30)
     var query: String?

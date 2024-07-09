@@ -29,7 +29,7 @@ extension MainViewController: UISearchBarDelegate {
     }
     
     func searchBarFilter(searchText: String) -> String? {
-        let filter = TextInputFilter.filter
-        return filter.removeSpace(searchText)
+        let filter = TextInputFilter.shared
+        return filter.removeSerialSpace(searchText)
     }
 }
