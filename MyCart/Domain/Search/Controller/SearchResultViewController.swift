@@ -124,9 +124,9 @@ class SearchResultViewController: BaseViewController<SearchResultView> {
                 self.rootView.popUpErrorToast(error)
                 return
             }
-            self.userModel.setSearchedList(newWord: query)
+//            self.userModel.setSearchedList(newWord: query)
             self.setNewResponse(search)
-            self.likedList = self.userModel.getLikedList()
+//            self.likedList = self.userModel.getLikedList()
             if self.responseInfo.start == 1 {
                 self.rootView.totalLabel.text = Int(self.responseInfo.total).formatted(.number) + Resource.Text.searchTotal
             }
@@ -187,7 +187,7 @@ extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
     }
     
     func setIsLiked(row: Int, productId: String) {
-        userModel.setIsLiked(productId)
+//        userModel.setIsLiked(productId)
         updateLikedList()
         if let likedList, !likedList.contains(productId) {
             print(#function, "삭제후 리로드", row)
@@ -196,6 +196,6 @@ extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
     }
     
     func updateLikedList() {
-        likedList = userModel.getLikedList()
+//        likedList = userModel.getLikedList()
     }
 }

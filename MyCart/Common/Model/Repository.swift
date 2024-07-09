@@ -10,12 +10,16 @@ import RealmSwift
 
 
 // complitionHandler를 이용해 완료 후의 작업 처리와 에러처리 동시 구현 가능할 것
-final class TodoRepository {
+final class Repository {
     
     typealias RepositoryResult = (_ status: RepositoryStatus?, _ error: RepositoryError?) -> Void
     typealias PropertyUpdate = () -> Void
     
     private let realm = try! Realm()
+    
+    func detectRealmURL() {
+        print(realm.configuration.fileURL ?? "")
+    }
 
     func createItem(_ data: Object, complitionHandler: RepositoryResult) {
         do {
@@ -70,6 +74,7 @@ final class TodoRepository {
         }
     }
     
+    @available(iOS 16.0, *)
     func deleteItem(_ data: Object, fileName: String? = nil, complitionHandler: RepositoryResult) {
         if let fileName {
             Utils.resourceManager.removeImageFromDocument(filename: fileName)

@@ -73,11 +73,11 @@ class SignUpViewController: BaseViewController<SignUpView> {
     
     func signUpNewUser(nickName: String, profileImage: UIImage) -> Bool {
         var thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
-        userModel.signUp(nickName, profileImage: thisName)
-        
-        guard userModel.nowUser.userId != Resource.Text.guestUser else {
-            return false
-        }
+//        userModel.signUp(nickName, profileImage: thisName)
+//        
+//        guard userModel.nowUser.userId != Resource.Text.guestUser else {
+//            return false
+//        }
         return true
     }
     
@@ -86,24 +86,24 @@ class SignUpViewController: BaseViewController<SignUpView> {
         guard let message = rootView.messageLabel.text, message == Resource.Text.nickNameSuccess else {
             return
         }
-        guard let selectedPhoto, let nickName = rootView.nickNameTextField.text, updateUserProfile(nickName: nickName, profileImage: selectedPhoto) else {
-            return
-        }
+//        guard let selectedPhoto, let nickName = rootView.nickNameTextField.text, updateUserProfile(nickName: nickName, profileImage: selectedPhoto) else {
+//            return
+//        }
         popBeforeView(animated: true)
     }
     
-    func updateUserProfile(nickName: String, profileImage: UIImage) -> Bool {
-        let thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
-        let newMappingKey = nickName + thisName
-        guard let oldMappingKey = userModel.mappingKey else {
-            return false
-        }
-        guard oldMappingKey != newMappingKey else {
-            return false
-        }
-        userModel.updateUser(newMappingKey, nickName, thisName)
-        return true
-    }
+//    func updateUserProfile(nickName: String, profileImage: UIImage) -> Bool {
+//        let thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
+//        let newMappingKey = nickName + thisName
+//        guard let oldMappingKey = userModel.mappingKey else {
+//            return false
+//        }
+//        guard oldMappingKey != newMappingKey else {
+//            return false
+//        }
+//        userModel.updateUser(newMappingKey, nickName, thisName)
+//        return true
+//    }
 }
 
 
@@ -114,7 +114,8 @@ extension SignUpViewController: SignUpViewDelegate, DataReceiveDelegate {
     }
     
     func getUserName() -> String? {
-        return userModel.nowUser.nickName
+        return nil
+//        return userModel.nowUser.nickName
     }
     
     func receiveData<T>(data: T) {

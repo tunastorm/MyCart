@@ -64,9 +64,9 @@ final class ProductDetailViewController: BaseViewController<ProductDetailView> {
         guard let id = product?.productId, let row else {
             return
         }
-        if userModel.getIsLiked(productId: id) {
-            cartImage = Resource.IsLike.like.image
-        }
+//        if userModel.getIsLiked(productId: id) {
+//            cartImage = Resource.IsLike.like.image
+//        }
         likeButton = UIBarButtonItem(image: cartImage,
                                          style: .plain, target: self,
                                          action: #selector(likeButtonClicked))

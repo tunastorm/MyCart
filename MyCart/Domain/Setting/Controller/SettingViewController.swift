@@ -38,7 +38,7 @@ class SettingViewController: BaseViewController<SettingView> {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         rootView.setNeedsLayout()
-        userModel.signIn()
+//        userModel.signIn()
         configCartCount()
         configProfile()
     }
@@ -58,7 +58,7 @@ class SettingViewController: BaseViewController<SettingView> {
         guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
             return
         }
-        userModel.deleteUser()
+//        userModel.deleteUser()
         let nextVC = SplashViewController()
         sceneDelegate.changeRootVCWithNavi(nextVC, animated: false)
     }
@@ -67,26 +67,26 @@ class SettingViewController: BaseViewController<SettingView> {
 extension SettingViewController: SettingViewDelegate {
 
     func configProfile() {
-        let user = userModel.nowUser
-        rootView.photoView.image = UIImage(named: user.profileImage)
-        rootView.nickNamLabel.text = user.nickName
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy. MM. dd 가입"
-        rootView.signUpDateLabel.text = dateFormatter.string(from: user.signUpDate)
+//        let user = userModel.nowUser
+//        rootView.photoView.image = UIImage(named: user.profileImage)
+//        rootView.nickNamLabel.text = user.nickName
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy. MM. dd 가입"
+//        rootView.signUpDateLabel.text = dateFormatter.string(from: user.signUpDate)
     }
     
     func configCartCount() {
-        let cartCount = userModel.getLikedListCount()
-        if cartCount > 0 {
-            rootView.myCartIcon.image = Resource.IsLike.like.image
-        } else {
-            rootView.myCartIcon.image = Resource.IsLike.unLike.image
-        }
-        var countText = String(cartCount) + Resource.Text.myCartCountLabel
-        var attributedStr = NSMutableAttributedString(string: countText)
-        attributedStr.addAttribute(.font, value: Resource.Font.boldSystem16,
-                                   range: (countText as NSString).range(of: "\(cartCount)개"))
-        rootView.myCartCountLabel.attributedText = attributedStr
+//        let cartCount = userModel.getLikedListCount()
+//        if cartCount > 0 {
+//            rootView.myCartIcon.image = Resource.IsLike.like.image
+//        } else {
+//            rootView.myCartIcon.image = Resource.IsLike.unLike.image
+//        }
+//        var countText = String(cartCount) + Resource.Text.myCartCountLabel
+//        var attributedStr = NSMutableAttributedString(string: countText)
+//        attributedStr.addAttribute(.font, value: Resource.Font.boldSystem16,
+//                                   range: (countText as NSString).range(of: "\(cartCount)개"))
+//        rootView.myCartCountLabel.attributedText = attributedStr
     }
     
     func pushUpdateProfile() {

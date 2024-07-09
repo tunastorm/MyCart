@@ -12,13 +12,15 @@ import Then
 
 class SplashViewController: BaseViewController<SplashView> {
     
+    let viewModel = UserViewModel()
+    
     private var nextView: UIViewController?
     private var withNavi: Bool?
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        signIn()
-        authonticateUser()
+        bindData()
+        viewModel.inputGetUser.value = ()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -29,19 +31,26 @@ class SplashViewController: BaseViewController<SplashView> {
         super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
     }
             
-    override func signIn() {
-        super.signIn()
+//    override func signIn() {
+//        super.signIn()
+//    }
+    
+    func bindData() {
+        viewModel.outputUser.bind { user in
+            self.authonticateUser(user)
+        }
     }
     
-    func authonticateUser() {
-        if userModel.nowUser.userId == Resource.Text.guestUser {
-            let nextVC = OnboadingViewController()
-            nextView = nextVC
-            withNavi = true
-        } else {
+    func authonticateUser(_ user: User?) {
+        print(#function, "최근유저: ", user)
+        if let user {
             let tabBar = TabBarController()
             nextView = tabBar
             withNavi = false
+        } else {
+            let nextVC = OnboadingViewController()
+            nextView = nextVC
+            withNavi = true
         }
         // 2초 간 대기후 화면 전환
         let timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(changeRootview), userInfo: nil, repeats: false)

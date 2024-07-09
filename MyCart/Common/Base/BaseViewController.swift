@@ -10,7 +10,7 @@ import UIKit
 
 class BaseViewController<T:BaseView>: UIViewController {
     
-    var userModel = UserModel.shared
+//    var userModel = UserModel.shared
     
     var rootView = T()
     
@@ -27,9 +27,9 @@ class BaseViewController<T:BaseView>: UIViewController {
         configNavigationbar(navigationColor: Resource.MyColor.white, shadowImage: true)
     }
     
-    func signIn() {
-        userModel.signIn()
-    }
+//    func signIn() {
+//        userModel.signIn()
+//    }
     
     func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
         let textAttributes = [NSAttributedString.Key.foregroundColor: Resource.MyColor.black]

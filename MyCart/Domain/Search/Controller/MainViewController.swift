@@ -46,10 +46,10 @@ class MainViewController: BaseViewController<MainView> {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        userModel.signIn()
-        searchedList = userModel.getSearchedList()
+//        userModel.signIn()
+//        searchedList = userModel.getSearchedList()
         rootView.searchedListToggle()
-        navigationItem.title = "\(userModel.nowUser.nickName)\(Resource.Text.mainViewTitle)"
+//        navigationItem.title = "\(userModel.nowUser.nickName)\(Resource.Text.mainViewTitle)"
     }
     
     func configInteraction() {
@@ -68,11 +68,12 @@ class MainViewController: BaseViewController<MainView> {
     }
     
     func getSearchedList() -> [String]? {
-        return userModel.getSearchedList()
+        return nil
+//        return userModel.getSearchedList()
     }
     
     func setSearchedList(newWord: String) {
-        userModel.setSearchedList(newWord: newWord)
+//        userModel.setSearchedList(newWord: newWord)
     }
     
     func updateSearchedList() {
@@ -106,13 +107,13 @@ extension MainViewController: MainViewDelegate {
     }
     
     func deleteSearchedList() {
-        userModel.setSearchedList(newWord: nil)
+//        userModel.setSearchedList(newWord: nil)
     }
 }
 
 extension MainViewController: MainTableViewCellDelegate {
     
     func deleteSearchedWord(deleteWord: String) {
-        userModel.deleteSearchedWord(deleteWord: deleteWord)
+//        userModel.deleteSearchedWord(deleteWord: deleteWord)
     }
 }
