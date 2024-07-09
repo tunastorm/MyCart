@@ -10,7 +10,7 @@ import UIKit
 
 class BaseViewController<T:BaseView>: UIViewController {
     
-//    var userModel = UserModel.shared
+    var user: User?
     
     var rootView = T()
     

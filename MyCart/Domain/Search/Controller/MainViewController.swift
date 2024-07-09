@@ -29,8 +29,12 @@ protocol MainTableViewCellDelegate {
 
 class MainViewController: BaseViewController<MainView> {
     
+    var userViewModel = UserViewModel()
+    
     var searchResultVC: SearchResultViewController?
     var productDetailVC: ProductDetailViewController?
+    
+    
     
     var searchedList: [String]? {
         didSet {
@@ -49,7 +53,11 @@ class MainViewController: BaseViewController<MainView> {
 //        userModel.signIn()
 //        searchedList = userModel.getSearchedList()
         rootView.searchedListToggle()
-//        navigationItem.title = "\(userModel.nowUser.nickName)\(Resource.Text.mainViewTitle)"
+        navigationItem.title = "\(user?.nickname)\(Resource.Text.mainViewTitle)"
+    }
+    
+    func bindData() {
+        
     }
     
     func configInteraction() {

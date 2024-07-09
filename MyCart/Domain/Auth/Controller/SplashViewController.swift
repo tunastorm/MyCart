@@ -37,11 +37,15 @@ class SplashViewController: BaseViewController<SplashView> {
     
     func bindData() {
         viewModel.outputUser.bind { user in
-            self.authonticateUser(user)
+            guard let user else{
+                return
+            }
+            self.user = user
+            self.authonticateUser()
         }
     }
     
-    func authonticateUser(_ user: User?) {
+    func authonticateUser() {
         print(#function, "최근유저: ", user)
         if let user {
             let tabBar = TabBarController()

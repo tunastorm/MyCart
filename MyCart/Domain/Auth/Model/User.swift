@@ -22,6 +22,8 @@ class User: Object {
     @Persisted var nickname: String
     @Persisted var profilImage: String
     @Persisted var signUpdate: Date
+    @Persisted var searchedList: List<SearchedWord>
+    @Persisted var likedList: List<LikedItem>
     
     convenience init(nickname: String, profilImage: String) {
         self.init()
@@ -34,6 +36,8 @@ class User: Object {
         case nickname
         case profiileImage
         case signUpdate
+        case searchedList
+        case likedList
         
         var name: String {
             return self.rawValue
@@ -63,3 +67,5 @@ class User: Object {
         }
     }
 }
+
+
