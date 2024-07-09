@@ -8,10 +8,15 @@
 import Foundation
 
 
-enum RepositoryStatus {
+protocol RepositoryResult {
+    var message: String { get }
+}
+
+enum RepositoryStatus: RepositoryResult {
     case createSuccess
     case updateSuccess
     case deleteSuccess
+    
     
     var message: String {
         switch self {
@@ -26,7 +31,7 @@ enum RepositoryStatus {
 }
 
 
-enum RepositoryError {
+enum RepositoryError: RepositoryResult {
     case createFailed
     case updatedFailed
     case deleteFailed

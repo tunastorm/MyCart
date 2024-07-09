@@ -28,17 +28,24 @@ class SignUpViewController: BaseViewController<SignUpView> {
     
     var selectPhotoVC: SelectPhotoViewController?
     
-    var selectedPhoto: UIImage?
+    var selectedPhoto: UIImage? {
+        didSet {
+            rootView.profileImageView.image = selectedPhoto
+        }
+    }
+    
+    var viewModel = UserViewModel()
     
     override func loadView() {
         super.loadView()
-        rootView.delegate = self
-        print(#function, isUpdateView)
-        configProfile()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        rootView.delegate = self
+        print(#function, isUpdateView)
+        configProfile()
+        bindData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,7 +58,30 @@ class SignUpViewController: BaseViewController<SignUpView> {
         configUpdateViewToggle()
     }
     
+    func bindData() {
+        viewModel.outputUser.bind { user in
+            guard let user else {
+                return
+            }
+            self.selectedPhoto = UIImage(named: user.profilImage)
+            self.rootView.nickNameTextField.text = user.nickname
+            
+        }
+        viewModel.outputResult.bind { result in
+            print(#function, "유저가입 결과")
+            guard let result, let status = result as? RepositoryStatus else {
+                if let errorMessage = result?.message {
+                    makeBasicToast(message: errorMessage, duration: 3.0, position: .bottom)
+                }
+                return
+            }
+            makeBasicToast(message: status.message, duration: 3.0, position: .bottom)
+            self.goMainViewController()
+        }
+    }
+    
     func configProfile() {
+        viewModel.inputGetUser.value = ()
         if let selectedPhoto {
             rootView.profileImageView.image = selectedPhoto
         } else {
@@ -71,14 +101,17 @@ class SignUpViewController: BaseViewController<SignUpView> {
         }
     }
     
-    func signUpNewUser(nickName: String, profileImage: UIImage) -> Bool {
-        var thisName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
-//        userModel.signUp(nickName, profileImage: thisName)
-//        
-//        guard userModel.nowUser.userId != Resource.Text.guestUser else {
-//            return false
-//        }
-        return true
+    func signUpNewUser(nickName: String, profileImage: UIImage) {
+        var imageName = String(profileImage.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
+        viewModel.inputAddUser.value = User(nickname: nickName, profilImage: imageName)
+    }
+    
+    func goMainViewController() {
+        let nextVC = SplashViewController()
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+            return
+        }
+        sceneDelegate.changeRootVCWithNavi(nextVC, animated: false)
     }
     
     @objc func updateAndGoSetting() {
@@ -107,7 +140,7 @@ class SignUpViewController: BaseViewController<SignUpView> {
 }
 
 
-extension SignUpViewController: SignUpViewDelegate, DataReceiveDelegate {
+extension SignUpViewController: SignUpViewDelegate {
     
     func getIsUpdateView() -> Bool {
         return isUpdateView
@@ -118,10 +151,6 @@ extension SignUpViewController: SignUpViewDelegate, DataReceiveDelegate {
 //        return userModel.nowUser.nickName
     }
     
-    func receiveData<T>(data: T) {
-        selectedPhoto = data as? UIImage
-    }
-    
     func pushSelectPhotoView() {
         if selectPhotoVC == nil {
             selectPhotoVC = SelectPhotoViewController()
@@ -130,19 +159,24 @@ extension SignUpViewController: SignUpViewDelegate, DataReceiveDelegate {
             return
         }
         selectPhotoVC.delegate = self
-        selectPhotoVC.isUpdateView = true
+        selectPhotoVC.isUpdateView = self.isUpdateView
         selectPhotoVC.selectedPhoto = rootView.profileImageView.image
         pushAfterView(view: selectPhotoVC, backButton: true, animated: true)
     }
     
     func signUpAndpushMain(nickName: String) {
-        guard let selectedPhoto, signUpNewUser(nickName: nickName, profileImage: selectedPhoto) else {
+        guard let selectedPhoto else {
             return
         }
-        let nextVC = SplashViewController()
-        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
-            return
-        }
-        sceneDelegate.changeRootVCWithNavi(nextVC, animated: false)
+        signUpNewUser(nickName: nickName, profileImage: selectedPhoto)
     }
+}
+
+extension SignUpViewController: DataReceiveDelegate  {
+    
+    func receiveData<T>(data: T) {
+        print(#function, "프로필 이미지 변경됨")
+        selectedPhoto = data as? UIImage
+    }
+    
 }

@@ -23,11 +23,11 @@ class User: Object {
     @Persisted var profilImage: String
     @Persisted var signUpdate: Date
     
-    convenience init(id: ObjectId, nickname: String, profilImage: String, signUpdate: Date) {
+    convenience init(nickname: String, profilImage: String) {
         self.init()
         self.nickname = nickname
         self.profilImage = profilImage
-        self.signUpdate = signUpdate
+        self.signUpdate = Date()
     }
     
     enum Column: String, ColumnManager {

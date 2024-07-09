@@ -12,6 +12,7 @@ import RealmSwift
 final class UserViewModel {
     
     var outputUser: Observable<User?> = Observable(nil)
+    var outputResult: Observable<RepositoryResult?> = Observable(nil)
     
     var inputAddUser: Observable<User?> = Observable(nil)
     var inputGetUser: Observable<Void?> = Observable(nil)
@@ -41,7 +42,16 @@ final class UserViewModel {
     }
     
     private func addUser() {
-        
+        guard let user = inputAddUser.value else {
+            return
+        }
+        repository.createItem(user) { status, error in
+            guard error == nil, let status else {
+                outputResult.value = error
+                return
+            }
+            outputResult.value = status
+        }
     }
     
     private func getUser() {

@@ -26,13 +26,9 @@ class SettingViewController: BaseViewController<SettingView> {
     
     var signUpVC: SignUpViewController?
     
-    override func loadView() {
-        super.loadView()
-        rootView.delegate = self
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        rootView.delegate = self
     }
         
     override func viewWillAppear(_ animated: Bool) {

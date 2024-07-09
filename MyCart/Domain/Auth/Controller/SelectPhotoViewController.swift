@@ -25,20 +25,15 @@ class SelectPhotoViewController: BaseViewController<SelectPhotoView>{
     
     let photoList = Resource.NamedImage.allProfile
     
-    override func loadView() {
-        super.loadView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         rootView.delegate = self
         configProfileImage()
         configInteraction()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       
         configUpdateViewToggle()
     }
     

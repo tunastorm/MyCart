@@ -155,11 +155,14 @@ class SignUpView: BaseView {
     
     @objc func signUpAndGoMain() {
         guard let message = messageLabel.text, message == Resource.Text.nickNameSuccess else {
+            print(#function, "닉네임 조건 미충족")
             return
         }
         guard let delegate, let nickName = nickNameTextField.text else {
+            print(#function, "닉네임 없음")
             return
         }
+        print(#function, "닉네임 조건 충족")
         delegate.signUpAndpushMain(nickName: nickName)
     }
     
