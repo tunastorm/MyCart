@@ -16,8 +16,21 @@ class LikedItem: Object {
     @Persisted var mallName: String
     @Persisted var title: String
     @Persisted var lprice: String
+    @Persisted var regDate: Date
 
     @Persisted(originProperty: User.Column.likedList.name) var main: LinkingObjects<User>
+    
+    init(productId: String, link: String, image: String, mallName: String, title: String, lprice: String, regDate: Date, main: LinkingObjects<User>) {
+        self.init()
+        self.productId = productId
+        self.link = link
+        self.image = image
+        self.mallName = mallName
+        self.title = title
+        self.lprice = lprice
+        self.regDate = regDate
+    }
+    
     
     enum Column: String, ColumnManager {
         case productId
@@ -27,6 +40,7 @@ class LikedItem: Object {
         case title
         case lprice
         case main
+        case regDate
         
         var name: String {
             return self.rawValue
@@ -48,6 +62,8 @@ class LikedItem: Object {
                 "상품 가격"
             case .main:
                 "부모 객체"
+            case .regDate:
+                "등록일"
             }
         }
         var inputErrorMessage: String {

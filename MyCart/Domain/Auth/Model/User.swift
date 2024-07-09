@@ -51,6 +51,10 @@ class User: Object {
                 return "프로필 이미지"
             case .signUpdate:
                 return "가입일"
+            case .searchedList:
+                return "최근 검색어 목록"
+            case .likedList:
+                return "좋아요 목록"
             }
         }
         

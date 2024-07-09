@@ -20,4 +20,35 @@ class SearchedWord: Object {
         self.word = word
         self.regDate = regDate
     }
+    
+    enum Column: String, ColumnManager {
+        case word
+        case regDate
+        
+        
+        var name: String {
+            return self.rawValue
+        }
+        
+        var krName: String {
+            return switch self {
+            case .word:
+                "최근 검색어"
+            case .regDate:
+                "등록일"
+            }
+        }
+        
+        var inputErrorMessage: String {
+            return "\(self.krName) 값이 없거나 유효하지 않습니다."
+        }
+        
+        var updatePropertySuccessMessage: String {
+            return "\(self.krName) 값의 수정이 완료되었습니다."
+        }
+        
+        var updatePropertyErrorMessage: String {
+            return "\(self.krName) 값의 수정에 실패하였습니다."
+        }
+    }
 }
