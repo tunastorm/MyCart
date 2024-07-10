@@ -33,6 +33,7 @@ class LikedItemViewModel: BaseViewModel {
         print(#function, "아웃풋", outputLikedList.value.count, "현재", user.likedList.count)
         if outputLikedList.value.count != user.likedList.count {
             outputLikedList.value = Array(user.likedList)
+            outputTotal.value = outputLikedList.value.count.formatted(.number) + Resource.Text.myCartTotal
         }
     }
     

@@ -30,14 +30,14 @@ final class LikedItemViewController: BaseViewController {
         
         let horizontalCount = CGFloat(5)
         let verticalCount = CGFloat(1)
-        let lineSpacing = CGFloat(20)
-        let itemSpacing = CGFloat(10)
-        let inset = CGFloat(20)
+        let lineSpacing = CGFloat(10)
+        let itemSpacing = CGFloat(1)
+        let inset = CGFloat(5)
         
         let width = UIScreen.main.bounds.width - (inset * 2) - (itemSpacing * horizontalCount-1)
-        let height = UIScreen.main.bounds.height - 240 - (inset * 2) - (lineSpacing * verticalCount-1)
+        let height = 50 - (inset * 2) - (lineSpacing * verticalCount-1)
         
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: width / horizontalCount,
                                  height: height / verticalCount)
         layout.minimumLineSpacing = lineSpacing
@@ -71,8 +71,16 @@ final class LikedItemViewController: BaseViewController {
     
     lazy var likedItemCollectionView = UICollectionView(frame: .zero,
                                                collectionViewLayout: likedItemLayout())
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.inputFatchLikedItemList.value = ()
+    }
     
-    
+    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
+        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
+        navigationItem.title = Resource.Text.appTitle
+    }
     
     override func configHierarchy() {
         view.addSubview(totalLabel)
@@ -98,11 +106,6 @@ final class LikedItemViewController: BaseViewController {
         }
     }
     
-    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
-        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
-        navigationItem.title = Resource.Text.appTitle
-    }
-    
     override func configInteraction() {
         categoryCollectionView.delegate = self
         categoryCollectionView.dataSource = self
@@ -123,7 +126,6 @@ final class LikedItemViewController: BaseViewController {
         viewModel.outputLikedList.bind { _ in
             self.likedItemCollectionView.reloadData()
         }
-        viewModel.inputFatchLikedItemList.value = ()
     }
 //    
 //    func configcategoryView() {

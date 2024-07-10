@@ -11,18 +11,18 @@ import UIKit
 extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.outputItemList.value?.count ?? 0
+        return viewModel.outputItemList.value.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as? SearchCollectionViewCell else { return UICollectionViewCell() }
         
-        guard let dataList = viewModel.outputItemList.value, dataList.count > 0 else {
+        guard viewModel.outputItemList.value.count > 0 else {
             return cell
         }
         
-        let data = dataList[indexPath.row]
+        let data = viewModel.outputItemList.value[indexPath.row]
         let isLiked = viewModel.outputLikedProductIdDict.value.keys.contains(data.productId)
         print(#function, "data: ", data, "isLiked: ", isLiked)
         cell.delegate = self
@@ -34,12 +34,12 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        guard let itemSize = viewModel.outputItemList.value?.count else {
-            return
-        }
-        indexPaths.forEach {
-            if itemSize - 2 == $0.row, let query {
-                viewModel.inputRequestSearchTrigger.value = (query, nil)
+        let itemSize = viewModel.outputItemList.value.count
+        indexPaths.forEach { indexPath in
+            print(#function, indexPath.row, itemSize, query, "스크롤")
+            if itemSize - 1 == indexPath.row, let query {
+                print(#function, "스크롤 실행")
+                viewModel.inputRequestSearchTrigger.value = (query, viewModel.outputSort.value)
             }
         }
     }
@@ -48,8 +48,8 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         let nextVC = ProductDetailViewController()
         nextVC.delegate = self
         nextVC.row = indexPath.row
-        if let dataList = viewModel.outputItemList.value, dataList.count > 0 {
-            nextVC.product = dataList[indexPath.row]
+        if viewModel.outputItemList.value.count > 0 {
+            nextVC.product = viewModel.outputItemList.value[indexPath.row]
         }
         pushAfterView(view: nextVC, backButton: true, animated: true)
     }

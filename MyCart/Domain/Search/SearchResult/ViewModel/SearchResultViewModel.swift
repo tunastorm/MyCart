@@ -20,7 +20,7 @@ class SearchResultViewModel: BaseViewModel {
     var outputLikedItemIndex: Observable<IndexPath?> = Observable(nil)
     var outputLikedProductIdDict: Observable<[String:IndexPath]> = Observable([:])
     var outputLikedListResult: Observable<RepositoryResult?> = Observable(nil)
-    var outputItemList: Observable<[ShopItem]?> = Observable([])
+    var outputItemList: Observable<[ShopItem]> = Observable([])
     
     private var responseInfo = SearchResponse<ShopItem>(total: 0, start: 1, display: 30)
     
@@ -36,45 +36,47 @@ class SearchResultViewModel: BaseViewModel {
     }
     
     func clearSearchRecord() {
-        outputItemList.value?.removeAll()
+        outputItemList.value.removeAll()
         responseInfo.total = 0
         responseInfo.start = 1
     }
     
     func pageNation() -> Int? {
         print(#function, responseInfo)
-        guard responseInfo.start > 1 else {
-            print(#function, "최초 검색")
+        if responseInfo.start == 1, responseInfo.total == 0 {
             return responseInfo.start
         }
-        let start = responseInfo.start
+        let start = responseInfo.start + responseInfo.display
         if start > responseInfo.total || start > 1000 {
+            print(#function, "마지막 페이지")
             return nil
         }
+        responseInfo.start = start
+        print(#function, responseInfo)
         return start
     }
     
     func setNewResponse(_ response: SearchResponse<ShopItem>) {
         if responseInfo.start > 1, outputItemList.value != nil, let items = response.items {
-            responseInfo.start = response.start + response.display
-            outputItemList.value?.append(contentsOf: items)
-        } else if responseInfo.start == 1 {
+            print(#function, "야 임마!")
+            var newList = outputItemList.value
+            newList.append(contentsOf: items)
+            outputItemList.value = newList
+        } else if responseInfo.start == 1, let itemList = response.items {
             responseInfo = response
             responseInfo.items = nil
-            outputItemList.value = response.items
+            outputItemList.value = itemList
         }
     }
     
     func requestSearch() {
         guard let start = pageNation(), let searchInfo = inputRequestSearchTrigger.value  else {
-//            print(#function, "start: \(responseInfo.start) | query: \()")
+            print(#function, "마지막 페이지 start: \(responseInfo.start)")
 //            hideToastActivity()
             return
         }
         guard let query = searchInfo.0, let sort = searchInfo.1 == nil ? outputSort.value : searchInfo.1 else {
-            return
-        }
-        guard outputSort.value != sort else {
+            print(#function, "쿼리, 정렬 입력 안됨")
             return
         }
         outputSort.value = sort
@@ -85,7 +87,7 @@ class SearchResultViewModel: BaseViewModel {
                 return
             }
             self.setNewResponse(search)
-            print(#function, "검색결과 수: " , self.outputItemList.value?.count)
+            print(#function, "검색결과 수: " , self.outputItemList.value.count)
             if self.responseInfo.start == 1 {
                 self.outputTotal.value = Int(self.responseInfo.total).formatted(.number) + Resource.Text.searchTotal
             }
@@ -106,7 +108,7 @@ class SearchResultViewModel: BaseViewModel {
                 if outputLikedList.value.contains(likedItem) {
                     return
                 }
-                outputItemList.value?.enumerated().forEach { index, item in
+                outputItemList.value.enumerated().forEach { index, item in
                     if item.productId == likedItem.productId {
                         dict[likedItem.productId] = IndexPath(row: index, section: 0)
                         return
@@ -144,7 +146,7 @@ class SearchResultViewModel: BaseViewModel {
         print(#function, "row: ", row, "productId: ", productId)
         if outputLikedProductIdDict.value.keys.contains(productId) {
             deleteLikedItem(productId)
-        } else if let item = outputItemList.value?[row] {
+        } else {
             addLikedItem(row)
         }
     }
@@ -165,9 +167,10 @@ class SearchResultViewModel: BaseViewModel {
     }
     
     private func addLikedItem(_ row: Int) {
-        guard let user, let item = outputItemList.value?[row] else {
+        guard let user  else {
             return
         }
+        let item = outputItemList.value[row]
         let likedItem = LikedItem(productId: item.productId, link: item.link, image: item.image,mallName: item.mallName, title: item.title, lprice: item.lprice, regDate: Date())
         
         repository.updateProperty {

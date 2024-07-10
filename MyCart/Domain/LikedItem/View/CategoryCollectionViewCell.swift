@@ -32,7 +32,7 @@ class CategoryCollectionViewCell: BaseCollectionViewCell {
     }
     
     override func configView() {
-       super.configView()
+        super.configView()
     }
     
 //    configCell(data: ) {

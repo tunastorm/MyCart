@@ -116,6 +116,7 @@ final class SearchResultViewController: BaseViewController {
             self.updateSortingView(sort)
         }
         viewModel.outputItemList.bind { _ in
+            print(#function, "콜렉션뷰 리로드")
             self.collectionView.reloadData()
         }
         viewModel.outputLikedItemIndex.bind { indexPath in
@@ -168,11 +169,13 @@ final class SearchResultViewController: BaseViewController {
                 button.setTitleColor(Resource.MyColor.white, for: .normal)
                 button.backgroundColor = Resource.MyColor.darkGray
                 button.layer.borderWidth = Resource.Border.widthZero
+                button.isUserInteractionEnabled = false
             } else {
                 button.setTitleColor(Resource.MyColor.black, for: .normal)
                 button.backgroundColor = Resource.MyColor.white
                 button.layer.borderWidth = Resource.Border.width1
                 button.layer.borderColor = Resource.MyColor.lightGray.cgColor
+                button.isUserInteractionEnabled = true
             }
         }
     }
