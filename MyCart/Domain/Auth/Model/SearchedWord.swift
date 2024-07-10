@@ -22,7 +22,7 @@ class SearchedWord: Object {
         self.regDate = regDate
     }
     
-    enum Column: String, ColumnManager {
+    enum Column: String, CaseIterable, ColumnManager {
         case id
         case word
         case regDate

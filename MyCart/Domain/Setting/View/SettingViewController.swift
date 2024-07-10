@@ -281,7 +281,6 @@ class SettingViewController: BaseViewController {
             return
         }
         let vc = SearchResultViewController()
-        vc.nowSort = .sim
     }
     
         

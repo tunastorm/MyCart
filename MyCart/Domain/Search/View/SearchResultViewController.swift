@@ -6,196 +6,211 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
-protocol SearchResultViewDelegate {
-    func configInteraction()
-    func getNowSort() -> APIRouter.Sorting
-    func setNowSort(sort: APIRouter.Sorting)
-    func clearSearchRecord()
-    func requestSearch()
-    func requestURLSessionSearch()
-}
 
 protocol SearchResultCollectionViewCellDelegate {
     func getQuery() -> String?
-    func setIsLiked(row: Int, productId: String)
-    func updateLikedList()
+    func updateLikedList(_ row: Int, _ productId: String)
 }
 
 
-class SearchResultViewController: MVCViewController<SearchResultView> {
+final class SearchResultViewController: BaseViewController {
     
-    var responseInfo = SearchResponse<ShopItem>(total: 0, start: 1, display: 30)
+    let viewModel = SearchResultViewModel()
     var query: String?
-    var nowSort: APIRouter.Sorting = .sim
-    var itemList: [ShopItem]? {
-        didSet {
-            guard itemList?.count ?? 0 > 0 else {
-                return
-            }
-            rootView.updateSortingView()
-            rootView.collectionView.reloadData()
-            hideToastActivity()
+    
+    private let totalLabel = UILabel().then {
+        $0.textAlignment = .left
+        $0.textColor = Resource.MyColor.orange
+        $0.font = Resource.Font.boldSystem15
+    }
+    
+    private let sortingView = UIView()
+    
+    private let simButton = UIButton()
+    
+    private let dateButton = UIButton()
+    
+    private let dscButton = UIButton()
+    
+    private let ascButton = UIButton()
+    
+    lazy var collectionView = UICollectionView(frame: .zero,
+                                               collectionViewLayout: collectionViewLayout())
+    
+    private func collectionViewLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewFlowLayout()
+        
+        let horizontalCount = CGFloat(2)
+        let verticalCount = CGFloat(2)
+        let lineSpacing = CGFloat(20)
+        let itemSpacing = CGFloat(10)
+        let inset = CGFloat(20)
+        
+        let width = UIScreen.main.bounds.width - (inset * 2) - (itemSpacing * horizontalCount-1)
+        let height = UIScreen.main.bounds.height - 240 - (inset * 2) - (lineSpacing * verticalCount-1)
+        
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: width / horizontalCount,
+                                 height: height / verticalCount)
+        layout.minimumLineSpacing = lineSpacing
+        layout.minimumInteritemSpacing = itemSpacing
+        layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+        return layout
+    }
+    
+    override func configHierarchy() {
+        view.addSubview(totalLabel)
+        view.addSubview(sortingView)
+        view.addSubview(collectionView)
+    }
+    
+    override func configLayout() {
+        totalLabel.snp.makeConstraints{
+            $0.height.equalTo(30)
+            $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+        
+        sortingView.snp.makeConstraints{
+            $0.height.equalTo(50)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.top.equalTo(totalLabel.snp.bottom).offset(5)
+        }
+        
+        collectionView.snp.makeConstraints{
+            $0.top.equalTo(sortingView.snp.bottom)
+            $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
-    var likedList: [String]? {
-        didSet {
-            guard let indexPaths = likedIndexPaths(), indexPaths.count > 0 else {
-                return
-            }
-            print(#function, likedList)
-            print(#function, indexPaths)
-            rootView.collectionView.reloadItems(at: indexPaths)
-        }
+    override func configView() {
+        super.configView()
+        configSortingView()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        rootView.delegate = self
-        configInteraction()
-    }
-    
-    func configInteraction() {
-        rootView.collectionView.delegate = self
-        rootView.collectionView.dataSource = self
-        rootView.collectionView.prefetchDataSource = self
-        rootView.collectionView.register(SearchCollectionViewCell.self,
+    override func configInteraction() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
+        collectionView.register(SearchCollectionViewCell.self,
                                 forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
     }
-
-    func clearSearchRecord() {
-        itemList = []
-        responseInfo.total = 0
-        responseInfo.start = 1
-    }
     
-    func pageNation() -> Int? {
-        print(#function, responseInfo)
-        guard responseInfo.start > 1 else {
-            print(#function, "최초 검색")
-            return responseInfo.start
+    override func bindData() {
+        viewModel.outputTotal.bind { title in
+            self.totalLabel.text = title
         }
-        let start = responseInfo.start
-        if start > responseInfo.total || start > 1000 {
-            return nil
+        viewModel.outputSort.bind { sort in
+            guard let sort else { return }
+            self.updateSortingView(sort)
         }
-        return start
-    }
-    
-    func setNewResponse(_ response: SearchResponse<ShopItem>) {
-        if responseInfo.start > 1, itemList != nil, let items = response.items {
-            responseInfo.start = response.start + response.display
-            itemList?.append(contentsOf: items)
-        } else if responseInfo.start == 1 {
-            responseInfo = response
-            responseInfo.items = nil
-            itemList = response.items
+        viewModel.outputItemList.bind { _ in
+            self.collectionView.reloadData()
         }
-    }
-    
-    func likedIndexPaths() -> [IndexPath]? {
-        guard let itemList, let likedList, itemList.count > 0, likedList.count > 0 else {
-            return nil
-        }
-        var indexPaths: [IndexPath] = []
-        itemList.enumerated().forEach {idx, item in
-            if likedList.contains(item.productId) {
-                indexPaths.append(IndexPath(row: idx, section: 0))
+        viewModel.outputLikedList.bind { list in
+            list.enumerated().forEach { row, likedItem in
+                self.collectionView.reloadItems(at: [IndexPath(row: row, section: 0)])
             }
         }
-        return indexPaths
+        guard let query else { return }
+        viewModel.inputRequestSearchTrigger.value = (query, .sim)
     }
     
-    func requestSearch() {
-        rootView.popUpStatusToast(StatusMessage.APIStatus.loading)
-    }
-    
-    func requestURLSessionSearch() {
-        rootView.popUpStatusToast(StatusMessage.APIStatus.loading)
-        guard let start = pageNation(), let query else {
-            print(#function, "start: \(responseInfo.start) | query: \(query)")
-            hideToastActivity()
-            return
-        }
-        URLSessionManager.shared.callRequest(query: query, sort: nowSort, start: start) { search, error in
-            guard error == nil, let search else {
-                hideToastActivity()
-                self.rootView.popUpErrorToast(error)
-                return
+    func configSortingView() {
+        print(#function, "정렬뷰 설정")
+        for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
+            let title = APIRouter.Sorting.allCases[idx].buttonTitle
+            button.setTitle(title, for: .normal)
+            button.titleLabel?.font = Resource.Font.system13
+            button.layer.masksToBounds = true
+            button.layer.cornerRadius = Resource.CornerRadious.sortingButton
+            button.addTarget(self, action: #selector(sortSearching), for: .touchUpInside)
+            button.tag = idx
+//            button.backgroundColor = .red
+            sortingView.addSubview(button)
+            
+            button.snp.makeConstraints {
+                $0.height.equalTo(34)
+                $0.width.equalTo(24 + title.count * 10)
+                $0.centerY.equalToSuperview()
             }
-//            self.userModel.setSearchedList(newWord: query)
-            self.setNewResponse(search)
-//            self.likedList = self.userModel.getLikedList()
-            if self.responseInfo.start == 1 {
-                self.rootView.totalLabel.text = Int(self.responseInfo.total).formatted(.number) + Resource.Text.searchTotal
-            }
+            print(#function, "\(title)버튼 설정")
         }
-
-//        model.requestSearch(query, sort: sort,
-//        callback: {
-//            self.setSearchedList(newWord: query)
-//            self.rootView.itemList = self.model.responseItems
-//            self.rootView.likedList = self.getLikedList()
-//            if self.model.page == 1 {
-//                self.rootView.totalLabel.text = Int(self.getTotal()).formatted(.number)
-//                                          + Resource.Text.searchTotal
-//            }
-//        }, errorCallback: {
-//            self.setErrorToast(messageEnum: StatusMessage.APIError.requestAPIFailed)
-//        })
-//        rootView.nowSort = sort
-//        setStatusToast(messageEnum: StatusMessage.APIStatus.loading)
+        configSortButtonLayout()
     }
     
-    func scrollDown() {
+    func configSortButtonLayout() {
+        dateButton.snp.makeConstraints {
+            $0.leading.equalTo(simButton.snp.trailing).offset(6)
+        }
+        dscButton.snp.makeConstraints {
+            $0.leading.equalTo(dateButton.snp.trailing).offset(6)
+        }
+        ascButton.snp.makeConstraints {
+            $0.leading.equalTo(dscButton.snp.trailing).offset(6)
+        }
+    }
+    
+    func updateSortingView(_ sort: APIRouter.Sorting) {
+        print(#function, "정렬 뷰 업데이트")
+        for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
+            if APIRouter.Sorting.allCases[idx] == sort {
+                button.setTitleColor(Resource.MyColor.white, for: .normal)
+                button.backgroundColor = Resource.MyColor.darkGray
+                button.layer.borderWidth = Resource.Border.widthZero
+            } else {
+                button.setTitleColor(Resource.MyColor.black, for: .normal)
+                button.backgroundColor = Resource.MyColor.white
+                button.layer.borderWidth = Resource.Border.width1
+                button.layer.borderColor = Resource.MyColor.lightGray.cgColor
+            }
+        }
+    }
+    
+    @objc func sortSearching(_ sender: UIButton) {
         guard let query else {
             return
         }
-        requestURLSessionSearch()
-//        if let query, model.pageNation() {
-//            model.requestSearch(query, sort: sort,
-//            callback: {() -> () in
-//                self.rootView.itemList = self.model.responseItems
-//            },
-//            errorCallback: {
-//                self.setErrorToast(messageEnum: StatusMessage.APIError.requestAPIFailed)
-//            })
-//        } else {
-//            setStatusToast(messageEnum: StatusMessage.APIStatus.lastPage)
-//        }
-    }
-}
-
-extension SearchResultViewController: SearchResultViewDelegate {
-    
-    func getNowSort() -> APIRouter.Sorting {
-        return nowSort
+        let sort = APIRouter.Sorting.allCases[sender.tag]
+        viewModel.inputRequestSearchTrigger.value = (query, sort)
     }
     
-    func setNowSort(sort: APIRouter.Sorting) {
-        nowSort = sort
+    func popUpErrorToast(_ error: APIError?) {
+        guard let error else {
+            return
+        }
+        switch error {
+        case .networkError:
+            let image = Resource.SystemImage.wifiExclamationmark
+            makeToastWithImage(message: error.message,duration: 3.0, position: .bottom,
+                               title: error.title, image: image)
+        default: makeBasicToast(message: error.message, duration: 3.0 , position: .bottom, title: error.title)
+        }
+    }
+    
+    func popUpStatusToast(_ messageEnum: StatusMessage.APIStatus) {
+        switch messageEnum {
+        case .loading:
+            makeLoadingToast(positon: .center)
+        case .lastPage:
+            makeBasicToast(message: StatusMessage.APIStatus.lastPage.message, duration: 3.0, position: .bottom)
+        }
     }
 }
 
 extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
     func getQuery() -> String? {
+        print(#function, query)
         guard let query else {
+            print(#function, "query 없음")
             return nil
         }
         return query
     }
     
-    func setIsLiked(row: Int, productId: String) {
-//        userModel.setIsLiked(productId)
-        updateLikedList()
-        if let likedList, !likedList.contains(productId) {
-            print(#function, "삭제후 리로드", row)
-            rootView.collectionView.reloadItems(at: [IndexPath(row: row, section: 0)])
-        }
-    }
-    
-    func updateLikedList() {
-//        likedList = userModel.getLikedList()
+    func updateLikedList(_ row: Int, _ productId: String) {
+        viewModel.inputLikeListButtonTrigger.value = (row,productId)
     }
 }

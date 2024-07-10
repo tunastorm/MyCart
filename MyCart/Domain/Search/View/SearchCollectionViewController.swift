@@ -11,34 +11,36 @@ import UIKit
 extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return itemList?.count ?? 1
+        return viewModel.outputItemList.value?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as! SearchCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as? SearchCollectionViewCell else { return UICollectionViewCell() }
         
-        if let dataList = itemList, dataList.count > 0 {
-            let data = dataList[indexPath.row]
-            guard let likedList else {return cell}
-            
-            let isLiked = likedList.contains(data.productId)
-            
-            cell.delegate = self
-            cell.likeButton.tag = indexPath.row
-            cell.configCell(data, isLiked)
+        guard let dataList = viewModel.outputItemList.value, dataList.count > 0 else {
+            return cell
         }
+        
+        let data = dataList[indexPath.row]
+        let isLiked = viewModel.outputLikedProductIdList.value.contains(data.productId)
+        print(#function, "data: ", data, "isLiked: ", isLiked)
+        cell.delegate = self
+        cell.likeButton.tag = indexPath.row
+        cell.configCell(data, isLiked)
+        
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         
-        guard let itemSize = itemList?.count else {return}
-        
+        guard let itemSize = viewModel.outputItemList.value?.count else {
+            return
+        }
         indexPaths.forEach {
-            if itemSize - 2 == $0.row {
-                requestURLSessionSearch()
+            if itemSize - 2 == $0.row, let query {
+                viewModel.inputRequestSearchTrigger.value = (query, nil)
             }
         }
     }
@@ -47,8 +49,8 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         let nextVC = ProductDetailViewController()
         nextVC.delegate = self
         nextVC.row = indexPath.row
-        if let dataList = itemList, dataList.count > 0 {
-            nextVC .product = dataList[indexPath.row]
+        if let dataList = viewModel.outputItemList.value, dataList.count > 0 {
+            nextVC.product = dataList[indexPath.row]
         }
         pushAfterView(view: nextVC, backButton: true, animated: true)
     }

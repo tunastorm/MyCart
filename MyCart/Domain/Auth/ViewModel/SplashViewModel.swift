@@ -8,16 +8,12 @@
 import Foundation
 
 
-final class SplashViewModel {
+final class SplashViewModel: BaseViewModel {
     
     var inputGetUser: Observable<Void?> = Observable(nil)
     var outputUser: Observable<User?> = Observable(nil)
     
-    private let repository = Repository()
-    private let object = User.self
-    
-    init () {
-        repository.detectRealmURL()
+    override func transform() {
         inputGetUser.bind { _ in
             self.getUser()
         }

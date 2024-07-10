@@ -176,9 +176,6 @@ extension MainViewController: MainTableViewCellDelegate {
             return
         }
         searchResultVC.query = query
-        searchResultVC.nowSort = .sim
-        searchResultVC.clearSearchRecord()
-        searchResultVC.requestURLSessionSearch()
         pushAfterView(view: searchResultVC, backButton: true, animated: true)
     }
 }

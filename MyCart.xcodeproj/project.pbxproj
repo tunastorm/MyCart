@@ -72,6 +72,8 @@
 		BCF5E9912C3D7F79002D9EA0 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9902C3D7F79002D9EA0 /* SignUpViewModel.swift */; };
 		BCF5E9932C3DA4D6002D9EA0 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9922C3DA4D6002D9EA0 /* SettingViewModel.swift */; };
 		BCF5E9AE2C3E5D07002D9EA0 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9AD2C3E5D07002D9EA0 /* MainViewModel.swift */; };
+		BCF5E9B02C3E7881002D9EA0 /* SearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9AF2C3E7881002D9EA0 /* SearchResultViewModel.swift */; };
+		BCF5E9B22C3E78FE002D9EA0 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9B12C3E78FE002D9EA0 /* BaseViewModel.swift */; };
 		BCF731AF2C1BEB85003FC583 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731AE2C1BEB85003FC583 /* Resource.swift */; };
 		BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */; };
 		BCF731B42C1C14DB003FC583 /* ViewTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B32C1C14DB003FC583 /* ViewTransition.swift */; };
@@ -138,6 +140,8 @@
 		BCF5E9902C3D7F79002D9EA0 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		BCF5E9922C3DA4D6002D9EA0 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		BCF5E9AD2C3E5D07002D9EA0 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		BCF5E9AF2C3E7881002D9EA0 /* SearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewModel.swift; sourceTree = "<group>"; };
+		BCF5E9B12C3E78FE002D9EA0 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		BCF731AE2C1BEB85003FC583 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColorExtension.swift"; sourceTree = "<group>"; };
 		BCF731B32C1C14DB003FC583 /* ViewTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTransition.swift; sourceTree = "<group>"; };
@@ -348,6 +352,7 @@
 			isa = PBXGroup;
 			children = (
 				BCF5E9AD2C3E5D07002D9EA0 /* MainViewModel.swift */,
+				BCF5E9AF2C3E7881002D9EA0 /* SearchResultViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -360,6 +365,7 @@
 				BCEC00252C317F9D00C96564 /* BaseTableViewCell.swift */,
 				BCEC00272C3180C500C96564 /* BaseCollectionViewCell.swift */,
 				BCF5E98D2C3D760B002D9EA0 /* BaseViewController.swift */,
+				BCF5E9B12C3E78FE002D9EA0 /* BaseViewModel.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -560,6 +566,7 @@
 				BC3B9C612C1D674B008DCD18 /* OnboadingViewController.swift in Sources */,
 				BC9502EC2C1AEBB9004070B8 /* APIKey.swift in Sources */,
 				BCEC00102C314AFE00C96564 /* URLSessionManager.swift in Sources */,
+				BCF5E9B22C3E78FE002D9EA0 /* BaseViewModel.swift in Sources */,
 				BCF5E9932C3DA4D6002D9EA0 /* SettingViewModel.swift in Sources */,
 				BC3B9C712C1DBFBA008DCD18 /* TextInputFilter.swift in Sources */,
 				BC3B9C682C1D786B008DCD18 /* TabBarController.swift in Sources */,
@@ -570,6 +577,7 @@
 				BC9503002C1B32CB004070B8 /* NaverSearchModel.swift in Sources */,
 				BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */,
 				BCEC00302C31B12000C96564 /* ProductDetailView.swift in Sources */,
+				BCF5E9B02C3E7881002D9EA0 /* SearchResultViewModel.swift in Sources */,
 				BCBDE7C82C2004A000B551F6 /* SettingViewController.swift in Sources */,
 				BC1ED39C2C34571C00BFD44A /* DataReceiveDelegate.swift in Sources */,
 				BCBDE7CC2C20670800B551F6 /* MainTableViewController.swift in Sources */,

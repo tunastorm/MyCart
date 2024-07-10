@@ -8,7 +8,7 @@
 import Foundation
 
 
-class SignUpViewModel {
+class SignUpViewModel: BaseViewModel {
     
     var inputNickName: Observable<String?> = Observable(nil)
     var inputValidate: Observable<Void?> = Observable(nil)
@@ -21,12 +21,10 @@ class SignUpViewModel {
     var outputAddUserResult: Observable<RepositoryResult> = Observable(RepositoryError.createFailed)
     var outputUpdateUserResult: Observable<RepositoryResult> = Observable(RepositoryError.updatedFailed)
     var outputUser: Observable<User?> = Observable(nil)
-    
-    private let repository = Repository()
-    private let object = User.self
+
     private var validateResult: (Bool,String)?
-    
-    init() {
+        
+    override func transform() {
         inputNickName.bind { _  in
             self.validation()
         }
@@ -68,7 +66,7 @@ class SignUpViewModel {
         }
         print(#function, "연속공백 제거 후: ", nickname)
         outputValidateMessage.value = Resource.Text.nickNameSuccess
-        validateResult = (true, nickname)
+        outputValidateResult.value = (true, nickname)
     }
     
     private func sendValidateResult() {

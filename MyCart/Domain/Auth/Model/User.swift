@@ -32,7 +32,7 @@ class User: Object {
         self.signUpDate = Date()
     }
     
-    enum Column: String, ColumnManager {
+    enum Column: String, CaseIterable, ColumnManager {
         case id
         case nickname
         case profileImage

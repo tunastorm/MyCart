@@ -21,7 +21,7 @@ class LikedItem: Object {
 
     @Persisted(originProperty: User.Column.likedList.name) var main: LinkingObjects<User>
     
-    convenience init(productId: String, link: String, image: String, mallName: String, title: String, lprice: String, regDate: Date, main: LinkingObjects<User>) {
+    convenience init(productId: String, link: String, image: String, mallName: String, title: String, lprice: String, regDate: Date) {
         self.init()
         self.productId = productId
         self.link = link
@@ -32,7 +32,7 @@ class LikedItem: Object {
         self.regDate = regDate
     }
     
-    enum Column: String, ColumnManager {
+    enum Column: String, CaseIterable, ColumnManager {
         case id
         case productId
         case link

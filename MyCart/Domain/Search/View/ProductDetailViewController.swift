@@ -36,8 +36,6 @@ final class ProductDetailViewController: MVCViewController<ProductDetailView> {
         guard let delegate, let productId = product?.productId else {
             return
         }
-        delegate.updateLikedList()
-        
     }
     
     override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
@@ -79,7 +77,7 @@ final class ProductDetailViewController: MVCViewController<ProductDetailView> {
         guard let productId = product?.productId, let row = likeButton?.tag else {
             return
         }
-        delegate?.setIsLiked(row: row, productId: productId)
+        delegate?.updateLikedList(row, productId)
         configLikeButton()
     }
 }

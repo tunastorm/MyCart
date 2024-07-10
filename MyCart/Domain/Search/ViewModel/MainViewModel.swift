@@ -8,13 +8,9 @@
 import Foundation
 
 
-class MainViewModel {
-    
-    let repository = Repository()
-    let object = User.self
-    
+class MainViewModel: BaseViewModel {
+        
     var inputUpdateUserTrigger: Observable<Void?> = Observable(nil)
-    var inputAddSearchedWord: Observable<String?> = Observable(nil)
     var inputDeleteSearchedWord: Observable<Int?> = Observable(nil)
     var inputTruncateSearchedListTrigger: Observable<Void?> = Observable(nil)
     
@@ -25,18 +21,9 @@ class MainViewModel {
     var outputDeleteSearchedWordResult: Observable<RepositoryResult> = Observable(RepositoryError.deleteFailed)
     var outputTruncateSearchedListResult: Observable<RepositoryResult> = Observable(RepositoryError.deleteFailed)
     
-    
-    init() {
-        repository.detectRealmURL()
-        transform()
-    }
-    
-    func transform() {
+    override func transform() {
         inputUpdateUserTrigger.bind { _ in
             self.getUser()
-        }
-        inputAddSearchedWord.bind { _ in
-            self.addSearchedWord()
         }
         inputDeleteSearchedWord.bind { _ in
             self.deleteSearchedWord()
@@ -57,26 +44,8 @@ class MainViewModel {
             print(#function, "searchedList: \(searchedList.count)")
             outputSearchedList.value = Array(searchedList)
         }
-//        if let likedList = outputUser.value?.likedList, outputLikedList.value.count != likedList.count {
-//            outputLikedList.value = Array(likedList)
-//        }
     }
-    
-    private func addSearchedWord() {
-        guard let word = inputAddSearchedWord.value else {
-            return
-        }
-        let searchedWord = SearchedWord(word: word, regDate: Date())
-        repository.updateProperty {
-            outputUser.value?.searchedList.append(searchedWord)
-        } completionHandler: { status, error in
-            guard error == nil, let status else {
-                return
-            }
-            self.getUser()
-        }
-    }
-    
+
     private func deleteSearchedWord() {
         guard let index = inputDeleteSearchedWord.value else {
             return

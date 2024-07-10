@@ -12,7 +12,7 @@ import SnapKit
 import Then
 
 
-class SearchCollectionViewCell: UICollectionViewCell {
+class SearchCollectionViewCell: BaseCollectionViewCell {
     
     var delegate: SearchResultCollectionViewCellDelegate?
     
@@ -48,17 +48,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
         $0.font = Resource.Font.boldSystem16
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configHierarchy()
-        configLayout()
-    }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configHierarchy() {
+    override func configHierarchy() {
         contentView.addSubview(imageView)
         contentView.addSubview(likeButton)
         contentView.addSubview(mallNameLabel)
@@ -66,7 +57,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(priceLabel)
     }
     
-    func configLayout() {
+    override func configLayout() {
         imageView.snp.makeConstraints {
             $0.height.equalToSuperview().multipliedBy(0.7)
             $0.top.horizontalEdges.equalToSuperview()
@@ -98,7 +89,10 @@ class SearchCollectionViewCell: UICollectionViewCell {
     }
     
     func configCell(_ data: ShopItem, _ isLiked: Bool) {
-        guard let query = delegate?.getQuery() else {return}
+        guard let query = delegate?.getQuery() else {
+            print(#function, "query 없음")
+            return
+        }
         
         let url = URL(string: data.image)
         imageView.kf.setImage(with: url)
@@ -147,6 +141,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         guard let productId = sender.title(for: .normal), let delegate else {
             return
         }
-        delegate.setIsLiked(row: sender.tag, productId: productId)
+        print(#function, "좋아요 버튼 클릭됨")
+        delegate.updateLikedList(sender.tag, productId)
     }
 }
