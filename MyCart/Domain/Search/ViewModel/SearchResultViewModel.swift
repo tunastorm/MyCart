@@ -17,6 +17,7 @@ class SearchResultViewModel: BaseViewModel {
     var outputSort: Observable<APIRouter.Sorting?> = Observable(nil)
     var outputTotal: Observable<String?> = Observable(nil)
     var outputLikedList: Observable<[LikedItem]> = Observable([])
+    var outputLikedItemIndex: Observable<IndexPath?> = Observable(nil)
     var outputLikedProductIdDict: Observable<[String:IndexPath]> = Observable([:])
     var outputLikedListResult: Observable<RepositoryResult?> = Observable(nil)
     var outputItemList: Observable<[ShopItem]?> = Observable([])
@@ -88,32 +89,32 @@ class SearchResultViewModel: BaseViewModel {
             if self.responseInfo.start == 1 {
                 self.outputTotal.value = Int(self.responseInfo.total).formatted(.number) + Resource.Text.searchTotal
             }
-            self.updateLikedList()
+            self.fetchLikedList()
             self.addSearchedWord()
         }
     }
     
-    private func updateLikedList() {
+    private func fetchLikedList() {
         guard let user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first else {
             return
         }
         self.user = user
         print(#function, "아웃풋", outputLikedList.value.count, "현재", user.likedList.count)
         if outputLikedList.value.count != user.likedList.count {
-            var dict:[String:IndexPath] = [:]
+            var dict: [String:IndexPath] = [:]
             user.likedList.forEach { likedItem in
                 if outputLikedList.value.contains(likedItem) {
                     return
                 }
                 outputItemList.value?.enumerated().forEach { index, item in
                     if item.productId == likedItem.productId {
-                        dict[item.productId] = IndexPath(row: index, section: 0)
+                        dict[likedItem.productId] = IndexPath(row: index, section: 0)
                         return
                     }
                 }
             }
-            print(#function, "좋아요 상품아이디:indexPath", dict)
             outputLikedProductIdDict.value = dict
+            outputLikedList.value = Array(user.likedList)
         }
     }
     
@@ -130,6 +131,7 @@ class SearchResultViewModel: BaseViewModel {
             guard error == nil, let status else {
                 return
             }
+            
         }
     }
     
@@ -158,7 +160,7 @@ class SearchResultViewModel: BaseViewModel {
                 outputLikedListResult.value = error!
                 return
             }
-            self.updateLikedList()
+            self.fetchLikedList()
             outputLikedListResult.value = status
         }
     }
@@ -176,7 +178,8 @@ class SearchResultViewModel: BaseViewModel {
                 outputLikedListResult.value = error!
                 return
             }
-            self.updateLikedList()
+            self.fetchLikedList()
+            outputLikedItemIndex.value = IndexPath(row: row, section: 0)
             outputLikedListResult.value = status
         }
     }

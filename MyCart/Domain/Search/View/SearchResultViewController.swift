@@ -117,12 +117,9 @@ final class SearchResultViewController: BaseViewController {
         viewModel.outputItemList.bind { _ in
             self.collectionView.reloadData()
         }
-        viewModel.outputLikedProductIdDict.bind { dict in
-            dict.keys.forEach { productId in
-                if let indexPath = dict[productId] {
-                    self.collectionView.reloadItems(at: [indexPath])
-                }
-            }
+        viewModel.outputLikedItemIndex.bind { indexPath in
+            guard let indexPath else { return }
+            self.collectionView.reloadItems(at: [indexPath])
         }
         guard let query else { return }
         viewModel.inputRequestSearchTrigger.value = (query, .sim)
