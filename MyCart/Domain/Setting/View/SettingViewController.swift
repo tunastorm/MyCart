@@ -310,7 +310,7 @@ class SettingViewController: BaseViewController {
         guard let user else {
             return
         }
-        viewModel.inputGetLikedList.value = user.id
+        viewModel.inputGetLikedList.value = ()
     }
     
     func deleteUser() {

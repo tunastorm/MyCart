@@ -11,14 +11,16 @@ import UIKit
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchedList?.count ?? 0
+        return viewModel.outputSearchedList.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier, for: indexPath) as! MainTableViewCell
-        guard let searchedList else {return cell}
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier, for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
+        let searchedWord = viewModel.outputSearchedList.value[indexPath.row].word
         cell.delegate = self
-        cell.configCell(data: searchedList[indexPath.row])
+        cell.configCell(indexPath.row, searchedWord)
         return cell
     }
+    
+    
 }

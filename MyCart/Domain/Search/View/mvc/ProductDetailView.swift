@@ -49,7 +49,6 @@ class ProductDetailView: BaseView {
             $0.size.equalTo(300)
             $0.center.equalTo(safeAreaLayoutGuide)
         }
-        
         errorImage.snp.makeConstraints {
             $0.height.equalToSuperview().multipliedBy(0.8)
             $0.top.horizontalEdges.equalToSuperview()

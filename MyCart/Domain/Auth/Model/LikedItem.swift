@@ -32,7 +32,6 @@ class LikedItem: Object {
         self.regDate = regDate
     }
     
-    
     enum Column: String, ColumnManager {
         case id
         case productId

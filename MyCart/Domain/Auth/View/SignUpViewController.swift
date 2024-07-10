@@ -155,7 +155,8 @@ class SignUpViewController: BaseViewController {
                 self.viewModel.inputUpdateUser.value = [
                     User.Column.id.name: id,
                     User.Column.nickname.name: nickName,
-                    User.Column.profileImage.name: imageName]
+                    User.Column.profileImage.name: imageName
+                ]
             } else {
                 print(#function, "프로필 세팅 뷰")
                 self.viewModel.inputAddUser.value = User(nickname: nickName, profilImage: imageName)

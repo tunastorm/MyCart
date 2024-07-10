@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import RealmSwift
-
 
 class SettingViewModel {
     
@@ -15,15 +13,13 @@ class SettingViewModel {
     let object = User.self
 
     var inputGetUser: Observable<Void?> = Observable(nil)
-    var inputGetLikedList: Observable<ObjectId?> = Observable(nil)
+    var inputGetLikedList: Observable<Void?> = Observable(nil)
     var inputDeleteUser: Observable<User?> = Observable(nil)
     
     var outputUser: Observable<User?> = Observable(nil)
-    var outputLikedList: Observable<List<LikedItem>?> = Observable(nil)
+    var outputLikedList: Observable<[LikedItem]?> = Observable(nil)
     var outputLikedListCount: Observable<Int?> = Observable(nil)
     var outputDeleteUserResult: Observable<RepositoryResult> = Observable(RepositoryError.deleteFailed)
-    
-    var likedList: List<LikedItem>?
     
     init() {
         inputGetUser.bind { _ in
@@ -42,12 +38,11 @@ class SettingViewModel {
     }
     
     private func getLikedList() {
-        guard let id = inputGetLikedList.value else {
+        guard let list = outputUser.value?.likedList else {
             return
         }
-        likedList = repository.fetchItem(object: object, primaryKey:id)?.likedList
-        print(#function, "좋아요 목록 길이: ", likedList?.count, likedList)
-        outputLikedListCount.value = likedList?.count ?? 0
+        outputLikedList.value = Array(list)
+        outputLikedListCount.value = outputLikedList.value?.count ?? 0
     }
     
     private func deleteUser() {

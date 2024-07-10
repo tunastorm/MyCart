@@ -25,6 +25,7 @@ extension MainViewController: UISearchBarDelegate {
             return
         }
         print(#function, query)
+        viewModel.inputAddSearchedWord.value = query
         goSearchResultView(query: query)
     }
     
