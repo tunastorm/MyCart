@@ -100,15 +100,14 @@ class SearchResultViewModel: BaseViewModel {
         self.user = user
         print(#function, "아웃풋", outputLikedList.value.count, "현재", user.likedList.count)
         if outputLikedList.value.count != user.likedList.count {
-            outputLikedList.value = Array(user.likedList)
-            let list = outputLikedList.value.map { item in
-                return item.productId
-            }
             var dict:[String:IndexPath] = [:]
-            list.forEach { productId in
+            user.likedList.forEach { likedItem in
+                if outputLikedList.value.contains(likedItem) {
+                    return
+                }
                 outputItemList.value?.enumerated().forEach { index, item in
-                    if item.productId == productId {
-                       dict[productId] = IndexPath(row: index, section: 0)
+                    if item.productId == likedItem.productId {
+                        dict[item.productId] = IndexPath(row: index, section: 0)
                         return
                     }
                 }
@@ -124,7 +123,7 @@ class SearchResultViewModel: BaseViewModel {
         }
         let searchedWord = SearchedWord(word: word, regDate: Date())
         repository.updateProperty {
-            if !user.searchedList.contains(searchedWord){
+            if user.searchedList.where({$0.word == word}).count < 1 {
                 user.searchedList.append(searchedWord)
             }
         } completionHandler: { status, error in

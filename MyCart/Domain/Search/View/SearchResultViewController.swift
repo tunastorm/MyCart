@@ -90,6 +90,14 @@ final class SearchResultViewController: BaseViewController {
         configSortingView()
     }
     
+    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
+        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
+        guard let query else {
+            return
+        }
+        navigationItem.title = "\(query) 검색결과"
+    }
+    
     override func configInteraction() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -99,8 +107,8 @@ final class SearchResultViewController: BaseViewController {
     }
     
     override func bindData() {
-        viewModel.outputTotal.bind { title in
-            self.totalLabel.text = title
+        viewModel.outputTotal.bind { total in
+            self.totalLabel.text = total
         }
         viewModel.outputSort.bind { sort in
             guard let sort else { return }

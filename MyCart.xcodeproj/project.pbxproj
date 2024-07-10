@@ -37,7 +37,6 @@
 		BC9503002C1B32CB004070B8 /* NaverSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9502FF2C1B32CB004070B8 /* NaverSearchModel.swift */; };
 		BC9503022C1B3532004070B8 /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9503012C1B3532004070B8 /* APIRouter.swift */; };
 		BC95030B2C1BD6DA004070B8 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC95030A2C1BD6DA004070B8 /* UserDefaultsHelper.swift */; };
-		BC95030D2C1BDA41004070B8 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC95030C2C1BDA41004070B8 /* SearchResultView.swift */; };
 		BC95030F2C1BDA83004070B8 /* SearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC95030E2C1BDA83004070B8 /* SearchCollectionViewController.swift */; };
 		BC9503112C1BDE7E004070B8 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9503102C1BDE7E004070B8 /* SearchCollectionViewCell.swift */; };
 		BC9503142C1BE086004070B8 /* ReusableIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9503132C1BE086004070B8 /* ReusableIdentifier.swift */; };
@@ -74,6 +73,7 @@
 		BCF5E9AE2C3E5D07002D9EA0 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9AD2C3E5D07002D9EA0 /* MainViewModel.swift */; };
 		BCF5E9B02C3E7881002D9EA0 /* SearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9AF2C3E7881002D9EA0 /* SearchResultViewModel.swift */; };
 		BCF5E9B22C3E78FE002D9EA0 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9B12C3E78FE002D9EA0 /* BaseViewModel.swift */; };
+		BCF5E9B42C3EC21C002D9EA0 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9B32C3EC21C002D9EA0 /* ProductDetailViewModel.swift */; };
 		BCF731AF2C1BEB85003FC583 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731AE2C1BEB85003FC583 /* Resource.swift */; };
 		BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */; };
 		BCF731B42C1C14DB003FC583 /* ViewTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B32C1C14DB003FC583 /* ViewTransition.swift */; };
@@ -106,7 +106,6 @@
 		BC9502FF2C1B32CB004070B8 /* NaverSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverSearchModel.swift; sourceTree = "<group>"; };
 		BC9503012C1B3532004070B8 /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
 		BC95030A2C1BD6DA004070B8 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
-		BC95030C2C1BDA41004070B8 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		BC95030E2C1BDA83004070B8 /* SearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewController.swift; sourceTree = "<group>"; };
 		BC9503102C1BDE7E004070B8 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		BC9503132C1BE086004070B8 /* ReusableIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableIdentifier.swift; sourceTree = "<group>"; };
@@ -142,6 +141,7 @@
 		BCF5E9AD2C3E5D07002D9EA0 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		BCF5E9AF2C3E7881002D9EA0 /* SearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewModel.swift; sourceTree = "<group>"; };
 		BCF5E9B12C3E78FE002D9EA0 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		BCF5E9B32C3EC21C002D9EA0 /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
 		BCF731AE2C1BEB85003FC583 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColorExtension.swift"; sourceTree = "<group>"; };
 		BCF731B32C1C14DB003FC583 /* ViewTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTransition.swift; sourceTree = "<group>"; };
@@ -353,6 +353,7 @@
 			children = (
 				BCF5E9AD2C3E5D07002D9EA0 /* MainViewModel.swift */,
 				BCF5E9AF2C3E7881002D9EA0 /* SearchResultViewModel.swift */,
+				BCF5E9B32C3EC21C002D9EA0 /* ProductDetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -409,7 +410,6 @@
 		BCF5E9AC2C3E5CBE002D9EA0 /* mvc */ = {
 			isa = PBXGroup;
 			children = (
-				BC95030C2C1BDA41004070B8 /* SearchResultView.swift */,
 				BCEC002F2C31B12000C96564 /* ProductDetailView.swift */,
 			);
 			path = mvc;
@@ -528,7 +528,6 @@
 				BCEC00242C317A2D00C96564 /* SelectPhotoCollectionViewController.swift in Sources */,
 				BC95030F2C1BDA83004070B8 /* SearchCollectionViewController.swift in Sources */,
 				BCF5E98A2C3D3C31002D9EA0 /* LikedItem.swift in Sources */,
-				BC95030D2C1BDA41004070B8 /* SearchResultView.swift in Sources */,
 				BC9503112C1BDE7E004070B8 /* SearchCollectionViewCell.swift in Sources */,
 				BCF5E97B2C3D1CEC002D9EA0 /* SplashViewModel.swift in Sources */,
 				BC3B9C752C1E97C7008DCD18 /* SelectPhotoCollectionViewCell.swift in Sources */,
@@ -549,6 +548,7 @@
 				BC3B9C5C2C1D4338008DCD18 /* String+randomExtension.swift in Sources */,
 				BC3B9C732C1DC6A9008DCD18 /* SelectPhotoViewController.swift in Sources */,
 				BCEC00322C31B45200C96564 /* User.swift in Sources */,
+				BCF5E9B42C3EC21C002D9EA0 /* ProductDetailViewModel.swift in Sources */,
 				BCEC00282C3180C500C96564 /* BaseCollectionViewCell.swift in Sources */,
 				BCEC00392C31B8F700C96564 /* TextinputFilterError.swift in Sources */,
 				BCEC000E2C314A1E00C96564 /* APIError.swift in Sources */,

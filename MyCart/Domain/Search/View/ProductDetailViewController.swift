@@ -13,7 +13,7 @@ import Then
 
 
 
-final class ProductDetailViewController: MVCViewController<ProductDetailView> {
+final class ProductDetailViewController: BaseViewController {
 
     var delegate: SearchResultCollectionViewCellDelegate?
     
@@ -21,14 +21,18 @@ final class ProductDetailViewController: MVCViewController<ProductDetailView> {
     var product: ShopItem?
     
     var likeButton: UIBarButtonItem?
+
+    let webView = WKWebView()
+    let errorView = UIView()
+    let errorLabel = UILabel().then {
+        $0.font = Resource.Font.boldSystem16
+        $0.textAlignment = .center
+        $0.textColor = Resource.MyColor.lightGray
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configExternalResource()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -38,6 +42,59 @@ final class ProductDetailViewController: MVCViewController<ProductDetailView> {
         }
     }
     
+    override func configHierarchy() {
+        view.addSubview(webView)
+    }
+    
+    override func configLayout() {
+        webView.snp.makeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    override func configView() {
+        super.configView()
+        configErrorView()
+    }
+    
+    func configErrorView() {
+        let errorImage = UIImageView(image: Resource.SystemImage.networkSlash).then {
+            $0.tintColor = Resource.MyColor.lightGray
+            $0.contentMode = .scaleAspectFit
+        }
+        errorImage.isHidden = true
+        
+        view.addSubview(errorView)
+        errorView.addSubview(errorImage)
+        errorView.addSubview(errorLabel)
+        
+        errorView.snp.makeConstraints {
+            $0.size.equalTo(300)
+            $0.center.equalTo(view.safeAreaLayoutGuide)
+        }
+        errorImage.snp.makeConstraints {
+            $0.height.equalToSuperview().multipliedBy(0.8)
+            $0.top.horizontalEdges.equalToSuperview()
+        }
+        
+        errorLabel.snp.makeConstraints {
+            $0.top.equalTo(errorImage.snp.bottom)
+            $0.bottom.horizontalEdges.equalToSuperview()
+        }
+    }
+    
+    func viewToggle(error: MapKitError) {
+        switch error {
+        case .productURLNotExist, .productConnectionFailed:
+            webView.isHidden = true
+            errorView.isHidden = false
+        default:
+            webView.isHidden = false
+            errorView.isHidden = true
+        }
+    }
+
+    
     override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
         super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
         let title = product?.title.replacingOccurrences(of: "<b>", with: "")
@@ -46,15 +103,14 @@ final class ProductDetailViewController: MVCViewController<ProductDetailView> {
     }
     
     private func configExternalResource() {
-        rootView.webView.navigationDelegate = self
+        webView.navigationDelegate = self
         guard let link = product?.link, let url = URL(string: link) else {
-            print(#function, "아아날ㅇ나ㅣㅁ러리ㅏㅁ너라ㅣㅁ너라ㅣㄴㅁ럼나ㅣㄹㄴㅁㄹ")
-            rootView.errorLabel.text = MapKitError.productURLNotExist.message
-            rootView.viewToggle(error: MapKitError.productURLNotExist)
+            errorLabel.text = MapKitError.productURLNotExist.message
+            viewToggle(error: MapKitError.productURLNotExist)
             return
         }
         let request = URLRequest(url: url)
-        rootView.webView.load(request)
+        webView.load(request)
     }
     
     private func configLikeButton() {
@@ -86,8 +142,8 @@ final class ProductDetailViewController: MVCViewController<ProductDetailView> {
 extension ProductDetailViewController: WKNavigationDelegate {
     
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: any Error) {
-        rootView.errorLabel.text = MapKitError.productConnectionFailed.message
-        rootView.viewToggle(error:MapKitError.productConnectionFailed)
+        errorLabel.text = MapKitError.productConnectionFailed.message
+        viewToggle(error:MapKitError.productConnectionFailed)
     }
 }
 

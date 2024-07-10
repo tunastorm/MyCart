@@ -34,7 +34,6 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        
         guard let itemSize = viewModel.outputItemList.value?.count else {
             return
         }
