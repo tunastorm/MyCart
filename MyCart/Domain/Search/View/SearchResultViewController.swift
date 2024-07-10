@@ -12,6 +12,7 @@ import Then
 
 protocol SearchResultCollectionViewCellDelegate {
     func getQuery() -> String?
+    func checkIsLikedItem(_ productId: String) -> Bool
     func updateLikedList(_ row: Int, _ productId: String)
 }
 
@@ -208,6 +209,7 @@ final class SearchResultViewController: BaseViewController {
 }
 
 extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
+    
     func getQuery() -> String? {
         print(#function, query)
         guard let query else {
@@ -215,6 +217,10 @@ extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
             return nil
         }
         return query
+    }
+    
+    func checkIsLikedItem(_ productId: String) -> Bool {
+        return viewModel.outputLikedProductIdDict.value.keys.contains(productId)
     }
     
     func updateLikedList(_ row: Int, _ productId: String) {

@@ -131,7 +131,6 @@ class SearchResultViewModel: BaseViewModel {
             guard error == nil, let status else {
                 return
             }
-            
         }
     }
     

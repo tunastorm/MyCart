@@ -14,13 +14,10 @@ import Then
 
 
 final class ProductDetailViewController: BaseViewController {
-
-    var delegate: SearchResultCollectionViewCellDelegate?
     
+    var delegate: SearchResultCollectionViewCellDelegate?
     var row: Int?
     var product: ShopItem?
-    
-    var likeButton: UIBarButtonItem?
 
     let webView = WKWebView()
     let errorView = UIView()
@@ -94,7 +91,6 @@ final class ProductDetailViewController: BaseViewController {
         }
     }
 
-    
     override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
         super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
         let title = product?.title.replacingOccurrences(of: "<b>", with: "")
@@ -114,27 +110,20 @@ final class ProductDetailViewController: BaseViewController {
     }
     
     private func configLikeButton() {
-        var cartImage = Resource.IsLike.unLike.image
-        guard let id = product?.productId, let row else {
+        guard let delegate, let productId = product?.productId, let row else {
             return
         }
-        
-        likeButton = UIBarButtonItem(image: cartImage,
-                                         style: .plain, target: self,
-                                         action: #selector(likeButtonClicked))
-        likeButton?.tag = row
-        guard let likeButton else {return}
-        navigationItem.rightBarButtonItems = [likeButton]
+        let cartImage = delegate.checkIsLikedItem(productId) ? Resource.IsLike.like.image : Resource.IsLike.unLike.image
+        let likeButton = UIBarButtonItem(image: cartImage, style: .plain, target: self, action: #selector(likeButtonClicked))
+        likeButton.tag = row
+        navigationItem.rightBarButtonItem = likeButton
     }
     
     @objc private func likeButtonClicked(_ sender: UIButton) {
-        guard let productId = product?.productId, let row = likeButton?.tag else {
+        guard let productId = product?.productId else {
             return
         }
-        if sender.image(for: .normal) == Resource.NamedImage.likeSelected {
-            
-        }
-        delegate?.updateLikedList(row, productId)
+        delegate?.updateLikedList(sender.tag, productId)
         configLikeButton()
     }
 }

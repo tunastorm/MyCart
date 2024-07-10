@@ -44,7 +44,7 @@ enum Resource {
         static let startButton = CGFloat(30)
         static let profileImageView = CGFloat(60)
         static let cameraIcon = CGFloat(15)
-        static let searchImage = CGFloat(16)
+        static let searchImage = CGFloat(8)
         static let likeButton = CGFloat(10)
         static let sortingButton = CGFloat(17)
         static let settingProfileImage = CGFloat(40)

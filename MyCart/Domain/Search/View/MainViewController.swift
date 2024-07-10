@@ -20,7 +20,6 @@ class MainViewController: BaseViewController {
     
     let viewModel = MainViewModel()
     
-    var searchResultVC: SearchResultViewController?
     var productDetailVC: ProductDetailViewController?
 
     var searchBar: UISearchBar?
@@ -169,13 +168,8 @@ extension MainViewController: MainTableViewCellDelegate {
     }
     
     func goSearchResultView(query: String) {
-        if searchResultVC == nil {
-            searchResultVC = SearchResultViewController()
-        }
-        guard let searchResultVC else {
-            return
-        }
-        searchResultVC.query = query
-        pushAfterView(view: searchResultVC, backButton: true, animated: true)
+        let vc = SearchResultViewController()
+        vc.query = query
+        pushAfterView(view: vc, backButton: true, animated: true)
     }
 }
