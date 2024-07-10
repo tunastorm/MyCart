@@ -105,6 +105,7 @@ enum Resource {
         static let guestUser = "guest"
         static let searchTabBar = "검색"
         static let settingTabBar = "설정"
+        static let likedItemTabBar = "내 카트"
         
         static let profileSetting = "PROFILE SETTING"
         static let nickNamePlaceholder = "닉네임을 입력해주세요 :)"

@@ -276,14 +276,6 @@ class SettingViewController: BaseViewController {
         }
     }
     
-    @objc func goLikedItems() {
-        guard myCartLabel.text != "0" else {
-            return
-        }
-        let vc = SearchResultViewController()
-    }
-    
-        
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configProfile()
@@ -319,6 +311,13 @@ class SettingViewController: BaseViewController {
 //        userModel.deleteUser()
         let nextVC = SplashViewController()
         sceneDelegate.changeRootVCWithNavi(nextVC, animated: false)
+    }
+    
+    @objc func goLikedItems() {
+        guard myCartLabel.text != "0" else {
+            return
+        }
+        self.tabBarController?.selectedIndex = 1
     }
     
     @objc func pushUpdateProfile() {

@@ -18,17 +18,21 @@ class TabBarController: UITabBarController {
         tabBar.layer.addBorder([.top], color: Resource.MyColor.lightGray, width: Resource.Border.width1)
     
         let main = MainViewController()
-        
         let setting = SettingViewController()
+        let likedItem = LikedItemViewController()
         
-        let nav0 = UINavigationController(rootViewController: main)
-        let nav1 = UINavigationController(rootViewController: setting)
+        let mainNavi = UINavigationController(rootViewController: main)
+        let settingNavi = UINavigationController(rootViewController: setting)
+        let likedItemNavi = UINavigationController(rootViewController: likedItem)
         
-        nav0.tabBarItem = UITabBarItem(title: Resource.Text.searchTabBar,
+        mainNavi.tabBarItem = UITabBarItem(title: Resource.Text.searchTabBar,
                                        image: Resource.SystemImage.magnifyingGlass, tag: 0)
-        nav1.tabBarItem = UITabBarItem(title: Resource.Text.settingTabBar,
-                                       image: Resource.SystemImage.person, tag: 1)
+        likedItemNavi.tabBarItem = UITabBarItem(title: Resource.Text.likedItemTabBar,
+                                                image: Resource.NamedImage.likeSelected.withRenderingMode(.alwaysTemplate), tag: 1)
+        settingNavi.tabBarItem = UITabBarItem(title: Resource.Text.settingTabBar,
+                                       image: Resource.SystemImage.person, tag: 2)
+        
 
-        setViewControllers([nav0, nav1], animated: true)
+        setViewControllers([mainNavi, likedItemNavi, settingNavi], animated: true)
     }
 }

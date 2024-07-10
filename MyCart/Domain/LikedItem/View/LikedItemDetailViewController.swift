@@ -1,23 +1,21 @@
 //
-//  ProductDetailViewController.swift
+//  LikedItemDetailViewController.swift
 //  MyCart
 //
-//  Created by 유철원 on 6/14/24.
+//  Created by 유철원 on 7/11/24.
 //
 
 import UIKit
 import WebKit
-
 import SnapKit
 import Then
 
 
-
-final class ProductDetailViewController: BaseViewController {
+final class LikedItemDetailViewController: BaseViewController {
     
-    var delegate: SearchResultCollectionViewCellDelegate?
+    var delegate: LikedItemCollectionViewCellDelegate?
     var row: Int?
-    var product: ShopItem?
+    var product: LikedItem?
 
     let webView = WKWebView()
     let errorView = UIView()
@@ -113,7 +111,7 @@ final class ProductDetailViewController: BaseViewController {
         guard let delegate, let productId = product?.productId, let row else {
             return
         }
-        let cartImage = delegate.checkIsLikedItem(productId) ? Resource.IsLike.like.image : Resource.IsLike.unLike.image
+        let cartImage = Resource.IsLike.like.image
         let likeButton = UIBarButtonItem(image: cartImage, style: .plain, target: self, action: #selector(likeButtonClicked))
         likeButton.tag = row
         navigationItem.rightBarButtonItem = likeButton
@@ -123,17 +121,18 @@ final class ProductDetailViewController: BaseViewController {
         guard let productId = product?.productId else {
             return
         }
-        delegate?.updateLikedList(sender.tag, productId)
+//        delegate?.updateLikedList(sender.tag, productId)
         configLikeButton()
     }
 }
 
-extension ProductDetailViewController: WKNavigationDelegate {
+extension LikedItemDetailViewController: WKNavigationDelegate {
     
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: any Error) {
         errorLabel.text = MapKitError.productConnectionFailed.message
         viewToggle(error:MapKitError.productConnectionFailed)
     }
 }
+
 
 
