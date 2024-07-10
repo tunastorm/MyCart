@@ -98,17 +98,8 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
         imageView.kf.setImage(with: url)
     
         likeButton.setTitle(data.productId, for: .normal)
-        if isLiked {
-            likeButton.setImage(Resource.NamedImage.likeSelected, for: .normal)
-            likeButton.tintColor = Resource.MyColor.black
-            likeButton.backgroundColor = Resource.MyColor.white
-            likeButton.alpha = Resource.Alpha.full
-        } else {
-            likeButton.setImage(Resource.NamedImage.likeUnselected, for: .normal)
-            likeButton.tintColor = Resource.MyColor.white
-            likeButton.backgroundColor = Resource.MyColor.black
-            likeButton.alpha = Resource.Alpha.half
-        }
+        
+        isLikedToggle(isLiked)
         
         let mallName = data.mallName
         // 검색어에 해당하는 텍스트 하이라이팅
@@ -137,11 +128,28 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
         priceLabel.text = intPrice.formatted(.number) + "원"
     }
     
+    func isLikedToggle(_ isLiked: Bool = false) {
+        if isLiked {
+            likeButton.setImage(Resource.NamedImage.likeSelected, for: .normal)
+            likeButton.tintColor = Resource.MyColor.black
+            likeButton.backgroundColor = Resource.MyColor.white
+            likeButton.alpha = Resource.Alpha.full
+        } else {
+            likeButton.setImage(Resource.NamedImage.likeUnselected, for: .normal)
+            likeButton.tintColor = Resource.MyColor.white
+            likeButton.backgroundColor = Resource.MyColor.black
+            likeButton.alpha = Resource.Alpha.half
+        }
+    }
+    
     @objc func likeButtonClicked(_ sender: UIButton) {
         guard let productId = sender.title(for: .normal), let delegate else {
             return
         }
         print(#function, "좋아요 버튼 클릭됨")
+        if sender.image(for: .normal) == Resource.NamedImage.likeSelected {
+            isLikedToggle()
+        }
         delegate.updateLikedList(sender.tag, productId)
     }
 }

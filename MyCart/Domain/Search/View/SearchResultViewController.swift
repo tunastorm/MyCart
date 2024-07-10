@@ -109,9 +109,11 @@ final class SearchResultViewController: BaseViewController {
         viewModel.outputItemList.bind { _ in
             self.collectionView.reloadData()
         }
-        viewModel.outputLikedList.bind { list in
-            list.enumerated().forEach { row, likedItem in
-                self.collectionView.reloadItems(at: [IndexPath(row: row, section: 0)])
+        viewModel.outputLikedProductIdDict.bind { dict in
+            dict.keys.forEach { productId in
+                if let indexPath = dict[productId] {
+                    self.collectionView.reloadItems(at: [indexPath])
+                }
             }
         }
         guard let query else { return }

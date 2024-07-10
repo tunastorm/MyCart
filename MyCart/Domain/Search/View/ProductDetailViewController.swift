@@ -62,9 +62,7 @@ final class ProductDetailViewController: MVCViewController<ProductDetailView> {
         guard let id = product?.productId, let row else {
             return
         }
-//        if userModel.getIsLiked(productId: id) {
-//            cartImage = Resource.IsLike.like.image
-//        }
+        
         likeButton = UIBarButtonItem(image: cartImage,
                                          style: .plain, target: self,
                                          action: #selector(likeButtonClicked))
@@ -76,6 +74,9 @@ final class ProductDetailViewController: MVCViewController<ProductDetailView> {
     @objc private func likeButtonClicked(_ sender: UIButton) {
         guard let productId = product?.productId, let row = likeButton?.tag else {
             return
+        }
+        if sender.image(for: .normal) == Resource.NamedImage.likeSelected {
+            
         }
         delegate?.updateLikedList(row, productId)
         configLikeButton()

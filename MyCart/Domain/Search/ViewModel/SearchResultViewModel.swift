@@ -17,7 +17,7 @@ class SearchResultViewModel: BaseViewModel {
     var outputSort: Observable<APIRouter.Sorting?> = Observable(nil)
     var outputTotal: Observable<String?> = Observable(nil)
     var outputLikedList: Observable<[LikedItem]> = Observable([])
-    var outputLikedProductIdList: Observable<[String]> = Observable([])
+    var outputLikedProductIdDict: Observable<[String:IndexPath]> = Observable([:])
     var outputLikedListResult: Observable<RepositoryResult?> = Observable(nil)
     var outputItemList: Observable<[ShopItem]?> = Observable([])
     
@@ -104,7 +104,17 @@ class SearchResultViewModel: BaseViewModel {
             let list = outputLikedList.value.map { item in
                 return item.productId
             }
-            outputLikedProductIdList.value = list
+            var dict:[String:IndexPath] = [:]
+            list.forEach { productId in
+                outputItemList.value?.enumerated().forEach { index, item in
+                    if item.productId == productId {
+                       dict[productId] = IndexPath(row: index, section: 0)
+                        return
+                    }
+                }
+            }
+            print(#function, "좋아요 상품아이디:indexPath", dict)
+            outputLikedProductIdDict.value = dict
         }
     }
     
@@ -132,7 +142,7 @@ class SearchResultViewModel: BaseViewModel {
         let row = itemInfo.0
         let productId = itemInfo.1
         print(#function, "row: ", row, "productId: ", productId)
-        if outputLikedProductIdList.value.contains(productId) {
+        if outputLikedProductIdDict.value.keys.contains(productId) {
             deleteLikedItem(productId)
         } else if let item = outputItemList.value?[row] {
             addLikedItem(row)

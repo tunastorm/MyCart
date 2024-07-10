@@ -23,7 +23,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         }
         
         let data = dataList[indexPath.row]
-        let isLiked = viewModel.outputLikedProductIdList.value.contains(data.productId)
+        let isLiked = viewModel.outputLikedProductIdDict.value.keys.contains(data.productId)
         print(#function, "data: ", data, "isLiked: ", isLiked)
         cell.delegate = self
         cell.likeButton.tag = indexPath.row
