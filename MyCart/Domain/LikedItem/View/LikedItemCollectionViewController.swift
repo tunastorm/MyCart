@@ -25,7 +25,7 @@ extension LikedItemViewController: UICollectionViewDelegate, UICollectionViewDat
             }
             let data = viewModel.outputLikedList.value[indexPath.row]
             print(#function, "data: ", data)
-    //        cell.delegate = self
+            likedCell.delegate = self
             likedCell.likeButton.tag = indexPath.row
             likedCell.configCell(data)
             return likedCell
@@ -42,15 +42,7 @@ extension LikedItemViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let nextVC = LikedItemDetailViewController()
-//        nextVC.delegate = self
-        nextVC.row = indexPath.row
-        if viewModel.outputLikedList.value.count > 0 {
-            nextVC.product = viewModel.outputLikedList.value[indexPath.row]
-        }
-        pushAfterView(view: nextVC, backButton: true, animated: true)
+        viewModel.inputConvertShopItem.value = indexPath.row
     }
-    
-    
 }
 

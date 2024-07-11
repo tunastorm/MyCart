@@ -15,7 +15,7 @@ final class LikedItemDetailViewController: BaseViewController {
     
     var delegate: LikedItemCollectionViewCellDelegate?
     var row: Int?
-    var product: LikedItem?
+    var product: ShopItem?
 
     let webView = WKWebView()
     let errorView = UIView()
@@ -121,8 +121,7 @@ final class LikedItemDetailViewController: BaseViewController {
         guard let productId = product?.productId else {
             return
         }
-//        delegate?.updateLikedList(sender.tag, productId)
-        configLikeButton()
+        delegate?.deleteLikedItem(productId, inDetail: true)
     }
 }
 

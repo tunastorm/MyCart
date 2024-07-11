@@ -11,7 +11,7 @@ import Then
 
 
 protocol LikedItemCollectionViewCellDelegate {
-//    func updateLikedList(_ row: Int, _ productId: String)
+    func deleteLikedItem(_ productId: String, inDetail: Bool)
 }
 
 
@@ -93,7 +93,6 @@ final class LikedItemViewController: BaseViewController {
             $0.height.equalTo(30)
             $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
-        
         categoryCollectionView.snp.makeConstraints{
             $0.height.equalTo(50)
             $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
@@ -109,12 +108,10 @@ final class LikedItemViewController: BaseViewController {
     override func configInteraction() {
         categoryCollectionView.delegate = self
         categoryCollectionView.dataSource = self
-//        categoryCollectionView.prefetchDataSource = self
         categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
         
         likedItemCollectionView.delegate = self
         likedItemCollectionView.dataSource = self
-//        likedItemCollectionView.prefetchDataSource = self
         likedItemCollectionView.register(LikedItemCollectionViewCell.self,
                                 forCellWithReuseIdentifier: LikedItemCollectionViewCell.identifier)
     }
@@ -123,9 +120,30 @@ final class LikedItemViewController: BaseViewController {
         viewModel.outputTotal.bind { total in
             self.totalLabel.text = total
         }
+        viewModel.outputShopItem.bind { itemInfo in
+            guard let row = itemInfo?.0, let product = itemInfo?.1 else { return }
+            let nextVC = LikedItemDetailViewController()
+            nextVC.delegate = self
+            nextVC.row = row
+            nextVC.product = product
+            self.pushAfterView(view: nextVC, backButton: true, animated: true)
+        }
+        viewModel.outputPopDetaileView.bind { _ in
+            print(#function, "디테일뷰컨 팝 시도")
+            guard let vc = self.navigationController?.viewControllers.last, vc is LikedItemDetailViewController else {
+                return
+            }
+            vc.popBeforeView(animated: true)
+            print(#function, vc, " 팝 완료")
+        }
         viewModel.outputLikedList.bind { _ in
             self.likedItemCollectionView.reloadData()
         }
+        viewModel.outputLikedListResult.bind { result in
+            guard let result else { return }
+            makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
+        }
+        
     }
 //    
 //    func configcategoryView() {
@@ -150,32 +168,37 @@ final class LikedItemViewController: BaseViewController {
 //        viewModel.inputRequestSearchTrigger.value = (query, sort)
 //    }
     
-    func popUpErrorToast(_ error: APIError?) {
-        guard let error else {
-            return
-        }
-        switch error {
-        case .networkError:
-            let image = Resource.SystemImage.wifiExclamationmark
-            makeToastWithImage(message: error.message,duration: 3.0, position: .bottom,
-                               title: error.title, image: image)
-        default: makeBasicToast(message: error.message, duration: 3.0 , position: .bottom, title: error.title)
-        }
-    }
-    
-    func popUpStatusToast(_ messageEnum: StatusMessage.APIStatus) {
-        switch messageEnum {
-        case .loading:
-            makeLoadingToast(positon: .center)
-        case .lastPage:
-            makeBasicToast(message: StatusMessage.APIStatus.lastPage.message, duration: 3.0, position: .bottom)
-        }
-    }
+//    func popUpErrorToast(_ error: APIError?) {
+//        guard let error else {
+//            return
+//        }
+//        switch error {
+//        case .networkError:
+//            let image = Resource.SystemImage.wifiExclamationmark
+//            makeToastWithImage(message: error.message,duration: 3.0, position: .bottom,
+//                               title: error.title, image: image)
+//        default: makeBasicToast(message: error.message, duration: 3.0 , position: .bottom, title: error.title)
+//        }
+//    }
+//    
+//    func popUpStatusToast(_ messageEnum: StatusMessage.APIStatus) {
+//        switch messageEnum {
+//        case .loading:
+//            makeLoadingToast(positon: .center)
+//        case .lastPage:
+//            makeBasicToast(message: StatusMessage.APIStatus.lastPage.message, duration: 3.0, position: .bottom)
+//        }
+//    }
 }
 
 extension LikedItemViewController: LikedItemCollectionViewCellDelegate {
 
-//    func deleteLikedList(_ row: Int, _ productId: String) {
-//        viewModel.inputLikeListButtonTrigger.value = (row,productId)
-//    }
+    func deleteLikedItem(_ productId: String, inDetail: Bool) {
+        if inDetail {
+            viewModel.inputDeleteLikedItemInDetail.value = productId
+        } else {
+            viewModel.inputDeleteLikedItem.value = productId
+        }
+    }
+ 
 }

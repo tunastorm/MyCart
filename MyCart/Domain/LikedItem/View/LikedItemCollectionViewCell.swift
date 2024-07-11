@@ -92,9 +92,10 @@ class LikedItemCollectionViewCell: BaseCollectionViewCell {
     }
     
     func configCell(_ data: LikedItem) {
+        print(#function, "하이")
         let url = URL(string: data.image)
         imageView.kf.setImage(with: url)
-    
+        
         likeButton.setTitle(data.productId, for: .normal)
         
         mallNameLabel.text = data.mallName
@@ -108,7 +109,7 @@ class LikedItemCollectionViewCell: BaseCollectionViewCell {
         guard let productId = sender.title(for: .normal), let delegate else {
             return
         }
-        print(#function, "좋아요 버튼 클릭됨")
-//        delegate.updateLikedList(sender.tag, productId)
+        delegate.deleteLikedItem(productId, inDetail: false)
     }
+    
 }
