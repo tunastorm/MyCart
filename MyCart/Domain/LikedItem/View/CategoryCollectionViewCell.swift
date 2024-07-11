@@ -33,10 +33,8 @@ class CategoryCollectionViewCell: BaseCollectionViewCell {
     
     override func configView() {
         super.configView()
-        self.backgroundColor = Resource.MyColor.gray
-        self.layer.masksToBounds = true
-        self.layer.cornerRadius = Resource.CornerRadious.sortingButton
         categoryButton.addTarget(self, action: #selector(categoryButtonClicked), for: .touchUpInside)
+        self.layer.masksToBounds = true
     }
     
     func configCell(row: Int, category: String) {
@@ -49,11 +47,21 @@ class CategoryCollectionViewCell: BaseCollectionViewCell {
         delegate?.filterCategory(row: sender.tag)
     }
     
-    func clickedToggle() {
-        categoryButton.setTitleColor(Resource.MyColor.white, for: .normal)
-        categoryButton.backgroundColor = Resource.MyColor.darkGray
-        categoryButton.layer.borderWidth = Resource.Border.widthZero
-        categoryButton.isUserInteractionEnabled = false
+    func clickedToggle(_ selected: Int? = nil) {
+        print(#function, "클릭됨", selected)
+        if categoryButton.tag == selected {
+            categoryButton.setTitleColor(Resource.MyColor.white, for: .normal)
+            self.backgroundColor = Resource.MyColor.darkGray
+            self.layer.borderWidth = Resource.Border.widthZero
+            self.isUserInteractionEnabled = false
+        } else {
+            categoryButton.setTitleColor(Resource.MyColor.black, for: .normal)
+            self.backgroundColor = Resource.MyColor.white
+            self.layer.cornerRadius = Resource.CornerRadious.sortingButton
+            self.layer.borderWidth = Resource.Border.width1
+            self.layer.borderColor = Resource.MyColor.lightGray.cgColor
+            self.isUserInteractionEnabled = true
+        }
     }
 }
 

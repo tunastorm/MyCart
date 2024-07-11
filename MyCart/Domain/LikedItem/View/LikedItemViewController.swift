@@ -135,6 +135,9 @@ final class LikedItemViewController: BaseViewController {
         viewModel.outputCategoryList.bind { _ in
             self.categoryCollectionView.reloadData()
         }
+        viewModel.outputClickedCategory.bind { _ in
+            self.categoryCollectionView.reloadData()
+        }
         viewModel.outputPopDetaileView.bind { _ in
             print(#function, "디테일뷰컨 팝 시도")
             guard let vc = self.navigationController?.viewControllers.last, vc is LikedItemDetailViewController else {

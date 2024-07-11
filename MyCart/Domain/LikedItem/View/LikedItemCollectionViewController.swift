@@ -36,7 +36,7 @@ extension LikedItemViewController: UICollectionViewDelegate, UICollectionViewDat
             
             categoryCell.delegate = self
             categoryCell.configCell(row: indexPath.row, category: viewModel.outputCategoryList.value[indexPath.row])
-            
+            categoryCell.clickedToggle(viewModel.outputClickedCategory.value)
             return categoryCell
         }
 
@@ -47,13 +47,6 @@ extension LikedItemViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == likedItemCollectionView {
             viewModel.inputConvertShopItem.value = indexPath.row
-            return
-        }
-        
-        if collectionView == categoryCollectionView {
-            // 클릭되었을 때 likedList 필터링
-            
-            // 클릭되었을 때
             return
         }
     }
