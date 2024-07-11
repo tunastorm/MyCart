@@ -16,6 +16,7 @@ protocol LikedItemCollectionViewCellDelegate {
 
 protocol CategoryCollectionViewCellDelegate {
     func filterCategory(row: Int)
+    func scrollToLeft() 
 }
 
 
@@ -71,7 +72,7 @@ final class LikedItemViewController: BaseViewController {
         return layout
     }
 
-    lazy var categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: categoryLayout() )
+    lazy var categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: categoryLayout())
     
     lazy var likedItemCollectionView = UICollectionView(frame: .zero,
                                                collectionViewLayout: likedItemLayout())
@@ -99,10 +100,9 @@ final class LikedItemViewController: BaseViewController {
         }
         categoryCollectionView.snp.makeConstraints{
             $0.height.equalTo(54)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.horizontalEdges.equalToSuperview()
             $0.top.equalTo(totalLabel.snp.bottom).offset(5)
         }
-        
         likedItemCollectionView.snp.makeConstraints{
             $0.top.equalTo(categoryCollectionView.snp.bottom)
             $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
@@ -112,6 +112,7 @@ final class LikedItemViewController: BaseViewController {
     override func configInteraction() {
         categoryCollectionView.delegate = self
         categoryCollectionView.dataSource = self
+        categoryCollectionView.showsHorizontalScrollIndicator = false
         categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
         
         likedItemCollectionView.delegate = self
@@ -154,49 +155,6 @@ final class LikedItemViewController: BaseViewController {
             makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
         }
     }
-//    func configcategoryView() {
-//        print(#function, "정렬뷰 설정")
-//        for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
-//            let title = APIRouter.Sorting.allCases[idx].buttonTitle
-//           
-////            button.backgroundColor = .red
-//            categoryView.addSubview(button)
-//            
-//            button.snp.makeConstraints {
-//                $0.height.equalTo(34)
-//                $0.width.equalTo(24 + title.count * 10)
-//                $0.centerY.equalToSuperview()
-//            }
-//            print(#function, "\(title)버튼 설정")
-//        }
-//    }
-    
-//    @objc func sortSearching(_ sender: UIButton) {
-//        let sort = APIRouter.Sorting.allCases[sender.tag]
-//        viewModel.inputRequestSearchTrigger.value = (query, sort)
-//    }
-    
-//    func popUpErrorToast(_ error: APIError?) {
-//        guard let error else {
-//            return
-//        }
-//        switch error {
-//        case .networkError:
-//            let image = Resource.SystemImage.wifiExclamationmark
-//            makeToastWithImage(message: error.message,duration: 3.0, position: .bottom,
-//                               title: error.title, image: image)
-//        default: makeBasicToast(message: error.message, duration: 3.0 , position: .bottom, title: error.title)
-//        }
-//    }
-//    
-//    func popUpStatusToast(_ messageEnum: StatusMessage.APIStatus) {
-//        switch messageEnum {
-//        case .loading:
-//            makeLoadingToast(positon: .center)
-//        case .lastPage:
-//            makeBasicToast(message: StatusMessage.APIStatus.lastPage.message, duration: 3.0, position: .bottom)
-//        }
-//    }
 }
 
 extension LikedItemViewController: LikedItemCollectionViewCellDelegate {
@@ -214,5 +172,9 @@ extension LikedItemViewController: LikedItemCollectionViewCellDelegate {
 extension LikedItemViewController: CategoryCollectionViewCellDelegate {
     func filterCategory(row: Int) {
         viewModel.inputCategoryButtonTrigger.value = row
+    }
+    
+    func scrollToLeft() {
+        categoryCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .right, animated: false)
     }
 }

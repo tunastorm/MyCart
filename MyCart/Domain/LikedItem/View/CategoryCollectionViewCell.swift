@@ -45,10 +45,10 @@ class CategoryCollectionViewCell: BaseCollectionViewCell {
     @objc func categoryButtonClicked(_ sender: UIButton) {
         print(#function, "카테고리 버튼 클릭", sender.tag)
         delegate?.filterCategory(row: sender.tag)
+        delegate?.scrollToLeft()
     }
     
     func clickedToggle(_ selected: Int? = nil) {
-        print(#function, "클릭됨", selected)
         if categoryButton.tag == selected {
             categoryButton.setTitleColor(Resource.MyColor.white, for: .normal)
             self.backgroundColor = Resource.MyColor.darkGray
