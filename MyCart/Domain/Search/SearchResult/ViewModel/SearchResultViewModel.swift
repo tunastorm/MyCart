@@ -13,6 +13,7 @@ class SearchResultViewModel: BaseViewModel {
    
     var inputRequestSearchTrigger: Observable<(String?, APIRouter.Sorting?)?> = Observable(nil)
     var inputLikeListButtonTrigger: Observable<(Int,String)?> = Observable(nil)
+    var inputSortFilterTrigger: Observable<(String, APIRouter.Sorting)?> = Observable(nil)
     
     var outputSort: Observable<APIRouter.Sorting?> = Observable(nil)
     var outputTotal: Observable<String?> = Observable(nil)
@@ -33,12 +34,17 @@ class SearchResultViewModel: BaseViewModel {
         inputLikeListButtonTrigger.bind { _ in
             self.likeListButtonToggle()
         }
+        inputSortFilterTrigger.bind { _ in
+            self.clearSearchRecord()
+            self.requestSearch()
+        }
     }
     
     func clearSearchRecord() {
         outputItemList.value.removeAll()
         responseInfo.total = 0
         responseInfo.start = 1
+        inputRequestSearchTrigger.value = inputSortFilterTrigger.value
     }
     
     func pageNation() -> Int? {
@@ -75,10 +81,12 @@ class SearchResultViewModel: BaseViewModel {
 //            hideToastActivity()
             return
         }
+        print(#function, searchInfo)
         guard let query = searchInfo.0, let sort = searchInfo.1 == nil ? outputSort.value : searchInfo.1 else {
             print(#function, "쿼리, 정렬 입력 안됨")
             return
         }
+        print(#function, "정렬방식: ", sort)
         outputSort.value = sort
         URLSessionManager.shared.callRequest(query: query, sort: sort, start: start) { search, error in
             guard error == nil, let search else {
@@ -87,7 +95,7 @@ class SearchResultViewModel: BaseViewModel {
                 return
             }
             self.setNewResponse(search)
-            print(#function, "검색결과 수: " , self.outputItemList.value.count)
+            print(#function, "\(self.outputSort.value) 검색결과 수: " , self.outputItemList.value.count)
             if self.responseInfo.start == 1 {
                 self.outputTotal.value = Int(self.responseInfo.total).formatted(.number) + Resource.Text.searchTotal
             }

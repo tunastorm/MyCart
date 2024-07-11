@@ -39,7 +39,7 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
             print(#function, indexPath.row, itemSize, query, "스크롤")
             if itemSize - 1 == indexPath.row, let query {
                 print(#function, "스크롤 실행")
-                viewModel.inputRequestSearchTrigger.value = (query, viewModel.outputSort.value)
+                viewModel.inputRequestSearchTrigger.value = (query, nil)
             }
         }
     }

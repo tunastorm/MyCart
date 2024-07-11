@@ -143,7 +143,6 @@ final class LikedItemViewController: BaseViewController {
             guard let result else { return }
             makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
         }
-        
     }
 //    
 //    func configcategoryView() {

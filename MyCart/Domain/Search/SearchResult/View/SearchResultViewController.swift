@@ -185,7 +185,8 @@ final class SearchResultViewController: BaseViewController {
             return
         }
         let sort = APIRouter.Sorting.allCases[sender.tag]
-        viewModel.inputRequestSearchTrigger.value = (query, sort)
+        print(#function, sort)
+        viewModel.inputSortFilterTrigger.value = (query, sort)
     }
     
     func popUpErrorToast(_ error: APIError?) {
