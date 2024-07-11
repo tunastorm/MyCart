@@ -62,7 +62,7 @@ class MainViewModel: BaseViewModel {
     }
     
     private func truncateSearchedList() {
-        repository.updateProperty {
+        repository.queryProperty {
             outputUser.value?.searchedList.removeAll()
         } completionHandler: { status, error in
             guard error == nil, let status else {

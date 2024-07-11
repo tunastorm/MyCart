@@ -12,11 +12,11 @@ import Then
 
 class CategoryCollectionViewCell: BaseCollectionViewCell {
     
+    var delegate: CategoryCollectionViewCellDelegate?
+    
     let categoryButton = {
         let button = UIButton()
         button.titleLabel?.font = Resource.Font.system13
-        button.layer.masksToBounds = true
-        button.layer.cornerRadius = Resource.CornerRadious.sortingButton
 //        button.addTarget(self, action: #selector(sortSearching), for: .touchUpInside)
         return button
     }()
@@ -33,12 +33,27 @@ class CategoryCollectionViewCell: BaseCollectionViewCell {
     
     override func configView() {
         super.configView()
+        self.backgroundColor = Resource.MyColor.gray
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = Resource.CornerRadious.sortingButton
+        categoryButton.addTarget(self, action: #selector(categoryButtonClicked), for: .touchUpInside)
     }
     
-//    configCell(data: ) {
-//        button.tag = idx
-//        categoryButton.setTitle(title, for: .normal)
+    func configCell(row: Int, category: String) {
+        categoryButton.tag = row
+        categoryButton.setTitle(category, for: .normal)
+    }
     
-//    }
+    @objc func categoryButtonClicked(_ sender: UIButton) {
+        print(#function, "카테고리 버튼 클릭", sender.tag)
+        delegate?.filterCategory(row: sender.tag)
+    }
+    
+    func clickedToggle() {
+        categoryButton.setTitleColor(Resource.MyColor.white, for: .normal)
+        categoryButton.backgroundColor = Resource.MyColor.darkGray
+        categoryButton.layer.borderWidth = Resource.Border.widthZero
+        categoryButton.isUserInteractionEnabled = false
+    }
 }
 

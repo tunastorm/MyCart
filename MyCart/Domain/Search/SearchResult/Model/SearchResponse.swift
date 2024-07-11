@@ -22,4 +22,8 @@ struct ShopItem: Codable {
     let mallName: String
     let title: String
     let lprice: String
+    let category1 : String
+    let category2 : String
+    let category3 : String
+    let category4: String
 }

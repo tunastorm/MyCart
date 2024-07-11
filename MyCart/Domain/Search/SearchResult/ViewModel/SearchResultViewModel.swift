@@ -133,7 +133,7 @@ class SearchResultViewModel: BaseViewModel {
             return
         }
         let searchedWord = SearchedWord(word: word, regDate: Date())
-        repository.updateProperty {
+        repository.queryProperty {
             if user.searchedList.where({$0.word == word}).count < 1 {
                 user.searchedList.append(searchedWord)
             }
@@ -160,7 +160,7 @@ class SearchResultViewModel: BaseViewModel {
     }
     
     private func deleteLikedItem(_ productId: String) {
-        repository.updateProperty {
+        repository.queryProperty {
             if let item = user?.likedList.where({ $0.productId == productId }) {
                 user?.likedList.realm?.delete(item)
             }
@@ -179,9 +179,9 @@ class SearchResultViewModel: BaseViewModel {
             return
         }
         let item = outputItemList.value[row]
-        let likedItem = LikedItem(productId: item.productId, link: item.link, image: item.image,mallName: item.mallName, title: item.title, lprice: item.lprice, regDate: Date())
+        let likedItem = LikedItem(productId: item.productId, link: item.link, image: item.image,mallName: item.mallName, title: item.title, lprice: item.lprice, category1: item.category1, category2: item.category2, category3: item.category3, category4: item.category4, regDate: Date())
         
-        repository.updateProperty {
+        repository.queryProperty {
             user.likedList.append(likedItem)
         } completionHandler: { status, error in
             guard error == nil, let status else {

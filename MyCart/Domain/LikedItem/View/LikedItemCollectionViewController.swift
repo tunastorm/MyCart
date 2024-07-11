@@ -12,7 +12,7 @@ extension LikedItemViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let itemSize = collectionView == likedItemCollectionView ?
-        viewModel.outputLikedList.value.count : 10
+        viewModel.outputLikedList.value.count : viewModel.outputCategoryList.value.count
         return itemSize
     }
     
@@ -32,7 +32,10 @@ extension LikedItemViewController: UICollectionViewDelegate, UICollectionViewDat
         }
         
         if collectionView == categoryCollectionView,
-           let categoryCell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as? CategoryCollectionViewCell {
+            let categoryCell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as? CategoryCollectionViewCell {
+            
+            categoryCell.delegate = self
+            categoryCell.configCell(row: indexPath.row, category: viewModel.outputCategoryList.value[indexPath.row])
             
             return categoryCell
         }
@@ -42,7 +45,17 @@ extension LikedItemViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.inputConvertShopItem.value = indexPath.row
+        if collectionView == likedItemCollectionView {
+            viewModel.inputConvertShopItem.value = indexPath.row
+            return
+        }
+        
+        if collectionView == categoryCollectionView {
+            // 클릭되었을 때 likedList 필터링
+            
+            // 클릭되었을 때
+            return
+        }
     }
 }
 

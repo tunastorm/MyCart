@@ -13,7 +13,7 @@ import RealmSwift
 final class Repository {
     
     typealias RepositoryResult = (_ status: RepositoryStatus?, _ error: RepositoryError?) -> Void
-    typealias PropertyUpdate = () -> Void
+    typealias queryhandler = () -> Void
     
     private let realm = try! Realm()
     
@@ -64,17 +64,6 @@ final class Repository {
         }
     }
     
-    func updateProperty(updateHandeler: PropertyUpdate, completionHandler: RepositoryResult) {
-        do {
-            try realm.write {
-                updateHandeler()
-            }
-            completionHandler(RepositoryStatus.updateSuccess, nil)
-        } catch {
-            completionHandler(nil, RepositoryError.updatedFailed)
-        }
-    }
-    
     @available(iOS 16.0, *)
     func deleteItem(_ data: Object, fileName: String? = nil, complitionHandler: RepositoryResult) {
         if let fileName {
@@ -87,6 +76,17 @@ final class Repository {
             complitionHandler(RepositoryStatus.deleteSuccess, nil)
         } catch {
             complitionHandler(nil, RepositoryError.deleteFailed)
+        }
+    }
+    
+    func queryProperty(queryHandeler: queryhandler, completionHandler: RepositoryResult) {
+        do {
+            try realm.write {
+                queryHandeler()
+            }
+            completionHandler(RepositoryStatus.updateSuccess, nil)
+        } catch {
+            completionHandler(nil, RepositoryError.updatedFailed)
         }
     }
 }

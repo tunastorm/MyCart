@@ -15,18 +15,36 @@ class LikedItemViewModel: BaseViewModel {
     var inputConvertShopItem: Observable<Int?> = Observable(nil)
     var inputDeleteLikedItem: Observable<String?> = Observable(nil)
     var inputDeleteLikedItemInDetail: Observable<String?> = Observable(nil)
+    var inputCategoryButtonTrigger: Observable<Int?> = Observable(nil)
     
     var outputTotal: Observable<String?> = Observable(nil)
     var outputLikedList: Observable<[LikedItem]> = Observable([])
+    var outputCategoryList: Observable<[String]> = Observable([])
     var outputShopItem: Observable<(Int,ShopItem)?> = Observable(nil)
     var outputLikedListResult: Observable<RepositoryResult?> = Observable(nil)
     var outputPopDetaileView: Observable<Void?> = Observable(nil)
     
     var user: User?
+    var categoryQuery = { (searchText: String) in
+        let categoryList: [LikedItem.Column] = [.category1, .category2, .category3, .category4]
+        var filterArray: [NSPredicate] = []
+        for item in categoryList {
+            if categoryList.contains(item) {
+                let predicate = "\(item.rawValue) CONTAINS[c] '\(searchText)'"
+                print(#function, "predicate: ", predicate)
+                filterArray.append(NSPredicate(format:predicate))
+            }
+        }
+        return NSCompoundPredicate(type: .or, subpredicates: filterArray)
+    }
     
     override func transform() {
         inputFatchLikedItemList.bind { _ in
             self.fetchLikedList()
+        }
+        inputCategoryButtonTrigger.bind { _ in
+            self.filterLikedList()
+            self.categoryToggle()
         }
         inputConvertShopItem.bind { _ in
             self.convertShopItem()
@@ -48,15 +66,57 @@ class LikedItemViewModel: BaseViewModel {
         if outputLikedList.value.count != user.likedList.count {
             outputLikedList.value = Array(user.likedList)
             print(#function, "수정된 아웃풋 ", outputLikedList.value.count)
-//            outputTotal.value = outputLikedList.value.count.formatted(.number) + Resource.Text.myCartTotal
+            outputTotal.value = outputLikedList.value.count.formatted(.number) + Resource.Text.myCartTotal
+        }
+        print(#function, "카테고리 리스트", outputCategoryList.value)
+        fetchCategoryFilter()
+    }
+    
+    private func filterLikedList() {
+        guard let user, let index = inputCategoryButtonTrigger.value else {
+            return
+        }
+        let compundedFilter = categoryQuery(outputCategoryList.value[index])
+        repository.queryProperty {
+            outputLikedList.value = Array(user.likedList.filter(compundedFilter))
+        } completionHandler: { status, error in
+            guard error == nil, let status else {
+                // 검색결과 없다 등 에러처리
+                return
+            }
         }
     }
+    
+    private func fetchCategoryFilter() {
+        var categoryVector = [Set<String>(),Set<String>(), Set<String>(), Set<String>()]
+        outputLikedList.value.forEach() { item in
+            categoryVector[0].insert(item.category1)
+            categoryVector[1].insert(item.category2)
+            categoryVector[2].insert(item.category3)
+            categoryVector[3].insert(item.category4)
+        }
+        var flatten: [String] = []
+        categoryVector.forEach { set in
+            set.forEach { $0.isEmpty ? print("") : flatten.append($0) }
+        }
+        outputCategoryList.value = flatten
+    }
+    
+//    private func updateCategoryFilter() {
+//        if outputCategoryList.value.isEmpty {
+//            fetchCategoryFilter()
+//            return
+//        }
+//        guard let row = inputCategoryButtonTrigger.value else {
+//            return
+//        }
+//    }
     
     private func deleteLikedItem(inDetailView: Bool = false) {
         guard let productId = inDetailView ? inputDeleteLikedItemInDetail.value : inputDeleteLikedItem.value else {
             return
         }
-        repository.updateProperty {
+        repository.queryProperty {
             if let item = user?.likedList.where({ $0.productId == productId }) {
                 user?.likedList.realm?.delete(item)
             }
@@ -79,7 +139,11 @@ class LikedItemViewModel: BaseViewModel {
             return
         }
         let item = outputLikedList.value[row]
-        let shopItem = ShopItem(productId: item.productId, link: item.link, image: item.image, mallName: item.mallName, title: item.title, lprice: item.lprice)
+        let shopItem = ShopItem(productId: item.productId, link: item.link, image: item.image, mallName: item.mallName, title: item.title, lprice: item.lprice, category1: item.category1, category2: item.category2, category3: item.category3, category4: item.category4)
         outputShopItem.value = (row, shopItem)
+    }
+    
+    private func categoryToggle() {
+        
     }
 }

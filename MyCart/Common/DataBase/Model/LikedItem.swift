@@ -17,11 +17,15 @@ class LikedItem: Object {
     @Persisted var mallName: String
     @Persisted var title: String
     @Persisted var lprice: String
+    @Persisted var category1 : String
+    @Persisted var category2 : String
+    @Persisted var category3 : String
+    @Persisted var category4: String
     @Persisted var regDate: Date
 
     @Persisted(originProperty: User.Column.likedList.name) var main: LinkingObjects<User>
     
-    convenience init(productId: String, link: String, image: String, mallName: String, title: String, lprice: String, regDate: Date) {
+    convenience init(productId: String, link: String, image: String, mallName: String, title: String, lprice: String, category1: String, category2: String, category3: String, category4: String,  regDate: Date) {
         self.init()
         self.productId = productId
         self.link = link
@@ -29,6 +33,10 @@ class LikedItem: Object {
         self.mallName = mallName
         self.title = title
         self.lprice = lprice
+        self.category1 = category1
+        self.category2 = category2
+        self.category3 = category3
+        self.category4 = category4
         self.regDate = regDate
     }
     
@@ -41,6 +49,10 @@ class LikedItem: Object {
         case title
         case lprice
         case main
+        case category1
+        case category2
+        case category3
+        case category4
         case regDate
         
         var name: String {
@@ -63,10 +75,18 @@ class LikedItem: Object {
                 "상품 이름"
             case .lprice:
                 "상품 가격"
-            case .main:
-                "부모 객체"
+            case .category1:
+                "대분류"
+            case .category2:
+                "중분류"
+            case .category3:
+                "세부분류 1"
+            case .category4:
+                "세부분류 2"
             case .regDate:
                 "등록일"
+            case .main:
+                "부모 객체"
             }
         }
         var inputErrorMessage: String {

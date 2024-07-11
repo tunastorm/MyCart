@@ -14,6 +14,10 @@ protocol LikedItemCollectionViewCellDelegate {
     func deleteLikedItem(_ productId: String, inDetail: Bool)
 }
 
+protocol CategoryCollectionViewCellDelegate {
+    func filterCategory(row: Int)
+}
+
 
 final class LikedItemViewController: BaseViewController {
     
@@ -35,7 +39,7 @@ final class LikedItemViewController: BaseViewController {
         let inset = CGFloat(5)
         
         let width = UIScreen.main.bounds.width - (inset * 2) - (itemSpacing * horizontalCount-1)
-        let height = 50 - (inset * 2) - (lineSpacing * verticalCount-1)
+        let height = 54 - (inset * 2) - (lineSpacing * verticalCount-1)
         
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: width / horizontalCount,
@@ -94,7 +98,7 @@ final class LikedItemViewController: BaseViewController {
             $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         categoryCollectionView.snp.makeConstraints{
-            $0.height.equalTo(50)
+            $0.height.equalTo(54)
             $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             $0.top.equalTo(totalLabel.snp.bottom).offset(5)
         }
@@ -128,6 +132,9 @@ final class LikedItemViewController: BaseViewController {
             nextVC.product = product
             self.pushAfterView(view: nextVC, backButton: true, animated: true)
         }
+        viewModel.outputCategoryList.bind { _ in
+            self.categoryCollectionView.reloadData()
+        }
         viewModel.outputPopDetaileView.bind { _ in
             print(#function, "디테일뷰컨 팝 시도")
             guard let vc = self.navigationController?.viewControllers.last, vc is LikedItemDetailViewController else {
@@ -144,7 +151,6 @@ final class LikedItemViewController: BaseViewController {
             makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
         }
     }
-//    
 //    func configcategoryView() {
 //        print(#function, "정렬뷰 설정")
 //        for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
@@ -200,4 +206,10 @@ extension LikedItemViewController: LikedItemCollectionViewCellDelegate {
         }
     }
  
+}
+
+extension LikedItemViewController: CategoryCollectionViewCellDelegate {
+    func filterCategory(row: Int) {
+        viewModel.inputCategoryButtonTrigger.value = row
+    }
 }
