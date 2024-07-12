@@ -41,7 +41,6 @@ class SelectPhotoCollectionViewCell: UICollectionViewCell {
     func configCell(image: UIImage) {
         imageView.layer.cornerRadius = contentView.frame.height * 0.5
         imageView.image = image
-        
     }
     
     func configUnselectedUI() {

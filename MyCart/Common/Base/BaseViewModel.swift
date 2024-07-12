@@ -13,6 +13,8 @@ class BaseViewModel {
     let repository = Repository()
     let object = User.self
     
+    var user: User?
+    
     init() {
         repository.detectRealmURL()
         transform()

@@ -108,16 +108,16 @@ final class SearchResultViewController: BaseViewController {
     }
     
     override func bindData() {
-        viewModel.outputTotal.bind { total in
-            self.totalLabel.text = total
+        viewModel.outputTotal.bind { [weak self] total in
+            self?.totalLabel.text = total
         }
-        viewModel.outputSort.bind { sort in
+        viewModel.outputSort.bind {sort in
             guard let sort else { return }
             self.updateSortingView(sort)
         }
-        viewModel.outputItemList.bind { _ in
+        viewModel.outputItemList.bind { [weak self] _ in
             print(#function, "콜렉션뷰 리로드")
-            self.collectionView.reloadData()
+            self?.collectionView.reloadData()
         }
         viewModel.outputLikedItemIndex.bind { indexPath in
             guard let indexPath else { return }
@@ -189,27 +189,27 @@ final class SearchResultViewController: BaseViewController {
         viewModel.inputSortFilterTrigger.value = (query, sort)
     }
     
-    func popUpErrorToast(_ error: APIError?) {
-        guard let error else {
-            return
-        }
-        switch error {
-        case .networkError:
-            let image = Resource.SystemImage.wifiExclamationmark
-            makeToastWithImage(message: error.message,duration: 3.0, position: .bottom,
-                               title: error.title, image: image)
-        default: makeBasicToast(message: error.message, duration: 3.0 , position: .bottom, title: error.title)
-        }
-    }
-    
-    func popUpStatusToast(_ messageEnum: StatusMessage.APIStatus) {
-        switch messageEnum {
-        case .loading:
-            makeLoadingToast(positon: .center)
-        case .lastPage:
-            makeBasicToast(message: StatusMessage.APIStatus.lastPage.message, duration: 3.0, position: .bottom)
-        }
-    }
+//    func popUpErrorToast(_ error: APIError?) {
+//        guard let error else {
+//            return
+//        }
+//        switch error {
+//        case .networkError:
+//            let image = Resource.SystemImage.wifiExclamationmark
+//            makeToastWithImage(message: error.message,duration: 3.0, position: .bottom,
+//                               title: error.title, image: image)
+//        default: makeBasicToast(message: error.message, duration: 3.0 , position: .bottom, title: error.title)
+//        }
+//    }
+//    
+//    func popUpStatusToast(_ messageEnum: StatusMessage.APIStatus) {
+//        switch messageEnum {
+//        case .loading:
+//            makeLoadingToast(positon: .center)
+//        case .lastPage:
+//            makeBasicToast(message: StatusMessage.APIStatus.lastPage.message, duration: 3.0, position: .bottom)
+//        }
+//    }
 }
 
 extension SearchResultViewController: SearchResultCollectionViewCellDelegate {

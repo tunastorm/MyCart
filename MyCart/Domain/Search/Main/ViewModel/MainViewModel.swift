@@ -17,7 +17,6 @@ class MainViewModel: BaseViewModel {
     var outputUser: Observable<User?> = Observable(nil)
     var outputTitle: Observable<String> = Observable("춤추는 고래밥\(Resource.Text.mainViewTitle)")
     var outputSearchedList: Observable<[SearchedWord]> = Observable([])
-//    var outputLikedList: Observable<[LikedItem]> = Observable([])
     var outputDeleteSearchedWordResult: Observable<RepositoryResult> = Observable(RepositoryError.deleteFailed)
     var outputTruncateSearchedListResult: Observable<RepositoryResult> = Observable(RepositoryError.deleteFailed)
     

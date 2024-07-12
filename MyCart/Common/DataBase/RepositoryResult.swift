@@ -13,10 +13,10 @@ protocol RepositoryResult {
 }
 
 enum RepositoryStatus: RepositoryResult {
+    
     case createSuccess
     case updateSuccess
     case deleteSuccess
-    
     
     var message: String {
         switch self {

@@ -10,6 +10,7 @@ import RealmSwift
 
 
 final class LikedItemViewModel: BaseViewModel {
+    
     var inputFatchLikedItemList: Observable<Void?> = Observable(nil)
     var inputConvertShopItem: Observable<Int?> = Observable(nil)
     var inputDeleteLikedItem: Observable<String?> = Observable(nil)
@@ -24,7 +25,6 @@ final class LikedItemViewModel: BaseViewModel {
     var outputLikedListResult: Observable<RepositoryResult?> = Observable(nil)
     var outputPopDetaileView: Observable<Void?> = Observable(nil)
     
-    private var user: User?
     private var categoryQuery = { (searchText: String) in
         let categoryList: [LikedItem.Column] = [.category1, .category2, .category3, .category4]
         var filterArray: [NSPredicate] = []
@@ -112,17 +112,17 @@ final class LikedItemViewModel: BaseViewModel {
             if let item = user?.likedList.where({ $0.productId == productId }) {
                 user?.likedList.realm?.delete(item)
             }
-        } completionHandler: { status, error in
+        } completionHandler: { [weak self] status, error in
             guard error == nil, let status else {
-                outputLikedListResult.value = error!
+                self?.outputLikedListResult.value = error!
                 return
             }
             if inDetailView {
                 print(#function, "펑!!!!")
-                outputPopDetaileView.value = ()
+                self?.outputPopDetaileView.value = ()
             }
-            self.fetchLikedList()
-            outputLikedListResult.value = status
+            self?.fetchLikedList()
+            self?.outputLikedListResult.value = status
         }
     }
     
@@ -133,9 +133,5 @@ final class LikedItemViewModel: BaseViewModel {
         let item = outputLikedList.value[row]
         let shopItem = ShopItem(productId: item.productId, link: item.link, image: item.image, mallName: item.mallName, title: item.title, lprice: item.lprice, category1: item.category1, category2: item.category2, category3: item.category3, category4: item.category4)
         outputShopItem.value = (row, shopItem)
-    }
-    
-    private func categoryToggle() {
-        
     }
 }

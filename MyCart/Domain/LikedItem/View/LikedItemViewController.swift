@@ -47,7 +47,7 @@ final class LikedItemViewController: BaseViewController {
                                  height: height / verticalCount)
         layout.minimumLineSpacing = lineSpacing
         layout.minimumInteritemSpacing = itemSpacing
-        layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+        layout.sectionInset = UIEdgeInsets(top: inset, left: inset * 4, bottom: inset, right: inset)
         return layout
     }
     
@@ -127,11 +127,7 @@ final class LikedItemViewController: BaseViewController {
         }
         viewModel.outputShopItem.bind { itemInfo in
             guard let row = itemInfo?.0, let product = itemInfo?.1 else { return }
-            let nextVC = LikedItemDetailViewController()
-            nextVC.delegate = self
-            nextVC.row = row
-            nextVC.product = product
-            self.pushAfterView(view: nextVC, backButton: true, animated: true)
+            self.pushToDetailViewController(row, product)
         }
         viewModel.outputCategoryList.bind { _ in
             self.categoryCollectionView.reloadData()
@@ -140,12 +136,7 @@ final class LikedItemViewController: BaseViewController {
             self.categoryCollectionView.reloadData()
         }
         viewModel.outputPopDetaileView.bind { _ in
-            print(#function, "디테일뷰컨 팝 시도")
-            guard let vc = self.navigationController?.viewControllers.last, vc is LikedItemDetailViewController else {
-                return
-            }
-            vc.popBeforeView(animated: true)
-            print(#function, vc, " 팝 완료")
+            self.popDetailViewController()
         }
         viewModel.outputLikedList.bind { _ in
             self.likedItemCollectionView.reloadData()
@@ -154,6 +145,21 @@ final class LikedItemViewController: BaseViewController {
             guard let result else { return }
             makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
         }
+    }
+    
+    private func pushToDetailViewController(_ row: Int, _ product: ShopItem) {
+        let nextVC = LikedItemDetailViewController()
+        nextVC.delegate = self
+        nextVC.row = row
+        nextVC.product = product
+        pushAfterView(view: nextVC, backButton: true, animated: true)
+    }
+    
+    private func popDetailViewController() {
+        guard let vc = navigationController?.viewControllers.last, vc is LikedItemDetailViewController else {
+            return
+        }
+        vc.popBeforeView(animated: true)
     }
 }
 
@@ -166,10 +172,10 @@ extension LikedItemViewController: LikedItemCollectionViewCellDelegate {
             viewModel.inputDeleteLikedItem.value = productId
         }
     }
- 
 }
 
 extension LikedItemViewController: CategoryCollectionViewCellDelegate {
+    
     func filterCategory(row: Int) {
         viewModel.inputCategoryButtonTrigger.value = row
     }
@@ -177,4 +183,5 @@ extension LikedItemViewController: CategoryCollectionViewCellDelegate {
     func scrollToLeft() {
         categoryCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .right, animated: false)
     }
+    
 }

@@ -7,29 +7,26 @@
 
 import Foundation
 
-class SettingViewModel {
+class SettingViewModel: BaseViewModel {
     
-    let repository = Repository()
-    let object = User.self
-
     var inputGetUser: Observable<Void?> = Observable(nil)
     var inputGetLikedList: Observable<Void?> = Observable(nil)
-    var inputDeleteUser: Observable<User?> = Observable(nil)
+    var inputDeleteUser: Observable<Void?> = Observable(nil)
     
     var outputUser: Observable<User?> = Observable(nil)
     var outputLikedList: Observable<[LikedItem]?> = Observable(nil)
     var outputLikedListCount: Observable<Int?> = Observable(nil)
     var outputDeleteUserResult: Observable<RepositoryResult> = Observable(RepositoryError.deleteFailed)
     
-    init() {
-        inputGetUser.bind { _ in
-            self.getUser()
+    override func transform() {
+        inputGetUser.bind { [weak self] _ in
+            self?.getUser()
         }
-        inputGetLikedList.bind { _ in
-            self.getLikedList()
+        inputGetLikedList.bind { [weak self] _ in
+            self?.getLikedList()
         }
-        inputDeleteUser.bind { _ in
-            self.deleteUser()
+        inputDeleteUser.bind { [weak self] _ in
+            self?.deleteUser()
         }
     }
 
@@ -46,10 +43,10 @@ class SettingViewModel {
     }
     
     private func deleteUser() {
-        guard let user = inputDeleteUser.value else {
+        guard let user = outputUser.value else {
             return
         }
-        repository.deleteItem(user) { status, error in
+        repository.deleteUser(user) { status, error in
             guard error == nil, let status else {
                 outputDeleteUserResult.value = error!
                 return

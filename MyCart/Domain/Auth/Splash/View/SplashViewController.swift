@@ -77,20 +77,19 @@ class SplashViewController: BaseViewController {
     }
 
     override func bindData() {
-        viewModel.outputUser.bind { user in
-            print(#function, "인증 결과: ", user)
-            self.user = user
+        viewModel.outputUser.bind { _  in
             self.authonticateUser()
         }
     }
     
     func authonticateUser() {
-        print(#function, "최근유저: ", user)
-        if let user {
+        if let user = viewModel.outputUser.value {
+            print(#function, "최근유저: ", user)
             let tabBar = TabBarController()
             nextView = tabBar
             withNavi = false
         } else {
+            print(#function, "최근유저 없음")
             let nextVC = OnboadingViewController()
             nextView = nextVC
             withNavi = true

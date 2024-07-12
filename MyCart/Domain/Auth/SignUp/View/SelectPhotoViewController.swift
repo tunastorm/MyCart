@@ -57,10 +57,7 @@ class SelectPhotoViewController: BaseViewController {
                                  height: height / verticalCount)
         layout.minimumLineSpacing = lineSpacing
         layout.minimumInteritemSpacing = itemSpacing
-        layout.sectionInset = UIEdgeInsets(top: inset,
-                                           left: inset,
-                                           bottom: inset,
-                                           right: inset)
+        layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         return layout
     }
     

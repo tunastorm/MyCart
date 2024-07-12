@@ -25,8 +25,6 @@ class SearchResultViewModel: BaseViewModel {
     
     private var responseInfo = SearchResponse<ShopItem>(total: 0, start: 1, display: 30)
     
-    private var user: User?
-    
     override func transform() {
         inputRequestSearchTrigger.bind { _ in
             self.requestSearch()
@@ -88,19 +86,17 @@ class SearchResultViewModel: BaseViewModel {
         }
         print(#function, "정렬방식: ", sort)
         outputSort.value = sort
-        URLSessionManager.shared.callRequest(query: query, sort: sort, start: start) { search, error in
+        URLSessionManager.shared.callRequest(query: query, sort: sort, start: start) { [weak self] search, error in
             guard error == nil, let search else {
-//                hideToastActivity()
-//                self.rootView.popUpErrorToast(error)
                 return
             }
-            self.setNewResponse(search)
-            print(#function, "\(self.outputSort.value) 검색결과 수: " , self.outputItemList.value.count)
-            if self.responseInfo.start == 1 {
-                self.outputTotal.value = Int(self.responseInfo.total).formatted(.number) + Resource.Text.searchTotal
+            self?.setNewResponse(search)
+            print(#function, "\(self?.outputSort.value) 검색결과 수: " , self?.outputItemList.value.count)
+            if self?.responseInfo.start == 1, let total = self?.responseInfo.total{
+                self?.outputTotal.value = Int(total).formatted(.number) + Resource.Text.searchTotal
             }
-            self.fetchLikedList()
-            self.addSearchedWord()
+            self?.fetchLikedList()
+            self?.addSearchedWord()
         }
     }
     
@@ -135,9 +131,9 @@ class SearchResultViewModel: BaseViewModel {
         let searchedWord = SearchedWord(word: word, regDate: Date())
         repository.queryProperty {
             if user.searchedList.where({$0.word == word}).count < 1 {
-                user.searchedList.append(searchedWord)
+               user.searchedList.append(searchedWord)
             }
-        } completionHandler: { status, error in
+        } completionHandler: { [weak self] status, error in
             guard error == nil, let status else {
                 return
             }
@@ -164,13 +160,13 @@ class SearchResultViewModel: BaseViewModel {
             if let item = user?.likedList.where({ $0.productId == productId }) {
                 user?.likedList.realm?.delete(item)
             }
-        } completionHandler: { status, error in
+        } completionHandler: { [weak self] status, error in
             guard error == nil, let status else {
-                outputLikedListResult.value = error!
+                self?.outputLikedListResult.value = error!
                 return
             }
-            self.fetchLikedList()
-            outputLikedListResult.value = status
+            self?.fetchLikedList()
+            self?.outputLikedListResult.value = status
         }
     }
     
@@ -183,14 +179,14 @@ class SearchResultViewModel: BaseViewModel {
         
         repository.queryProperty {
             user.likedList.append(likedItem)
-        } completionHandler: { status, error in
+        } completionHandler: { [weak self] status, error in
             guard error == nil, let status else {
-                outputLikedListResult.value = error!
+                self?.outputLikedListResult.value = error!
                 return
             }
-            self.fetchLikedList()
-            outputLikedItemIndex.value = IndexPath(row: row, section: 0)
-            outputLikedListResult.value = status
+            self?.fetchLikedList()
+            self?.outputLikedItemIndex.value = IndexPath(row: row, section: 0)
+            self?.outputLikedListResult.value = status
         }
     }
 }

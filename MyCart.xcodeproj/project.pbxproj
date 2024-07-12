@@ -78,10 +78,26 @@
 		BCF5E9CD2C3EF54B002D9EA0 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9CC2C3EF54B002D9EA0 /* CategoryCollectionViewCell.swift */; };
 		BCF5E9CF2C3EFF62002D9EA0 /* LikedItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9CE2C3EFF62002D9EA0 /* LikedItemDetailViewController.swift */; };
 		BCF5E9DB2C3FACB6002D9EA0 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9DA2C3FACB6002D9EA0 /* Array+Extension.swift */; };
+		BCF5E9DC2C401216002D9EA0 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = BCF5E9782C3D18B9002D9EA0 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BCF5E9DF2C415A4E002D9EA0 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9DE2C415A4E002D9EA0 /* UIImage+Extension.swift */; };
 		BCF731AF2C1BEB85003FC583 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731AE2C1BEB85003FC583 /* Resource.swift */; };
 		BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */; };
 		BCF731B42C1C14DB003FC583 /* ViewTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B32C1C14DB003FC583 /* ViewTransition.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BCF5E9DD2C401216002D9EA0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BCF5E9DC2C401216002D9EA0 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		BC1ED39B2C34571C00BFD44A /* DataReceiveDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataReceiveDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +166,7 @@
 		BCF5E9CC2C3EF54B002D9EA0 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		BCF5E9CE2C3EFF62002D9EA0 /* LikedItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedItemDetailViewController.swift; sourceTree = "<group>"; };
 		BCF5E9DA2C3FACB6002D9EA0 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		BCF5E9DE2C415A4E002D9EA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		BCF731AE2C1BEB85003FC583 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColorExtension.swift"; sourceTree = "<group>"; };
 		BCF731B32C1C14DB003FC583 /* ViewTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTransition.swift; sourceTree = "<group>"; };
@@ -524,6 +541,7 @@
 				BC3B9C5B2C1D4338008DCD18 /* String+randomExtension.swift */,
 				BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */,
 				BCF5E9DA2C3FACB6002D9EA0 /* Array+Extension.swift */,
+				BCF5E9DE2C415A4E002D9EA0 /* UIImage+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -538,6 +556,7 @@
 				BC9502CD2C1AEA21004070B8 /* Sources */,
 				BC9502CE2C1AEA21004070B8 /* Frameworks */,
 				BC9502CF2C1AEA21004070B8 /* Resources */,
+				BCF5E9DD2C401216002D9EA0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -669,6 +688,7 @@
 				BCF5E9862C3D1FF0002D9EA0 /* ResourceManager.swift in Sources */,
 				BCEC00372C31B8D600C96564 /* MapKitError.swift in Sources */,
 				BC3B9C772C1ECF4A008DCD18 /* CALayer+PartialBorderExtension.swift in Sources */,
+				BCF5E9DF2C415A4E002D9EA0 /* UIImage+Extension.swift in Sources */,
 				BCF5E97D2C3D1D1E002D9EA0 /* Observable.swift in Sources */,
 				BCF5E9C82C3EEFA3002D9EA0 /* LikedItemCollectionViewController.swift in Sources */,
 				BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */,

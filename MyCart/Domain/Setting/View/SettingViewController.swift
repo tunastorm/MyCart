@@ -232,7 +232,6 @@ class SettingViewController: BaseViewController {
             guard let user else {
                 return
             }
-            self.user = user
             self.photoView.image = UIImage(named: user.profileImage)
             self.nickNamLabel.text = user.nickname
             Utils.dateFormatter.dateFormat = "yyyy. MM. dd 가입"
@@ -250,6 +249,10 @@ class SettingViewController: BaseViewController {
             attributedStr.addAttribute(.font, value: Resource.Font.boldSystem16,
                                        range: (countText as NSString).range(of: "\(cartCount)개"))
             self.myCartCountLabel.attributedText = attributedStr
+        }
+        viewModel.outputDeleteUserResult.bind { [weak self] result in
+            makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
+            self?.changeSplashViewController()
         }
     }
     
@@ -298,17 +301,20 @@ class SettingViewController: BaseViewController {
     }
     
     func configCartCount() {
-        guard let user else {
+        guard let user = viewModel.outputUser.value else {
             return
         }
         viewModel.inputGetLikedList.value = ()
     }
     
     func deleteUser() {
+        viewModel.inputDeleteUser.value = ()
+    }
+    
+    func changeSplashViewController() {
         guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
             return
         }
-//        userModel.deleteUser()
         let nextVC = SplashViewController()
         sceneDelegate.changeRootVCWithNavi(nextVC, animated: false)
     }
