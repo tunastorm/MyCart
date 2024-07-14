@@ -33,14 +33,13 @@ class MainViewModel: BaseViewModel {
     }
     
     private func getUser() {
-        outputUser.value = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
-        print(#function, "user: ", outputUser.value)
+        self.user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
+        guard let user else { return }
+        outputUser.value = user
         if let nickname = outputUser.value?.nickname, outputTitle.value != nickname {
-            print(#function, "nickname: \(nickname)")
             outputTitle.value = nickname + Resource.Text.mainViewTitle
         }
         if let searchedList = outputUser.value?.searchedList, outputSearchedList.value.count != searchedList.count {
-            print(#function, "searchedList: \(searchedList.count)")
             outputSearchedList.value = Array(searchedList)
         }
     }
@@ -50,26 +49,26 @@ class MainViewModel: BaseViewModel {
             return
         }
         let searchedword = outputSearchedList.value[index]
-        repository.deleteItem(searchedword) { status, error in
+        repository.deleteItem(searchedword) { [weak self] status, error in
             guard error == nil, let status else {
-                outputDeleteSearchedWordResult.value = error!
+                self?.outputDeleteSearchedWordResult.value = error!
                 return
             }
-            outputDeleteSearchedWordResult.value = status
-            self.getUser()
+            self?.outputDeleteSearchedWordResult.value = status
+            self?.getUser()
         }
     }
     
     private func truncateSearchedList() {
-        repository.queryProperty {
-            outputUser.value?.searchedList.removeAll()
-        } completionHandler: { status, error in
+        repository.queryProperty { [weak self] in
+            self?.outputUser.value?.searchedList.removeAll()
+        } completionHandler: { [weak self] status, error in
             guard error == nil, let status else {
-                outputTruncateSearchedListResult.value = error!
+                self?.outputTruncateSearchedListResult.value = error!
                 return
             }
-            outputTruncateSearchedListResult.value = status
-            self.getUser()
+            self?.outputTruncateSearchedListResult.value = status
+            self?.getUser()
         }
     }
 }

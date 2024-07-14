@@ -77,19 +77,17 @@ class SplashViewController: BaseViewController {
     }
 
     override func bindData() {
-        viewModel.outputUser.bind { _  in
-            self.authonticateUser()
+        viewModel.outputUser.bind { [weak self]_  in
+            self?.authonticateUser()
         }
     }
     
     func authonticateUser() {
         if let user = viewModel.outputUser.value {
-            print(#function, "최근유저: ", user)
             let tabBar = TabBarController()
             nextView = tabBar
             withNavi = false
         } else {
-            print(#function, "최근유저 없음")
             let nextVC = OnboadingViewController()
             nextView = nextVC
             withNavi = true
@@ -100,11 +98,7 @@ class SplashViewController: BaseViewController {
     }
     
     @objc func changeRootview() {
-        print(#function,"루트뷰 변경")
-        guard let nextView else {
-            return
-        }
-        
+        guard let nextView else { return }
         if let withNavi, withNavi {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVCWithNavi(nextView, animated: false)
         } else {

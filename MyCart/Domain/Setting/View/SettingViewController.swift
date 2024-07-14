@@ -93,6 +93,19 @@ class SettingViewController: BaseViewController {
         $0.text = Resource.Text.secessionLabel
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configProfile()
+        configCartCount()
+        print(self.self, #function, "\n", self.navigationController?.viewControllers)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        configUnderline()
+        view.layoutIfNeeded()
+    }
+    
     override func configHierarchy() {
         view.addSubview(profileView)
         profileView.addSubview(photoView)
@@ -276,20 +289,7 @@ class SettingViewController: BaseViewController {
             }
         }
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configProfile()
-        configCartCount()
-        print(self.self, #function, "\n", self.navigationController?.viewControllers)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-       configUnderline()
-        view.layoutIfNeeded()
-    }
-    
+
     override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
         super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
         navigationItem.title = Resource.Text.settingViewTitle

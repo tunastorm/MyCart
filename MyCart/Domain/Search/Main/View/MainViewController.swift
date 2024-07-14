@@ -19,9 +19,6 @@ protocol MainTableViewCellDelegate {
 class MainViewController: BaseViewController {
     
     let viewModel = MainViewModel()
-    
-    var productDetailVC: ProductDetailViewController?
-
     var searchBar: UISearchBar?
     
     let imageView = UIImageView(image: Resource.NamedImage.empty).then {
@@ -62,8 +59,15 @@ class MainViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.inputUpdateUserTrigger.value = ()
+        tableView.scrollsToTop = true
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.layer.addBorder([.top], color: Resource.MyColor.lightGray, width: 0.8, opacity: 0.5)
+        view.layoutIfNeeded()
+    }
+    
     override func configHierarchy() {
         if let searchBar {
             view.addSubview(searchBar)
@@ -113,17 +117,17 @@ class MainViewController: BaseViewController {
     }
     
     override func bindData() {
-        viewModel.outputTitle.bind { title in
-            self.navigationItem.title = title
+        viewModel.outputTitle.bind { [weak self] title in
+            self?.navigationItem.title = title
         }
-        viewModel.outputSearchedList.bind { list in
-            self.searchedListToggle(list.count)
-            self.tableView.reloadData()
+        viewModel.outputSearchedList.bind { [weak self] list in
+            self?.searchedListToggle(list.count)
+            self?.tableView.reloadData()
         }
-        viewModel.outputDeleteSearchedWordResult.bind { result in
+        viewModel.outputDeleteSearchedWordResult.bind { [weak self] result in
             makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
         }
-        viewModel.outputTruncateSearchedListResult.bind { result in
+        viewModel.outputTruncateSearchedListResult.bind { [weak self] result in
             makeBasicToast(message: "전체 \(result.message)", duration: 3.0, position: .bottom)
         }
     }
@@ -169,7 +173,7 @@ extension MainViewController: MainTableViewCellDelegate {
     
     func goSearchResultView(query: String) {
         let vc = SearchResultViewController()
-        vc.query = query
+        vc.configQuery(query)
         pushAfterView(view: vc, backButton: true, animated: true)
     }
 }

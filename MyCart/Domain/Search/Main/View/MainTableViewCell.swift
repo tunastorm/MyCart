@@ -83,7 +83,6 @@ final class MainTableViewCell: BaseTableViewCell {
         guard let delegate, let searchText = wordLabel.text else {
             return
         }
-        print(#function, searchText)
         delegate.goSearchResultView(query: searchText)
     }
     

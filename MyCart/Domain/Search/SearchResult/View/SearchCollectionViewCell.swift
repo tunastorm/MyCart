@@ -90,7 +90,6 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
     
     func configCell(_ data: ShopItem, _ isLiked: Bool) {
         guard let query = delegate?.getQuery() else {
-            print(#function, "query 없음")
             return
         }
         
@@ -146,7 +145,6 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
         guard let productId = sender.title(for: .normal), let delegate else {
             return
         }
-        print(#function, "좋아요 버튼 클릭됨")
         if sender.image(for: .normal) == Resource.NamedImage.likeSelected {
             isLikedToggle()
         }

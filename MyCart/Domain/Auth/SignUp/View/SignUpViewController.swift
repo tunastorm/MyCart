@@ -21,7 +21,7 @@ protocol SelectPhotoDelegate {
 
 class SignUpViewController: BaseViewController {
    
-    var viewModel = SignUpViewModel()
+    let viewModel = SignUpViewModel()
   
     let profileView = UIView()
     let profileImageView = UIImageView().then {

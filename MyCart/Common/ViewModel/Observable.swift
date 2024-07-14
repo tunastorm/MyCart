@@ -10,6 +10,10 @@ import Foundation
 
 class Observable<T> {
     
+    deinit {
+        print("deinit: ", self.self)
+    }
+    
     typealias LogicHandler = (T) -> Void
     
     var closure: LogicHandler?

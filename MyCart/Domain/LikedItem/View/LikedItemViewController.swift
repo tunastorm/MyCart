@@ -80,6 +80,7 @@ final class LikedItemViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.inputFatchLikedItemList.value = ()
+        likedItemCollectionView.scrollsToTop = true
     }
     
     override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
@@ -122,26 +123,26 @@ final class LikedItemViewController: BaseViewController {
     }
     
     override func bindData() {
-        viewModel.outputTotal.bind { total in
-            self.totalLabel.text = total
+        viewModel.outputTotal.bind { [weak self] total in
+            self?.totalLabel.text = total
         }
-        viewModel.outputShopItem.bind { itemInfo in
+        viewModel.outputShopItem.bind { [weak self] itemInfo in
             guard let row = itemInfo?.0, let product = itemInfo?.1 else { return }
-            self.pushToDetailViewController(row, product)
+            self?.pushToDetailViewController(row, product)
         }
-        viewModel.outputCategoryList.bind { _ in
-            self.categoryCollectionView.reloadData()
+        viewModel.outputCategoryList.bind { [weak self] _ in
+            self?.categoryCollectionView.reloadData()
         }
-        viewModel.outputClickedCategory.bind { _ in
-            self.categoryCollectionView.reloadData()
+        viewModel.outputClickedCategory.bind { [weak self] _ in
+            self?.categoryCollectionView.reloadData()
         }
-        viewModel.outputPopDetaileView.bind { _ in
-            self.popDetailViewController()
+        viewModel.outputPopDetaileView.bind { [weak self] _ in
+            self?.popDetailViewController()
         }
-        viewModel.outputLikedList.bind { _ in
-            self.likedItemCollectionView.reloadData()
+        viewModel.outputLikedList.bind { [weak self] _ in
+            self?.likedItemCollectionView.reloadData()
         }
-        viewModel.outputLikedListResult.bind { result in
+        viewModel.outputLikedListResult.bind { [weak self] result in
             guard let result else { return }
             makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
         }

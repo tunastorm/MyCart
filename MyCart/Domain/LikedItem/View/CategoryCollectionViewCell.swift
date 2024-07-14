@@ -43,7 +43,6 @@ class CategoryCollectionViewCell: BaseCollectionViewCell {
     }
     
     @objc func categoryButtonClicked(_ sender: UIButton) {
-        print(#function, "카테고리 버튼 클릭", sender.tag)
         delegate?.filterCategory(row: sender.tag)
         delegate?.scrollToLeft()
     }

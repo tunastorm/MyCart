@@ -48,7 +48,7 @@ class SignUpViewModel: BaseViewModel {
     }
     
     private func getUser() {
-        user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
+        self.user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
         guard let nickname = user?.nickname, let imageName = user?.profileImage else {
             return
         }
@@ -99,12 +99,12 @@ class SignUpViewModel: BaseViewModel {
             return
         }
         print(#function, user)
-        repository.createItem(user) { status, error in
+        repository.createItem(user) { [weak self] status, error in
             guard error == nil, let status else {
-                outputAddUserResult.value = error!
+                self?.outputAddUserResult.value = error!
                 return
             }
-            outputAddUserResult.value = status
+            self?.outputAddUserResult.value = status
         }
     }
     
@@ -118,12 +118,12 @@ class SignUpViewModel: BaseViewModel {
             User.Column.nickname.name: nickname,
             User.Column.profileImage.name: imageName
         ]
-        repository.updateItem(object: object, value: user) { status, error in
+        repository.updateItem(object: object, value: user) { [weak self] status, error in
             guard error == nil, let status else {
-                outputUpdateUserResult.value = error!
+                self?.outputUpdateUserResult.value = error!
                 return
             }
-            outputUpdateUserResult.value = status
+            self?.outputUpdateUserResult.value = status
         }
     }
 }

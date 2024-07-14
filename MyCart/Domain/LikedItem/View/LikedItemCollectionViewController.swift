@@ -24,7 +24,6 @@ extension LikedItemViewController: UICollectionViewDelegate, UICollectionViewDat
                 return likedCell
             }
             let data = viewModel.outputLikedList.value[indexPath.row]
-            print(#function, "data: ", data)
             likedCell.delegate = self
             likedCell.likeButton.tag = indexPath.row
             likedCell.configCell(data)

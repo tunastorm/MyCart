@@ -10,7 +10,7 @@ import UIKit
 
 extension CALayer {
     // 뷰의 특정 방향에만 보더를 추가하는 함수
-    func addBorder(_ arr_edge: [UIRectEdge], color: UIColor, width: CGFloat) {
+    func addBorder(_ arr_edge: [UIRectEdge], color: UIColor, width: CGFloat, opacity: Float? = nil) {
         for edge in arr_edge {
             let border = CALayer()
             switch edge {
@@ -29,6 +29,9 @@ extension CALayer {
             default: break
             }
             border.backgroundColor = color.cgColor
+            if let opacity {
+                border.opacity = opacity
+            }
             self.addSublayer(border)
         }
     }

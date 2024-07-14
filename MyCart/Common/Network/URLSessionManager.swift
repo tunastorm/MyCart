@@ -34,30 +34,25 @@ final class URLSessionManager{
         guard let url = component.url else {
             return
         }
-        print(#function, url)
         var request = URLRequest(url: url, timeoutInterval: 5)
         request.httpMethod = "GET"
         _ = headers.map { (key, value) in
             request.addValue(value, forHTTPHeaderField: key)
         }
-        print(#function,request.headers)
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             DispatchQueue.main.async {
                 guard error == nil else {
-                    print("Failed Request")
                     completionHandler(nil, .failedRequest)
                     return
                 }
                 
                 guard let data = data else {
                     completionHandler(nil, .noData)
-                    print("No Data Returned")
                     return
                 }
                 
                 guard let response = response as? HTTPURLResponse else {
                     completionHandler(nil, .invalidResponse)
-                    print("Unable Response")
                     return
                 }
                 
@@ -68,24 +63,22 @@ final class URLSessionManager{
                     case 500..<600: completionHandler(nil, .serverError)
                     default: completionHandler(nil, .unExpectedError)
                     }
-                    print("failed Response")
-                    dump(response)
                     return
                 }
-                
-                print("이제 식판에 담으면 됨!")
-                
                 do {
                     let result = try JSONDecoder().decode(SearchResponse<ShopItem>.self, from: data)
-                    print("Success")
 //                    print(result)
                     completionHandler(result, nil)
                 } catch {
-                    print("Error")
-                    print(error)
                     completionHandler(nil, .invalidData)
                 }
             }
         }.resume()
+//        URLSession.shared.finishTasksAndInvalidate()
+    }
+    
+    func closeSession() {
+        URLSession.shared.invalidateAndCancel()
+        URLSession.shared.finishTasksAndInvalidate()
     }
 }

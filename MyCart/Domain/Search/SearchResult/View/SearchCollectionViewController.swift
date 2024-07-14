@@ -24,11 +24,9 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         
         let data = viewModel.outputItemList.value[indexPath.row]
         let isLiked = viewModel.outputLikedProductIdDict.value.keys.contains(data.productId)
-        print(#function, "data: ", data, "isLiked: ", isLiked)
         cell.delegate = self
         cell.likeButton.tag = indexPath.row
         cell.configCell(data, isLiked)
-        
         
         return cell
     }
@@ -36,21 +34,19 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         let itemSize = viewModel.outputItemList.value.count
         indexPaths.forEach { indexPath in
-            print(#function, indexPath.row, itemSize, query, "스크롤")
-            if itemSize - 1 == indexPath.row, let query {
-                print(#function, "스크롤 실행")
-                viewModel.inputRequestSearchTrigger.value = (query, nil)
+            if itemSize - 1 == indexPath.row {
+                viewModel.inputRequestSearchTrigger.value = nil
             }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let nextVC = ProductDetailViewController()
-        nextVC.delegate = self
-        nextVC.row = indexPath.row
+        let vc = ProductDetailViewController()
+        vc.delegate = self
+        vc.row = indexPath.row
         if viewModel.outputItemList.value.count > 0 {
-            nextVC.product = viewModel.outputItemList.value[indexPath.row]
+            vc.product = viewModel.outputItemList.value[indexPath.row]
         }
-        pushAfterView(view: nextVC, backButton: true, animated: true)
+        pushAfterView(view: vc, backButton: true, animated: true)
     }
 }

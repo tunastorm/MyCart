@@ -20,7 +20,6 @@ protocol SearchResultCollectionViewCellDelegate {
 final class SearchResultViewController: BaseViewController {
     
     let viewModel = SearchResultViewModel()
-    var query: String?
     
     private let totalLabel = UILabel().then {
         $0.textAlignment = .left
@@ -62,6 +61,11 @@ final class SearchResultViewController: BaseViewController {
         return layout
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
+    }
+    
     override func configHierarchy() {
         view.addSubview(totalLabel)
         view.addSubview(sortingView)
@@ -91,14 +95,6 @@ final class SearchResultViewController: BaseViewController {
         configSortingView()
     }
     
-    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
-        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
-        guard let query else {
-            return
-        }
-        navigationItem.title = "\(query) 검색결과"
-    }
-    
     override func configInteraction() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -111,24 +107,33 @@ final class SearchResultViewController: BaseViewController {
         viewModel.outputTotal.bind { [weak self] total in
             self?.totalLabel.text = total
         }
-        viewModel.outputSort.bind {sort in
+        viewModel.outputSort.bind { [weak self] sort in
             guard let sort else { return }
-            self.updateSortingView(sort)
+            self?.updateSortingView(sort)
         }
         viewModel.outputItemList.bind { [weak self] _ in
-            print(#function, "콜렉션뷰 리로드")
             self?.collectionView.reloadData()
         }
-        viewModel.outputLikedItemIndex.bind { indexPath in
+        viewModel.outputLikedItemIndex.bind { [weak self] indexPath in
             guard let indexPath else { return }
-            self.collectionView.reloadItems(at: [indexPath])
+            self?.collectionView.reloadItems(at: [indexPath])
+//            self?.collectionView.reloadData()
         }
-        guard let query else { return }
-        viewModel.inputRequestSearchTrigger.value = (query, .sim)
+        viewModel.inputRequestSearchTrigger.value = .sim
     }
     
-    func configSortingView() {
-        print(#function, "정렬뷰 설정")
+    func configQuery(_ query: String) {
+        viewModel.inputQuery.value = query
+    }
+    
+    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
+        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
+        if let title = viewModel.outputQuery.value {
+            navigationItem.title = "\(title) 검색결과"
+        }
+    }
+    
+    private func configSortingView() {
         for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
             let title = APIRouter.Sorting.allCases[idx].buttonTitle
             button.setTitle(title, for: .normal)
@@ -137,7 +142,6 @@ final class SearchResultViewController: BaseViewController {
             button.layer.cornerRadius = Resource.CornerRadious.sortingButton
             button.addTarget(self, action: #selector(sortSearching), for: .touchUpInside)
             button.tag = idx
-//            button.backgroundColor = .red
             sortingView.addSubview(button)
             
             button.snp.makeConstraints {
@@ -145,12 +149,11 @@ final class SearchResultViewController: BaseViewController {
                 $0.width.equalTo(24 + title.count * 10)
                 $0.centerY.equalToSuperview()
             }
-            print(#function, "\(title)버튼 설정")
         }
         configSortButtonLayout()
     }
     
-    func configSortButtonLayout() {
+    private func configSortButtonLayout() {
         dateButton.snp.makeConstraints {
             $0.leading.equalTo(simButton.snp.trailing).offset(6)
         }
@@ -162,8 +165,7 @@ final class SearchResultViewController: BaseViewController {
         }
     }
     
-    func updateSortingView(_ sort: APIRouter.Sorting) {
-        print(#function, "정렬 뷰 업데이트")
+    private func updateSortingView(_ sort: APIRouter.Sorting) {
         for (idx, button) in [simButton, dateButton, dscButton, ascButton].enumerated() {
             if APIRouter.Sorting.allCases[idx] == sort {
                 button.setTitleColor(Resource.MyColor.white, for: .normal)
@@ -180,51 +182,23 @@ final class SearchResultViewController: BaseViewController {
         }
     }
     
-    @objc func sortSearching(_ sender: UIButton) {
-        guard let query else {
-            return
-        }
+    @objc private func sortSearching(_ sender: UIButton) {
         let sort = APIRouter.Sorting.allCases[sender.tag]
-        print(#function, sort)
-        viewModel.inputSortFilterTrigger.value = (query, sort)
+        viewModel.inputSortFilterTrigger.value = sort
+        collectionView.scrollsToTop = true
     }
-    
-//    func popUpErrorToast(_ error: APIError?) {
-//        guard let error else {
-//            return
-//        }
-//        switch error {
-//        case .networkError:
-//            let image = Resource.SystemImage.wifiExclamationmark
-//            makeToastWithImage(message: error.message,duration: 3.0, position: .bottom,
-//                               title: error.title, image: image)
-//        default: makeBasicToast(message: error.message, duration: 3.0 , position: .bottom, title: error.title)
-//        }
-//    }
-//    
-//    func popUpStatusToast(_ messageEnum: StatusMessage.APIStatus) {
-//        switch messageEnum {
-//        case .loading:
-//            makeLoadingToast(positon: .center)
-//        case .lastPage:
-//            makeBasicToast(message: StatusMessage.APIStatus.lastPage.message, duration: 3.0, position: .bottom)
-//        }
-//    }
 }
 
 extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
     
     func getQuery() -> String? {
-        print(#function, query)
-        guard let query else {
-            print(#function, "query 없음")
-            return nil
-        }
-        return query
+        return viewModel.outputQuery.value
     }
     
     func checkIsLikedItem(_ productId: String) -> Bool {
-        return viewModel.outputLikedProductIdDict.value.keys.contains(productId)
+        let result = viewModel.outputLikedProductIdDict.value.keys.contains(productId)
+        print(#function, result)
+        return result
     }
     
     func updateLikedList(_ row: Int, _ productId: String) {

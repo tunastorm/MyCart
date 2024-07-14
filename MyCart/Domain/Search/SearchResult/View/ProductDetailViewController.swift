@@ -30,13 +30,6 @@ final class ProductDetailViewController: BaseViewController {
         configExternalResource()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        guard let delegate, let productId = product?.productId else {
-            return
-        }
-    }
-    
     override func configHierarchy() {
         view.addSubview(webView)
     }
@@ -71,7 +64,6 @@ final class ProductDetailViewController: BaseViewController {
             $0.height.equalToSuperview().multipliedBy(0.8)
             $0.top.horizontalEdges.equalToSuperview()
         }
-        
         errorLabel.snp.makeConstraints {
             $0.top.equalTo(errorImage.snp.bottom)
             $0.bottom.horizontalEdges.equalToSuperview()
@@ -93,7 +85,10 @@ final class ProductDetailViewController: BaseViewController {
         super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
         let title = product?.title.replacingOccurrences(of: "<b>", with: "")
         navigationItem.title = title?.replacingOccurrences(of: "</b>", with: "")
-        configLikeButton()
+        guard let delegate, let productId = product?.productId else {
+            return
+        }
+        configLikeButton(delegate.checkIsLikedItem(productId))
     }
     
     private func configExternalResource() {
@@ -107,22 +102,23 @@ final class ProductDetailViewController: BaseViewController {
         webView.load(request)
     }
     
-    private func configLikeButton() {
-        guard let delegate, let productId = product?.productId, let row else {
+    private func configLikeButton(_ isLiked: Bool = false) {
+        guard let delegate, let row else {
             return
         }
-        let cartImage = delegate.checkIsLikedItem(productId) ? Resource.IsLike.like.image : Resource.IsLike.unLike.image
+        let cartImage = isLiked ? Resource.IsLike.like.image : Resource.IsLike.unLike.image
         let likeButton = UIBarButtonItem(image: cartImage, style: .plain, target: self, action: #selector(likeButtonClicked))
         likeButton.tag = row
         navigationItem.rightBarButtonItem = likeButton
     }
     
-    @objc private func likeButtonClicked(_ sender: UIButton) {
+    @objc private func likeButtonClicked(_ sender: UIBarButtonItem) {
         guard let productId = product?.productId else {
             return
         }
+        var isLiked = sender.image == Resource.NamedImage.likeUnselected ? true : false
+        configLikeButton(isLiked)
         delegate?.updateLikedList(sender.tag, productId)
-        configLikeButton()
     }
 }
 

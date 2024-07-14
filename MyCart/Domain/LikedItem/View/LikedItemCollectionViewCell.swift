@@ -92,7 +92,6 @@ class LikedItemCollectionViewCell: BaseCollectionViewCell {
     }
     
     func configCell(_ data: LikedItem) {
-        print(#function, "하이")
         let url = URL(string: data.image)
         imageView.kf.setImage(with: url)
         

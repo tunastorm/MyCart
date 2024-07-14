@@ -26,7 +26,6 @@ class TextInputFilter {
         }
         let trimed = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         let replaced = trimed.replacing(serialSpaceFilter, with: "")
-        print(#function, "공백제거결과: ", replaced, replaced.count)
         return (inputText == trimed && trimed.count - replaced.count <= 1) ? replaced : nil
     }
     

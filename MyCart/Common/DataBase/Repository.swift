@@ -41,7 +41,7 @@ final class Repository {
         return Array(value)
     }
     
-    func fetchAllFiltered<T: Object>(obejct: T.Type, sortKey column: ColumnManager, acending: Bool = true, query: (Query<T>) -> Query<Bool>) -> [T] {
+    func fetchAllFiltered<T: Object>(obejct: T.Type, sortKey column: ColumnManager, acending: Bool = true, query: @escaping (Query<T>) -> Query<Bool>) -> [T] {
         let value = realm.objects(obejct).where(query).sorted(byKeyPath: column.name, ascending: acending)
         return Array(value)
     }
