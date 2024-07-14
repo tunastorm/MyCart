@@ -103,20 +103,15 @@ class SearchResultViewModel: BaseViewModel {
     private func fetchLikedList() {
         self.user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
         
-        guard let user else  {
-            return
-        }
+        guard let user else { return }
         
         let oldCount = outputLikedList.value.count
         let newCount = user.likedList.count
 
         print(#function, "oldCount: ", oldCount, "newCount: ", newCount)
-        if oldCount == newCount {
-            return
-        }
+        if oldCount == newCount { return }
         
         var dict = outputLikedProductIdDict.value
-        
         if oldCount > newCount {
             outputLikedList.value = Array(user.likedList)
             dict.keys.forEach { productId in
@@ -144,6 +139,7 @@ class SearchResultViewModel: BaseViewModel {
             }
             outputLikedList.value = Array(newList)
         }
+        
         outputLikedProductIdDict.value = dict
     }
 
