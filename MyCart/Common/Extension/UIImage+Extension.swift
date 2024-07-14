@@ -10,6 +10,6 @@ import UIKit
 
 extension UIImage {
     var name: String {
-        self.name
+        return String(self.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
     }
 }

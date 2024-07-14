@@ -15,8 +15,6 @@ class SettingViewController: BaseViewController {
     
     let viewModel = SettingViewModel()
     
-    var signUpVC: SignUpViewController?
-    
     let profileView = UIView()
     
     let photoView = UIImageView().then {
@@ -283,6 +281,7 @@ class SettingViewController: BaseViewController {
         super.viewWillAppear(animated)
         configProfile()
         configCartCount()
+        print(self.self, #function, "\n", self.navigationController?.viewControllers)
     }
     
     override func viewDidLayoutSubviews() {
@@ -327,16 +326,9 @@ class SettingViewController: BaseViewController {
     }
     
     @objc func pushUpdateProfile() {
-        if signUpVC == nil {
-            signUpVC = SignUpViewController()
-        }
-        guard let signUpVC else {
-            return
-        }
-        signUpVC.isUpdateView = true
-        signUpVC.selectedPhoto = photoView.image
-        print(#function, signUpVC.isUpdateView, signUpVC.selectedPhoto)
-        pushAfterView(view: signUpVC, backButton: true, animated: true)
+        let vc = SignUpViewController()
+        vc.setUpdatePresentation()
+        pushAfterView(view: vc, backButton: true, animated: true)
     }
     
     @objc func alertSecession() {

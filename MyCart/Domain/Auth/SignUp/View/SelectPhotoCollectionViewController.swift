@@ -10,27 +10,24 @@ import UIKit
 
 extension SelectPhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(#function, photoList.count)
-        return photoList.count
+        return Resource.NamedImage.allProfile.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectPhotoCollectionViewCell.identifier,
                                                       for: indexPath) as! SelectPhotoCollectionViewCell
         
-        let thisPhoto = photoList[indexPath.row]
+        let thisPhoto = Resource.NamedImage.allProfile[indexPath.row]
         cell.configCell(image: thisPhoto)
-        guard let selectedPhoto else {
+        guard let selectedCell = delegate?.getSelectedPhoto(), let selectedPhoto = Resource.NamedImage.profileImage(number: selectedCell.row) else {
+            print(#function, "선택된 프로필 이미지 없음")
             return cell
         }
-        // UIImage 객체 생성 시 입력한 에셋파일의 이름 가져오기
-        var selectedName = String(selectedPhoto.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
-        var thisName = String(thisPhoto.description).split(separator: " ")[2].replacingOccurrences(of: ")", with: "")
         // 이름이 같을 경우 해당 셀을 선택된 상태로 설정
         // -> 페이지 로드시 이전 화면에서 랜덤 생성된 이미지가 기본 선택됨
-        if selectedName == thisName {
+        if selectedPhoto.name == thisPhoto.name {
             cell.configSelectedUI()
-            selectedCell = indexPath
+            delegate?.setSelectedPhoto(indexPath)
         } else {
             cell.configUnselectedUI()
         }
@@ -39,20 +36,15 @@ extension SelectPhotoViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if let selectedCell {
+        guard let delegate else { return }
+        if let selectedCell = delegate.getSelectedPhoto() {
             let lastCell = collectionView.cellForItem(at: selectedCell) as! SelectPhotoCollectionViewCell
             lastCell.configUnselectedUI()
         }
-      
+        delegate.setSelectedPhoto(indexPath)
         let cell = collectionView.cellForItem(at: indexPath) as! SelectPhotoCollectionViewCell
         cell.configSelectedUI()
-        selectedCell = indexPath
-        selectedPhoto = cell.imageView.image
-        profileImageView.image = selectedPhoto
-        guard let delegate else {
-            print(#function, "DataRecive 실패")
-            return
-        }
-        delegate.receiveData(data: selectedPhoto)
+        profileImageView.image = cell.imageView.image
+        delegate.receiveSelectedPhoto(data: cell.imageView.image)
     }
 }

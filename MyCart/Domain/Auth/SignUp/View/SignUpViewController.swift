@@ -11,22 +11,17 @@ import SnapKit
 import Then
 
 
-protocol SignUpViewDelegate {
-    func getIsUpdateView() -> Bool
-    
-    func getUserName() -> String?
-    
-    func pushSelectPhotoView()
-    
-    func signUpAndpushMain(nickName: String)
+protocol SelectPhotoDelegate {
+    func getIsUpdatePresentation() -> Bool
+    func setSelectedPhoto(_ indexPath: IndexPath)
+    func getSelectedPhoto() -> IndexPath? 
+    func receiveSelectedPhoto<T>(data: T)
 }
 
 
 class SignUpViewController: BaseViewController {
    
-    var isUpdateView = false
     var viewModel = SignUpViewModel()
-    var selectPhotoVC: SelectPhotoViewController?
   
     let profileView = UIView()
     let profileImageView = UIImageView().then {
@@ -66,18 +61,12 @@ class SignUpViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function, isUpdateView)
         viewModel.inputViewDidLoadTrigger.value = ()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configUpdateViewToggle()
-    }
-
-    override func configNavigationbar(navigationColor: UIColor, shadowImage: Bool) {
-        super.configNavigationbar(navigationColor: navigationColor, shadowImage: shadowImage)
-        configUpdateViewToggle()
+        print(self.self, #function, "\n", self.navigationController?.viewControllers)
     }
     
     override func configHierarchy() {
@@ -130,31 +119,29 @@ class SignUpViewController: BaseViewController {
     }
     
     override func bindData() {
-        viewModel.outputUpdatePresentation.bind { _ in
-            self.updatePresentationToggle()
+        viewModel.outputViewDidLoadTrigger.bind { [weak self] userInfo in
+            self?.configProfileToggle(userInfo?.0, userInfo?.1)
+            self?.updatePresentationToggle()
         }
-        viewModel.outputViewDidLoadTrigger.bind { userInfo in
-            self.configProfile(userInfo?.0, userInfo?.1)
+        viewModel.outputValidationResult.bind { [weak self] result in
+            self?.messageLabel.text = result
         }
-        viewModel.outputValidationResult.bind { result in
-            self.messageLabel.text = result
-        }
-        viewModel.outputAddUserResult.bind { result in
+        viewModel.outputAddUserResult.bind { [weak self] result in
             print(#function, "유저가입 결과")
             guard let status = result as? RepositoryStatus else {
                 makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
                 return
             }
             makeBasicToast(message: status.message, duration: 3.0, position: .bottom)
-            self.goMainViewController()
+            self?.goMainViewController()
         }
-        viewModel.outputUpdateUserResult.bind { result in
+        viewModel.outputUpdateUserResult.bind { [weak self] result in
             guard let status = result as? RepositoryStatus else {
                 makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
                 return
             }
             makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
-            self.popBeforeView(animated: true)
+            self?.popBeforeView(animated: true)
         }
     }
     
@@ -163,13 +150,14 @@ class SignUpViewController: BaseViewController {
         profileView.addGestureRecognizer(tapGesture)
     }
     
-    func setUpdateview() {
+    func setUpdatePresentation() {
         viewModel.inputUpdatePresentation.value = ()
     }
     
-    private func configProfile(_ nickname: String?, _ imageName: String?) {
+    private func configProfileToggle(_ nickname: String?, _ imageName: String?) {
         guard let nickname, let imageName else { // SignUp
             profileImageView.image = Resource.NamedImage.randomProfile
+            nickNameTextField.text = nil
             return
         }
         // Update
@@ -178,6 +166,7 @@ class SignUpViewController: BaseViewController {
     }
     
     private func updatePresentationToggle() {
+        print(#function, viewModel.outputUpdatePresentation.value )
         if viewModel.outputUpdatePresentation.value {
             navigationItem.title = Resource.Text.editProfileTitle
             let barButtonItem = UIBarButtonItem(title: Resource.Text.saveNewProfile,
@@ -218,17 +207,9 @@ class SignUpViewController: BaseViewController {
     }
     
     @objc func pushSelectPhotoView() {
-        if selectPhotoVC == nil {
-            selectPhotoVC = SelectPhotoViewController()
-        }
-        guard let selectPhotoVC else {
-            return
-        }
-        selectPhotoVC.delegate = self
-        selectPhotoVC.isUpdateView = self.isUpdateView
-        print(#function, profileImageView.image)
-        selectPhotoVC.selectedPhoto = profileImageView.image
-        pushAfterView(view: selectPhotoVC, backButton: true, animated: true)
+        let vc = SelectPhotoViewController()
+        vc.delegate = self
+        pushAfterView(view: vc, backButton: true, animated: true)
     }
     
     @objc func signUpAndPushMain() {
@@ -237,9 +218,22 @@ class SignUpViewController: BaseViewController {
     }
 }
 
-extension SignUpViewController: DataReceiveDelegate  {
-    func receiveData<T>(data: T) {
+extension SignUpViewController: SelectPhotoDelegate  {
+    func getIsUpdatePresentation() -> Bool {
+        return viewModel.outputUpdatePresentation.value
+    }
+    
+    func setSelectedPhoto(_ indexPath: IndexPath) {
+        viewModel.selectedPhoto = indexPath
+    }
+    
+    func getSelectedPhoto() -> IndexPath? {
+        return viewModel.selectedPhoto
+    }
+    
+    func receiveSelectedPhoto<T>(data: T) {
         print(#function, "프로필 이미지 변경됨")
-        viewModel. = data as? UIImage
+        guard let image = data as? UIImage else { return }
+        profileImageView.image = image
     }
 }

@@ -76,10 +76,7 @@ class OnboadingViewController: BaseViewController {
         if signUpVC == nil {
             signUpVC = SignUpViewController()
         }
-        guard let signUpVC else {
-            return
-        }
-        signUpVC.nickNameTextField.text = nil
+        guard let signUpVC else { return }
         pushAfterView(view: signUpVC, backButton: true, animated: true)
     }
 }

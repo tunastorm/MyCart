@@ -19,11 +19,11 @@ class SignUpViewModel: BaseViewModel {
   
     var outputUpdatePresentation: Observable<Bool> = Observable(false)
     var outputViewDidLoadTrigger: Observable<(String,String)?> = Observable(nil)
-    var outputAddUserResult: Observable<RepositoryResult> = Observable((nil, RepositoryError.createFailed))
-    var outputUpdateUserResult: Observable<RepositoryResult> = Observable((nil, RepositoryError.updatedFailed))
+    var outputAddUserResult: Observable<RepositoryResult> = Observable(RepositoryError.createFailed)
+    var outputUpdateUserResult: Observable<RepositoryResult> = Observable(RepositoryError.updatedFailed)
     var outputValidationResult: Observable<String?> = Observable(nil)
-//    var outputSignUpResult: Observable<(Bool,String?)> = Observable((false,nil))
- 
+
+    var selectedPhoto: IndexPath?
     private var signUpInfo: (Bool,String)?
 
     override func transform() {
@@ -52,6 +52,10 @@ class SignUpViewModel: BaseViewModel {
         guard let nickname = user?.nickname, let imageName = user?.profileImage else {
             return
         }
+        guard let row = Int(imageName.replacing("profile_", with: "")) else {
+            return
+        }
+        selectedPhoto = IndexPath(row: row, section: 0)
         outputViewDidLoadTrigger.value = (nickname, imageName)
     }
     

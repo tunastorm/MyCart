@@ -17,6 +17,9 @@ class BaseViewModel {
     
     init() {
         repository.detectRealmURL()
+        if user == nil {
+            user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
+        }
         transform()
     }
     

@@ -12,12 +12,7 @@ import SnapKit
 
 class SelectPhotoViewController: BaseViewController {
     
-    var isUpdateView = false
-    var delegate: DataReceiveDelegate?
-    var selectedCell: IndexPath?
-    var selectedPhoto: UIImage?
-    
-    let photoList = Resource.NamedImage.allProfile
+    var delegate: SelectPhotoDelegate?
     
     let profileView = UIView()
     
@@ -66,12 +61,11 @@ class SelectPhotoViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configInteraction()
+        configUpdateViewToggle()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configUpdateViewToggle()
         configProfileImage()
     }
     
@@ -113,6 +107,10 @@ class SelectPhotoViewController: BaseViewController {
     }
     
     func configProfileImage() {
+        guard let row = delegate?.getSelectedPhoto()?.row, let selectedPhoto = Resource.NamedImage.profileImage(number: row) else {
+            print(#function, "프로필이미지 설정 에러")
+            return
+        }
         profileImageView.image = selectedPhoto
         collectionView.reloadData()
     }
@@ -125,11 +123,8 @@ class SelectPhotoViewController: BaseViewController {
     }
     
     func configUpdateViewToggle() {
-        var naviTitle =  Resource.Text.profileSetting
-        if isUpdateView {
-            naviTitle = Resource.Text.editProfileTitle
-        }
-        navigationItem.title = naviTitle
+        guard let delegate else { return }
+        navigationItem.title = delegate.getIsUpdatePresentation() ? Resource.Text.editProfileTitle : Resource.Text.profileSetting
     }
 }
  
