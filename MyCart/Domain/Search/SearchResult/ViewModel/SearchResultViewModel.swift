@@ -119,6 +119,14 @@ class SearchResultViewModel: BaseViewModel {
         
         if oldCount > newCount {
             outputLikedList.value = Array(user.likedList)
+            dict.keys.forEach { productId in
+                self.outputLikedList.value.forEach{ likedItem in
+                    if likedItem.productId == productId {
+                        return
+                    }
+                    dict.removeValue(forKey: productId)
+                }
+            }
         }
         
         if oldCount < newCount {
@@ -172,10 +180,10 @@ class SearchResultViewModel: BaseViewModel {
     
     private func deleteLikedItem(_ productId: String) {
         print(#function, productId)
-        var dict = outputLikedProductIdDict.value
+//        var dict = outputLikedProductIdDict.value
         repository.queryProperty { [weak self] in
             if let item = self?.user?.likedList.where({ $0.productId == productId }) {
-                dict.removeValue(forKey: productId)
+//                dict.removeValue(forKey: productId)
                 self?.user?.likedList.realm?.delete(item)
             }
         } completionHandler: { [weak self] status, error in
@@ -183,7 +191,7 @@ class SearchResultViewModel: BaseViewModel {
                 self?.outputLikedListResult.value = error!
                 return
             }
-            self?.outputLikedProductIdDict.value = dict
+//            self?.outputLikedProductIdDict.value = dict
             self?.fetchLikedList()
             self?.outputLikedListResult.value = status
         }

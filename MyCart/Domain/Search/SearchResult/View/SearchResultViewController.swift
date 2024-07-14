@@ -63,7 +63,7 @@ final class SearchResultViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.reloadData()
+        viewModel.inputRequestSearchTrigger.value = .sim
     }
     
     override func configHierarchy() {
@@ -119,7 +119,6 @@ final class SearchResultViewController: BaseViewController {
             self?.collectionView.reloadItems(at: [indexPath])
 //            self?.collectionView.reloadData()
         }
-        viewModel.inputRequestSearchTrigger.value = .sim
     }
     
     func configQuery(_ query: String) {
