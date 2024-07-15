@@ -80,7 +80,8 @@ final class LikedItemViewModel: BaseViewModel {
             categoryVector[3].insert(item.category4)
         }
         var flatten: [String] = []
-        categoryVector.forEach { set in
+        categoryVector.enumerated().forEach { index, set in
+            if index < 2 { return }
             set.forEach { $0.isEmpty ? print("") : flatten.append($0) }
         }
         outputCategoryList.value = flatten
