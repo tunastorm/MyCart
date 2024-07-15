@@ -26,12 +26,11 @@ final class LikedItemViewController: BaseViewController {
     
     private let noItemView = UIView().then {
         $0.isHidden = true
-//        $0.backgroundColor = .gray
     }
     
     private let noItemImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-        $0.image = Resource.NamedImage.likeSelected.withRenderingMode(.alwaysTemplate)
+        $0.image = Resource.NamedImage.likeSelected
         $0.tintColor = Resource.MyColor.lightGray
     }
     

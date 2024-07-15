@@ -29,7 +29,7 @@ class LikedItemCollectionViewCell: BaseCollectionViewCell {
         $0.titleLabel?.layer.opacity = 0
         $0.titleLabel?.font = .systemFont(ofSize: 0)
         $0.backgroundColor = Resource.MyColor.white
-        $0.tintColor = Resource.MyColor.black
+        $0.tintColor = Resource.MyColor.orange
         $0.setImage(Resource.NamedImage.likeSelected, for: .normal)
         $0.alpha = Resource.Alpha.full
         $0.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)

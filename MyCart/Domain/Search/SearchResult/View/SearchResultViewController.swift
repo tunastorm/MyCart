@@ -61,6 +61,11 @@ final class SearchResultViewController: BaseViewController {
         return layout
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.inputCloseURLSession.value = ()
+    }
+    
     override func configHierarchy() {
         view.addSubview(totalLabel)
         view.addSubview(sortingView)

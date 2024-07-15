@@ -34,14 +34,14 @@ class MainViewModel: BaseViewModel {
     }
     
     @objc private func getUser() {
-        print(#function, "getUser 실행")
         self.user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
         guard let user else { return }
         outputUser.value = user
         if let nickname = outputUser.value?.nickname, outputTitle.value != nickname {
             outputTitle.value = nickname + Resource.Text.mainViewTitle
         }
-        if let searchedList = outputUser.value?.searchedList.reversed(), outputSearchedList.value.first != searchedList.first {
+        if let searchedList = outputUser.value?.searchedList.reversed(),
+          outputSearchedList.value.first != searchedList.first || outputSearchedList.value.count != searchedList.count {
             outputSearchedList.value = Array(searchedList)
         }
     }

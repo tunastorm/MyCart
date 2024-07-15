@@ -95,9 +95,7 @@ final class SearchCollectionViewCell: BaseCollectionViewCell {
         
         let url = URL(string: data.image)
         imageView.kf.setImage(with: url)
-    
         likeButton.setTitle(data.productId, for: .normal)
-        
         isLikedToggle(isLiked)
         
         let mallName = data.mallName
@@ -130,7 +128,7 @@ final class SearchCollectionViewCell: BaseCollectionViewCell {
     private func isLikedToggle(_ isLiked: Bool = false) {
         if isLiked {
             likeButton.setImage(Resource.NamedImage.likeSelected, for: .normal)
-            likeButton.tintColor = Resource.MyColor.black
+            likeButton.tintColor = Resource.MyColor.orange
             likeButton.backgroundColor = Resource.MyColor.white
             likeButton.alpha = Resource.Alpha.full
         } else {

@@ -50,6 +50,7 @@ class SettingViewController: BaseViewController {
     
     let myCartIcon = UIImageView().then {
         $0.contentMode = .scaleAspectFit
+        $0.tintColor = Resource.MyColor.orange
     }
     
     let myCartCountLabel = UILabel().then {
@@ -258,6 +259,8 @@ class SettingViewController: BaseViewController {
             var countText = String(cartCount) + Resource.Text.myCartCountLabel
             var attributedStr = NSMutableAttributedString(string: countText)
             attributedStr.addAttribute(.font, value: Resource.Font.boldSystem16,
+                                       range: (countText as NSString).range(of: "\(cartCount)개"))
+            attributedStr.addAttribute(.foregroundColor, value: Resource.MyColor.orange,
                                        range: (countText as NSString).range(of: "\(cartCount)개"))
             self.myCartCountLabel.attributedText = attributedStr
         }

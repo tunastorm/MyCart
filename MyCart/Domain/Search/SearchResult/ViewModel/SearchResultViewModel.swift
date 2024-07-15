@@ -16,6 +16,7 @@ final class SearchResultViewModel: BaseViewModel {
     var inputLikeListButtonTrigger: Observable<(Int,String)?> = Observable(nil)
     var inputSortFilterTrigger: Observable<APIRouter.Sorting?> = Observable(nil)
     var inputViewWillDisappear: Observable<Void?> = Observable(nil)
+    var inputCloseURLSession: Observable<Void?> = Observable(nil)
     
     var outputQuery: Observable<String?> = Observable(nil)
     var outputSort: Observable<APIRouter.Sorting?> = Observable(nil)
@@ -62,7 +63,7 @@ final class SearchResultViewModel: BaseViewModel {
         }
         let start = responseInfo.start + responseInfo.display
         if start > responseInfo.total || start > 1000 {
-            print(#function, "마지막 페이지")
+            makeBasicToast(message: "마지막 페이지 입니다", duration: 3.0, position: .bottom)
             return nil
         }
         responseInfo.start = start
@@ -88,6 +89,7 @@ final class SearchResultViewModel: BaseViewModel {
             return
         }
         outputSort.value = sort
+        makeLoadingToast(positon: .center)
         URLSessionManager.shared.callRequest(query: query, sort: sort, start: start) { [weak self] search, error in
             guard error == nil, let search else {
                 return
@@ -98,6 +100,7 @@ final class SearchResultViewModel: BaseViewModel {
             }
             self?.fetchLikedList()
             self?.addSearchedWord()
+            hideToastActivity()
         }
     }
     
@@ -105,8 +108,6 @@ final class SearchResultViewModel: BaseViewModel {
         self.user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
         
         guard let user else { return }
-
-        print(#function, "user.likedList: ", user.likedList)
         
         switch isAdd {
         case true:
@@ -145,7 +146,6 @@ final class SearchResultViewModel: BaseViewModel {
             }
             newDict.removeValue(forKey: productId)
         }
-        print(#function, "삭제된 dict: ",newDict)
         outputLikedProductIdDict.value = newDict
     }
     
@@ -192,8 +192,6 @@ final class SearchResultViewModel: BaseViewModel {
         }
         let row = itemInfo.0
         let productId = itemInfo.1
-        print(#function, productId, row)
-        print(#function, outputLikedProductIdDict.value)
         if outputLikedProductIdDict.value.keys.contains(productId) {
             deleteLikedItem(row, productId)
         } else {
@@ -202,7 +200,6 @@ final class SearchResultViewModel: BaseViewModel {
     }
     
     private func addLikedItem(_ row: Int) {
-        print(#function, row)
         let item = outputItemList.value[row]
         let likedItem = LikedItem(productId: item.productId, link: item.link, image: item.image,mallName: item.mallName, title: item.title, lprice: item.lprice, category1: item.category1, category2: item.category2, category3: item.category3, category4: item.category4, regDate: Date())
         
@@ -237,7 +234,6 @@ final class SearchResultViewModel: BaseViewModel {
     }
     
     private func closeURLSession() {
-        print(#function, "URLSession 종료")
         URLSessionManager.shared.closeSession()
     }
 }

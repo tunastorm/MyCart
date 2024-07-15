@@ -66,7 +66,7 @@ enum Resource {
     enum NamedImage {
         static let empty = UIImage(named: "empty")
         static let launch = UIImage(named: "launch")
-        static let likeSelected = UIImage(named: "like_selected")!.withRenderingMode(.alwaysOriginal)
+        static let likeSelected = UIImage(named: "like_selected")!.withRenderingMode(.alwaysTemplate)
         static let likeUnselected = UIImage(named: "like_unselected")!.withRenderingMode(.alwaysOriginal)
         static let loadingApple = UIImage (named: "loading_apple")
         

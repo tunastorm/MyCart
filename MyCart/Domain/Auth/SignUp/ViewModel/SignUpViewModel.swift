@@ -80,7 +80,6 @@ class SignUpViewModel: BaseViewModel {
             outputValidationResult.value = error.nickNameMessage
             return
         }
-        print(#function, "연속공백 제거 후: ", nickname)
         outputValidationResult.value = Resource.Text.nickNameSuccess
         signUpInfo = (true, nickname)
     }
@@ -94,11 +93,9 @@ class SignUpViewModel: BaseViewModel {
     }
     
     private func addUser() {
-        print(#function)
         guard let user = inputAddUser.value else {
             return
         }
-        print(#function, user)
         repository.createItem(user) { [weak self] status, error in
             guard error == nil, let status else {
                 self?.outputAddUserResult.value = error!
@@ -112,7 +109,6 @@ class SignUpViewModel: BaseViewModel {
         guard let nickname = inputUpdateUser.value?.0, let imageName = inputUpdateUser.value?.1 else {
             return
         }
-        print(#function, "업데이트 내용: ", nickname, imageName)
         let user: [String : Any] = [
             User.Column.id.name: user?.id,
             User.Column.nickname.name: nickname,

@@ -115,7 +115,6 @@ class MainViewController: BaseViewController {
             self?.navigationItem.title = title
         }
         viewModel.outputSearchedList.bind { [weak self] list in
-            print(#function, "outputSearchedList.bind 실행")
             self?.searchedListToggle(list.count)
             self?.tableView.reloadData()
             self?.tableView.scrollsToTop = true

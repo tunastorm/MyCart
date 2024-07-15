@@ -20,7 +20,6 @@ extension SelectPhotoViewController: UICollectionViewDelegate, UICollectionViewD
         let thisPhoto = Resource.NamedImage.allProfile[indexPath.row]
         cell.configCell(image: thisPhoto)
         guard let selectedCell = delegate?.getSelectedPhoto(), let selectedPhoto = Resource.NamedImage.profileImage(number: selectedCell.row) else {
-            print(#function, "선택된 프로필 이미지 없음")
             return cell
         }
         // 이름이 같을 경우 해당 셀을 선택된 상태로 설정

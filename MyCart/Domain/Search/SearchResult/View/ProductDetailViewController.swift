@@ -18,7 +18,9 @@ final class ProductDetailViewController: BaseViewController {
     var product: ShopItem?
 
     let webView = WKWebView()
-    private let errorView = UIView()
+    private let errorView = UIView().then {
+        $0.isHidden = true
+    }
     private let errorLabel = UILabel().then {
         $0.font = Resource.Font.boldSystem16
         $0.textAlignment = .center
@@ -50,7 +52,6 @@ final class ProductDetailViewController: BaseViewController {
             $0.tintColor = Resource.MyColor.lightGray
             $0.contentMode = .scaleAspectFit
         }
-        errorImage.isHidden = true
         
         view.addSubview(errorView)
         errorView.addSubview(errorImage)
@@ -106,7 +107,8 @@ final class ProductDetailViewController: BaseViewController {
         guard let delegate, let row else {
             return
         }
-        let cartImage = isLiked ? Resource.IsLike.like.image : Resource.IsLike.unLike.image
+        let cartImage = isLiked ?
+        Resource.NamedImage.likeSelected.withTintColor(Resource.MyColor.orange) : Resource.NamedImage.likeUnselected
         let likeButton = UIBarButtonItem(image: cartImage, style: .plain, target: self, action: #selector(likeButtonClicked))
         likeButton.tag = row
         navigationItem.rightBarButtonItem = likeButton

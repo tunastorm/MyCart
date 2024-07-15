@@ -78,9 +78,7 @@ final class MainTableViewCell: BaseTableViewCell {
     func configCell(_ row: Int, _ data: SearchedWord) {
         self.selectionStyle = .none
         wordLabel.text = data.word
-//        Utils.dateFormatter.locale = Locale(identifier: "ko-KR")
-        Utils.dateFormatter.dateFormat = "yy. M. d h:m a"
-        print(#function, Utils.dateFormatter.string(from: data.regDate))
+        Utils.dateFormatter.dateFormat = "yy. M. d hh:mm a"
         searchedDateLabel.text = Utils.dateFormatter.string(from: data.regDate)
         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(goSearchResultView))
         selectView.addGestureRecognizer(tapGesture1)

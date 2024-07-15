@@ -127,7 +127,6 @@ class SignUpViewController: BaseViewController {
             self?.messageLabel.text = result
         }
         viewModel.outputAddUserResult.bind { [weak self] result in
-            print(#function, "유저가입 결과")
             guard let status = result as? RepositoryStatus else {
                 makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
                 return
@@ -213,7 +212,6 @@ class SignUpViewController: BaseViewController {
     }
     
     @objc func signUpAndPushMain() {
-        print(#function, "시작하기 클릭됨")
         viewModel.inputCompleteButton.value = ()
     }
 }
@@ -232,7 +230,6 @@ extension SignUpViewController: SelectPhotoDelegate  {
     }
     
     func receiveSelectedPhoto<T>(data: T) {
-        print(#function, "프로필 이미지 변경됨")
         guard let image = data as? UIImage else { return }
         profileImageView.image = image
     }

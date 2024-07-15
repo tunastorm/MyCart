@@ -78,7 +78,7 @@ final class URLSessionManager{
     }
     
     func closeSession() {
-        URLSession.shared.invalidateAndCancel()
         URLSession.shared.finishTasksAndInvalidate()
+        print(#function, "Session Finished")
     }
 }

@@ -23,7 +23,7 @@ class TabBarController: UITabBarController {
         mainNavi.tabBarItem = UITabBarItem(title: Resource.Text.searchTabBar,
                                        image: Resource.SystemImage.magnifyingGlass, tag: 0)
         likedItemNavi.tabBarItem = UITabBarItem(title: Resource.Text.likedItemTabBar,
-                                                image: Resource.NamedImage.likeSelected.withRenderingMode(.alwaysTemplate), tag: 1)
+                                                image: Resource.NamedImage.likeSelected, tag: 1)
         settingNavi.tabBarItem = UITabBarItem(title: Resource.Text.settingTabBar,
                                        image: Resource.SystemImage.person, tag: 2)
 
