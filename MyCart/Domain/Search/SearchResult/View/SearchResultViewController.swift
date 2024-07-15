@@ -61,11 +61,6 @@ final class SearchResultViewController: BaseViewController {
         return layout
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.inputRequestSearchTrigger.value = .sim
-    }
-    
     override func configHierarchy() {
         view.addSubview(totalLabel)
         view.addSubview(sortingView)
@@ -117,8 +112,8 @@ final class SearchResultViewController: BaseViewController {
         viewModel.outputLikedItemIndex.bind { [weak self] indexPath in
             guard let indexPath else { return }
             self?.collectionView.reloadItems(at: [indexPath])
-//            self?.collectionView.reloadData()
         }
+        viewModel.inputRequestSearchTrigger.value = .sim
     }
     
     func configQuery(_ query: String) {

@@ -123,6 +123,7 @@ final class LikedItemViewModel: BaseViewModel {
             }
             self?.fetchLikedList()
             self?.outputLikedListResult.value = status
+            NotificationCenter.default.post(name: NSNotification.Name("removeLikedItemInMyCart"), object: nil, userInfo: ["productId": productId])
         }
     }
     

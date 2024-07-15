@@ -9,6 +9,10 @@ import UIKit
 
 class TabBarController: UITabBarController {
         
+    private let mainNavi = UINavigationController(rootViewController: MainViewController())
+    private let likedItemNavi = UINavigationController(rootViewController: LikedItemViewController())
+    private let settingNavi = UINavigationController(rootViewController: SettingViewController())
+    
     override func viewDidLoad() {
         super.viewDidLoad()
        
@@ -16,10 +20,6 @@ class TabBarController: UITabBarController {
         tabBar.unselectedItemTintColor = Resource.MyColor.lightGray
         tabBar.layer.addBorder([.top], color: Resource.MyColor.lightGray, width: Resource.Border.width1)
         
-        let mainNavi = UINavigationController(rootViewController: MainViewController())
-        let likedItemNavi = UINavigationController(rootViewController: LikedItemViewController())
-        let settingNavi = UINavigationController(rootViewController: SettingViewController())
-      
         mainNavi.tabBarItem = UITabBarItem(title: Resource.Text.searchTabBar,
                                        image: Resource.SystemImage.magnifyingGlass, tag: 0)
         likedItemNavi.tabBarItem = UITabBarItem(title: Resource.Text.likedItemTabBar,

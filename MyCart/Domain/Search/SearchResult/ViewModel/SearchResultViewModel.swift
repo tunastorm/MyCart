@@ -45,6 +45,7 @@ class SearchResultViewModel: BaseViewModel {
         inputViewWillDisappear.bind { _ in
             self.closeURLSession()
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteDictItemFromMyCart), name: NSNotification.Name("removeLikedItemInMyCart"), object: nil)
     }
     
     func clearSearchRecord() {
@@ -100,49 +101,68 @@ class SearchResultViewModel: BaseViewModel {
         }
     }
     
-    private func fetchLikedList() {
+    private func fetchLikedList(isAdd: Bool? = nil) {
         self.user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
         
         guard let user else { return }
-        
-        let oldCount = outputLikedList.value.count
-        let newCount = user.likedList.count
 
-        print(#function, "oldCount: ", oldCount, "newCount: ", newCount)
-        if oldCount == newCount { return }
+        print(#function, "user.likedList: ", user.likedList)
         
-        var dict = outputLikedProductIdDict.value
-        if oldCount > newCount {
-            outputLikedList.value = Array(user.likedList)
-            dict.keys.forEach { productId in
-                self.outputLikedList.value.forEach{ likedItem in
-                    if likedItem.productId == productId {
-                        return
-                    }
-                    dict.removeValue(forKey: productId)
-                }
-            }
+        switch isAdd {
+        case true:
+            addDictItem(user, dict: outputLikedProductIdDict.value)
+        case false:
+            deleteDictItem(user, dict: outputLikedProductIdDict.value)
+        default: addDictItem(user, dict: [:])
         }
-        
-        if oldCount < newCount {
-            let newList = user.likedList.map { likedItem in
-                if self.outputLikedList.value.contains(likedItem) {
-                    return likedItem
-                }
-                self.outputItemList.value.enumerated().forEach { index, item in
-                    if item.productId == likedItem.productId {
-                        dict[likedItem.productId] = IndexPath(row: index, section: 0)
-                        return
-                    }
-                }
+    }
+    
+    private func addDictItem(_ user: User, dict: [String:IndexPath]) {
+        var newDict = dict
+        let newList = user.likedList.map { likedItem in
+            if self.outputLikedList.value.contains(likedItem) {
                 return likedItem
             }
-            outputLikedList.value = Array(newList)
+            self.outputItemList.value.enumerated().forEach { index, item in
+                if item.productId == likedItem.productId {
+                    newDict [likedItem.productId] = IndexPath(row: index, section: 0)
+                    return
+                }
+            }
+            return likedItem
         }
-        
-        outputLikedProductIdDict.value = dict
+        outputLikedList.value = Array(newList)
+        outputLikedProductIdDict.value = newDict
     }
 
+    private func deleteDictItem(_ user: User, dict: [String:IndexPath]) {
+        var newDict = dict
+        outputLikedList.value = Array(user.likedList)
+        let likedIds = self.outputLikedList.value.map { $0.productId }
+        newDict.keys.forEach { productId in
+            if likedIds.contains(productId) {
+                return
+            }
+            newDict.removeValue(forKey: productId)
+        }
+        print(#function, "삭제된 dict: ",newDict)
+        outputLikedProductIdDict.value = newDict
+    }
+    
+    @objc private func deleteDictItemFromMyCart(_ notification: Notification) {
+        guard let productId = notification.userInfo?["productId"] as? String else {
+            return
+        }
+        var row: Int?
+        outputItemList.value.enumerated().forEach { index, item in
+            if item.productId == productId { row = index }
+        }
+        guard let row else { return }
+        fetchLikedList(isAdd: false)
+        outputLikedItemIndex.value = IndexPath(row: row, section: 0)
+       
+    }
+    
     private func addSearchedWord() {
         guard let word = outputQuery.value else {
             return
@@ -168,28 +188,9 @@ class SearchResultViewModel: BaseViewModel {
         print(#function, productId, row)
         print(#function, outputLikedProductIdDict.value)
         if outputLikedProductIdDict.value.keys.contains(productId) {
-            deleteLikedItem(productId)
+            deleteLikedItem(row, productId)
         } else {
             addLikedItem(row)
-        }
-    }
-    
-    private func deleteLikedItem(_ productId: String) {
-        print(#function, productId)
-//        var dict = outputLikedProductIdDict.value
-        repository.queryProperty { [weak self] in
-            if let item = self?.user?.likedList.where({ $0.productId == productId }) {
-//                dict.removeValue(forKey: productId)
-                self?.user?.likedList.realm?.delete(item)
-            }
-        } completionHandler: { [weak self] status, error in
-            guard error == nil, let status else {
-                self?.outputLikedListResult.value = error!
-                return
-            }
-//            self?.outputLikedProductIdDict.value = dict
-            self?.fetchLikedList()
-            self?.outputLikedListResult.value = status
         }
     }
     
@@ -205,7 +206,24 @@ class SearchResultViewModel: BaseViewModel {
                 self?.outputLikedListResult.value = error!
                 return
             }
-            self?.fetchLikedList()
+            self?.fetchLikedList(isAdd: true)
+            self?.outputLikedItemIndex.value = IndexPath(row: row, section: 0)
+            self?.outputLikedListResult.value = status
+        }
+    }
+    
+    private func deleteLikedItem(_ row: Int, _ productId: String) {
+        print(#function, productId)
+        repository.queryProperty { [weak self] in
+            if let item = self?.user?.likedList.where({ $0.productId == productId }) {
+                self?.user?.likedList.realm?.delete(item)
+            }
+        } completionHandler: { [weak self] status, error in
+            guard error == nil, let status else {
+                self?.outputLikedListResult.value = error!
+                return
+            }
+            self?.fetchLikedList(isAdd: false)
             self?.outputLikedItemIndex.value = IndexPath(row: row, section: 0)
             self?.outputLikedListResult.value = status
         }
