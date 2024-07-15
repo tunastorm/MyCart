@@ -16,9 +16,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier, for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
-        let searchedWord = viewModel.outputSearchedList.value[indexPath.row].word
+        let data = viewModel.outputSearchedList.value[indexPath.row]
         cell.delegate = self
-        cell.configCell(indexPath.row, searchedWord)
+        cell.configCell(indexPath.row, data)
         return cell
     }
     

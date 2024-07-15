@@ -169,13 +169,20 @@ final class SearchResultViewModel: BaseViewModel {
         }
         let searchedWord = SearchedWord(word: word, regDate: Date())
         repository.queryProperty { [weak self] in
-            if let count = self?.user?.searchedList.where({$0.word == word}).count, count < 1 {
+            guard let oldWords = self?.user?.searchedList.where({$0.word == word}) else {
+                return
+            }
+            if oldWords.count == 1, let oldWord = oldWords.first {
+                self?.user?.searchedList.realm?.delete(oldWord)
+            }
+            if oldWords.count <= 1 {
                 self?.user?.searchedList.append(searchedWord)
             }
         } completionHandler: { [weak self] status, error in
             guard error == nil, let status else {
                 return
             }
+            NotificationCenter.default.post(name: NSNotification.Name("searchedWordListChanged"), object: nil, userInfo: nil)
         }
     }
     

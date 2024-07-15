@@ -55,12 +55,6 @@ class MainViewController: BaseViewController {
         super.viewDidLoad()
         configInteraction()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.inputUpdateUserTrigger.value = ()
-        tableView.scrollsToTop = true
-    }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -121,8 +115,10 @@ class MainViewController: BaseViewController {
             self?.navigationItem.title = title
         }
         viewModel.outputSearchedList.bind { [weak self] list in
+            print(#function, "outputSearchedList.bind 실행")
             self?.searchedListToggle(list.count)
             self?.tableView.reloadData()
+            self?.tableView.scrollsToTop = true
         }
         viewModel.outputDeleteSearchedWordResult.bind { [weak self] result in
             makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
@@ -130,6 +126,7 @@ class MainViewController: BaseViewController {
         viewModel.outputTruncateSearchedListResult.bind { [weak self] result in
             makeBasicToast(message: "전체 \(result.message)", duration: 3.0, position: .bottom)
         }
+        viewModel.inputUpdateUserTrigger.value = ()
     }
     
     override func configInteraction() {

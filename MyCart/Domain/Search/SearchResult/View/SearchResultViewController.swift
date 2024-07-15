@@ -191,7 +191,6 @@ extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
     
     func checkIsLikedItem(_ productId: String) -> Bool {
         let result = viewModel.outputLikedProductIdDict.value.keys.contains(productId)
-        print(#function, result)
         return result
     }
     
