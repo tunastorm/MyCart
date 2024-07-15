@@ -12,11 +12,11 @@ import SnapKit
 import Then
 
 
-class SearchCollectionViewCell: BaseCollectionViewCell {
+final class SearchCollectionViewCell: BaseCollectionViewCell {
     
     var delegate: SearchResultCollectionViewCellDelegate?
     
-    let imageView = UIImageView().then {
+    private let imageView = UIImageView().then {
         $0.backgroundColor = Resource.MyColor.lightGray
         $0.contentMode = .scaleToFill
         $0.layer.cornerRadius = Resource.CornerRadious.searchImage
@@ -31,19 +31,19 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
         $0.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
     }
     
-    let mallNameLabel = UILabel().then {
+    private let mallNameLabel = UILabel().then {
         $0.textAlignment = .left
         $0.textColor = Resource.MyColor.lightGray
         $0.font = Resource.Font.system13
     }
     
-    let itemNameLabel = UILabel().then {
+    private let itemNameLabel = UILabel().then {
         $0.textAlignment = .left
         $0.numberOfLines = 0
         $0.font = Resource.Font.system14
     }
     
-    let priceLabel = UILabel().then {
+    private let priceLabel = UILabel().then {
         $0.textAlignment = .left
         $0.font = Resource.Font.boldSystem16
     }
@@ -127,7 +127,7 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
         priceLabel.text = intPrice.formatted(.number) + "원"
     }
     
-    func isLikedToggle(_ isLiked: Bool = false) {
+    private func isLikedToggle(_ isLiked: Bool = false) {
         if isLiked {
             likeButton.setImage(Resource.NamedImage.likeSelected, for: .normal)
             likeButton.tintColor = Resource.MyColor.black
@@ -141,7 +141,7 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
         }
     }
     
-    @objc func likeButtonClicked(_ sender: UIButton) {
+    @objc private func likeButtonClicked(_ sender: UIButton) {
         guard let productId = sender.title(for: .normal), let delegate else {
             return
         }

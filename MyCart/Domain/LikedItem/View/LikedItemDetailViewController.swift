@@ -18,8 +18,8 @@ final class LikedItemDetailViewController: BaseViewController {
     var product: ShopItem?
 
     let webView = WKWebView()
-    let errorView = UIView()
-    let errorLabel = UILabel().then {
+    private let errorView = UIView()
+    private let errorLabel = UILabel().then {
         $0.font = Resource.Font.boldSystem16
         $0.textAlignment = .center
         $0.textColor = Resource.MyColor.lightGray
@@ -52,7 +52,7 @@ final class LikedItemDetailViewController: BaseViewController {
         configErrorView()
     }
     
-    func configErrorView() {
+    private func configErrorView() {
         let errorImage = UIImageView(image: Resource.SystemImage.networkSlash).then {
             $0.tintColor = Resource.MyColor.lightGray
             $0.contentMode = .scaleAspectFit
@@ -78,7 +78,7 @@ final class LikedItemDetailViewController: BaseViewController {
         }
     }
     
-    func viewToggle(error: MapKitError) {
+    private func viewToggle(error: MapKitError) {
         switch error {
         case .productURLNotExist, .productConnectionFailed:
             webView.isHidden = true

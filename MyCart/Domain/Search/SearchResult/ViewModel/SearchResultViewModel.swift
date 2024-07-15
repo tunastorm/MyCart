@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 
-class SearchResultViewModel: BaseViewModel {
+final class SearchResultViewModel: BaseViewModel {
     
     var inputQuery: Observable<String?> = Observable(nil)
     var inputRequestSearchTrigger: Observable<APIRouter.Sorting?> = Observable(nil)
@@ -48,14 +48,14 @@ class SearchResultViewModel: BaseViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDictItemFromMyCart), name: NSNotification.Name("removeLikedItemInMyCart"), object: nil)
     }
     
-    func clearSearchRecord() {
+    private func clearSearchRecord() {
         outputItemList.value.removeAll()
         responseInfo.total = 0
         responseInfo.start = 1
         inputRequestSearchTrigger.value = inputSortFilterTrigger.value
     }
     
-    func pageNation() -> Int? {
+    private func pageNation() -> Int? {
         print(#function, responseInfo)
         if responseInfo.start == 1, responseInfo.total == 0 {
             return responseInfo.start
@@ -69,7 +69,7 @@ class SearchResultViewModel: BaseViewModel {
         return start
     }
     
-    func setNewResponse(_ response: SearchResponse<ShopItem>) {
+    private func setNewResponse(_ response: SearchResponse<ShopItem>) {
         if responseInfo.start > 1, outputItemList.value != nil, let items = response.items {
             var newList = outputItemList.value
             newList.append(contentsOf: items)
@@ -81,7 +81,7 @@ class SearchResultViewModel: BaseViewModel {
         }
     }
     
-    func requestSearch() {
+    private func requestSearch() {
         guard let start = pageNation() else { return }
         guard let query = outputQuery.value else { return }
         guard let sort = inputRequestSearchTrigger.value == nil ? outputSort.value : inputRequestSearchTrigger.value else {

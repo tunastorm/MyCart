@@ -9,6 +9,7 @@ import Foundation
 
 
 enum TextinputFilterError: Error {
+    
     case haveSpace
     case haveSpecial
     case haveNumber

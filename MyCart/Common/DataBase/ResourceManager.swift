@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ResourceManager: FileManager {
+final class ResourceManager: FileManager {
     
-    var documentDirectory: URL?
+    private var documentDirectory: URL?
 
     override init() {
         self.documentDirectory = FileManager.default.urls(

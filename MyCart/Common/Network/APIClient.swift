@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 
-class APIClient {
+final class APIClient {
     typealias onSuccess<T> = ((T) -> Void)
     typealias onFailure = ((_ error: Error) -> Void)
     
