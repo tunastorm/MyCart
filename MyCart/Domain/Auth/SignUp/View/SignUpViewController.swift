@@ -56,17 +56,11 @@ class SignUpViewController: BaseViewController {
         $0.layer.masksToBounds = true
         $0.setTitle(Resource.Text.startButton, for: .normal)
         $0.setTitleColor(Resource.MyColor.white, for: .normal)
-        $0.addTarget(self, action: #selector(signUpAndPushMain), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(addUser), for: .touchUpInside)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.inputViewDidLoadTrigger.value = ()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        print(self.self, #function, "\n", self.navigationController?.viewControllers)
     }
     
     override func configHierarchy() {
@@ -120,7 +114,7 @@ class SignUpViewController: BaseViewController {
     
     override func bindData() {
         viewModel.outputViewDidLoadTrigger.bind { [weak self] userInfo in
-            self?.configProfileToggle(userInfo?.0, userInfo?.1)
+            self?.configProfileToggle(userInfo.0, userInfo.1)
             self?.updatePresentationToggle()
         }
         viewModel.outputValidationResult.bind { [weak self] result in
@@ -142,6 +136,7 @@ class SignUpViewController: BaseViewController {
             makeBasicToast(message: result.message, duration: 3.0, position: .bottom)
             self?.popBeforeView(animated: true)
         }
+        viewModel.inputViewDidLoadTrigger.value = ()
     }
     
     override func configInteraction() {
@@ -153,13 +148,8 @@ class SignUpViewController: BaseViewController {
         viewModel.inputUpdatePresentation.value = ()
     }
     
-    private func configProfileToggle(_ nickname: String?, _ imageName: String?) {
-        guard let nickname, let imageName else { // SignUp
-            profileImageView.image = Resource.NamedImage.randomProfile
-            nickNameTextField.text = nil
-            return
-        }
-        // Update
+    private func configProfileToggle(_ nickname: String?, _ imageName: String) {
+        print(#function, nickname, imageName)
         profileImageView.image = UIImage(named: imageName)
         nickNameTextField.text = nickname
     }
@@ -169,7 +159,7 @@ class SignUpViewController: BaseViewController {
         if viewModel.outputUpdatePresentation.value {
             navigationItem.title = Resource.Text.editProfileTitle
             let barButtonItem = UIBarButtonItem(title: Resource.Text.saveNewProfile,
-                                                style: .plain, target: self, action: #selector(updateAndGoSetting))
+                                                style: .plain, target: self, action: #selector(updateUser))
             navigationItem.rightBarButtonItem = barButtonItem
             completeButton.isHidden = true
             nickNameTextField.placeholder = nil
@@ -188,11 +178,17 @@ class SignUpViewController: BaseViewController {
         sceneDelegate.changeRootVCWithNavi(nextVC, animated: false)
     }
     
-    private func addUser(_ nickname: String, _ imageName: String) {
-        self.viewModel.inputAddUser.value = User(nickname: nickname, profilImage: imageName)
+    @objc private func addUser() {
+        guard let nickname = nickNameTextField.text, let imageName = profileImageView.image?.name else {
+            return
+        }
+        self.viewModel.inputAddUser.value = (nickname, imageName)
     }
     
-    private func updateUser(_ nickname: String, _ imageName: String) {
+    @objc private func updateUser() {
+        guard let nickname = nickNameTextField.text, let imageName = profileImageView.image?.name else {
+            return
+        }
         self.viewModel.inputUpdateUser.value = (nickname, imageName)
     }
     
@@ -200,19 +196,11 @@ class SignUpViewController: BaseViewController {
         viewModel.inputNickNameValidate.value = sender.text
     }
     
-    @objc func updateAndGoSetting() {
-        print(#function, "hihihihi")
-        viewModel.inputCompleteButton.value = ()
-    }
-    
     @objc func pushSelectPhotoView() {
         let vc = SelectPhotoViewController()
         vc.delegate = self
+        
         pushAfterView(view: vc, backButton: true, animated: true)
-    }
-    
-    @objc func signUpAndPushMain() {
-        viewModel.inputCompleteButton.value = ()
     }
 }
 

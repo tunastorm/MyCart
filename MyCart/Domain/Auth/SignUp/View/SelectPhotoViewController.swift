@@ -107,8 +107,11 @@ class SelectPhotoViewController: BaseViewController {
     }
     
     func configProfileImage() {
-        guard let row = delegate?.getSelectedPhoto()?.row, let selectedPhoto = Resource.NamedImage.profileImage(number: row) else {
+        guard let delegate, let row = delegate.getSelectedPhoto()?.row, let selectedPhoto = Resource.NamedImage.profileImage(number: row) else {
             print(#function, "프로필이미지 설정 에러")
+            print(#function, "row: ", delegate?.getSelectedPhoto()?.row)
+            
+//            print(#function, "selectedPhoto: ", Resource.NamedImage.profileImage(number: row))
             return
         }
         profileImageView.image = selectedPhoto

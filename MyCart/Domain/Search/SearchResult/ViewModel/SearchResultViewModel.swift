@@ -16,11 +16,11 @@ final class SearchResultViewModel: BaseViewModel {
     var inputLikeListButtonTrigger: Observable<(Int,String)?> = Observable(nil)
     var inputSortFilterTrigger: Observable<APIRouter.Sorting?> = Observable(nil)
     var inputViewWillDisappear: Observable<Void?> = Observable(nil)
-    var inputCloseURLSession: Observable<Void?> = Observable(nil)
     
     var outputQuery: Observable<String?> = Observable(nil)
     var outputSort: Observable<APIRouter.Sorting?> = Observable(nil)
     var outputTotal: Observable<String?> = Observable(nil)
+//    var outputLikedList: Observable<Results<LikedItem>?> = Observable(nil)
     var outputLikedList: Observable<[LikedItem]> = Observable([])
     var outputLikedItemIndex: Observable<IndexPath?> = Observable(nil)
     var outputLikedProductIdDict: Observable<[String:IndexPath]> = Observable([:])
@@ -43,9 +43,6 @@ final class SearchResultViewModel: BaseViewModel {
         inputSortFilterTrigger.bind { [weak self] _ in
             self?.clearSearchRecord()
             self?.requestSearch()
-        }
-        inputViewWillDisappear.bind { [weak self] _ in
-            self?.closeURLSession()
         }
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDictItemFromMyCart), name: NSNotification.Name("removeLikedItemInMyCart"), object: nil)
     }
@@ -106,6 +103,8 @@ final class SearchResultViewModel: BaseViewModel {
             }
             self?.fetchLikedList()
             self?.addSearchedWord()
+            URLSessionManager.shared.closeSession()
+//            self?.deinitAllObservables()
             hideToastActivity()
         }
     }
@@ -238,7 +237,21 @@ final class SearchResultViewModel: BaseViewModel {
         }
     }
     
-    private func closeURLSession() {
-        URLSessionManager.shared.closeSession()
+    private func deinitAllObservables() {
+        print(#function)
+        inputQuery = Observable(nil)
+//        inputRequestSearchTrigger = Observable(nil)
+        inputLikeListButtonTrigger = Observable(nil)
+        inputSortFilterTrigger = Observable(nil)
+        inputViewWillDisappear = Observable(nil)
+        
+        outputQuery = Observable(nil)
+        outputSort = Observable(nil)
+        outputTotal = Observable(nil)
+        outputLikedList = Observable([])
+        outputLikedItemIndex = Observable([])
+        outputLikedProductIdDict = Observable([:])
+        outputLikedListResult = Observable(nil)
+        outputItemList = Observable([])
     }
 }

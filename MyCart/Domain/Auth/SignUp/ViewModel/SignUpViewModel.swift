@@ -12,13 +12,12 @@ class SignUpViewModel: BaseViewModel {
     
     var inputUpdatePresentation: Observable<Void?> = Observable(nil)
     var inputViewDidLoadTrigger: Observable<Void?> = Observable(nil)
-    var inputAddUser: Observable<User?> = Observable(nil)
+    var inputAddUser: Observable<(String, String)?> = Observable(nil)
     var inputUpdateUser: Observable<(String, String)?> = Observable(nil)
     var inputNickNameValidate: Observable<String?> = Observable(nil)
-    var inputCompleteButton: Observable<Void?> = Observable(nil)
-  
+    
     var outputUpdatePresentation: Observable<Bool> = Observable(false)
-    var outputViewDidLoadTrigger: Observable<(String,String)?> = Observable(nil)
+    var outputViewDidLoadTrigger: Observable<(String?,String)> = Observable((nil,""))
     var outputAddUserResult: Observable<RepositoryResult> = Observable(RepositoryError.createFailed)
     var outputUpdateUserResult: Observable<RepositoryResult> = Observable(RepositoryError.updatedFailed)
     var outputValidationResult: Observable<String?> = Observable(nil)
@@ -36,9 +35,6 @@ class SignUpViewModel: BaseViewModel {
         inputNickNameValidate.bind { [weak self] _ in
             self?.validation()
         }
-        inputCompleteButton.bind { [weak self] _ in
-            self?.repositoryTask()
-        }
         inputAddUser.bind { [weak self] _ in
             self?.addUser()
         }
@@ -49,17 +45,19 @@ class SignUpViewModel: BaseViewModel {
     
     private func getUser() {
         self.user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first
-        guard let nickname = user?.nickname, let imageName = user?.profileImage else {
+        
+        let nickname = user?.nickname == nil ? nil : user?.nickname
+        let imageName = user?.profileImage == nil ? Resource.NamedImage.randomProfile.name : user?.profileImage
+
+        guard let imageName, let row = Int(imageName.replacing("profile_", with: "")) else {
             return
         }
-        guard let row = Int(imageName.replacing("profile_", with: "")) else {
-            return
-        }
+        print(#function, nickname, imageName, row)
         selectedPhoto = IndexPath(row: row, section: 0)
         outputViewDidLoadTrigger.value = (nickname, imageName)
     }
     
-    private func validation(){
+    private func validation() {
         guard let inputText = inputNickNameValidate.value else {
             outputValidationResult.value = nil
             return
@@ -84,18 +82,12 @@ class SignUpViewModel: BaseViewModel {
         signUpInfo = (true, nickname)
     }
 
-    private func repositoryTask() {
-        if self.outputUpdatePresentation.value {
-            self.updateUser()
-        } else {
-            self.addUser()
-        }
-    }
-    
     private func addUser() {
-        guard let user = inputAddUser.value else {
+        print(#function, "user: ", inputAddUser.value)
+        guard let nickname = inputAddUser.value?.0, let imageName = inputAddUser.value?.1 else {
             return
         }
+        let user = User(nickname: nickname, profilImage: imageName)
         repository.createItem(user) { [weak self] status, error in
             guard error == nil, let status else {
                 self?.outputAddUserResult.value = error!
