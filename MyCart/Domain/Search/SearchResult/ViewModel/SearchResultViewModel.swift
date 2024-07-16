@@ -30,30 +30,36 @@ final class SearchResultViewModel: BaseViewModel {
     private var responseInfo = SearchResponse<ShopItem>(total: 0, start: 1, display: 30)
     
     override func transform() {
-        inputQuery.bind { query in
-            self.outputQuery.value = query
+        inputQuery.bind { [weak self] query in
+            guard let query else { return }
+            self?.setQuery(query)
         }
-        inputRequestSearchTrigger.bind { _ in
-            self.requestSearch()
+        inputRequestSearchTrigger.bind { [weak self] _ in
+            self?.requestSearch()
         }
-        inputLikeListButtonTrigger.bind { _ in
-            self.likeListButtonToggle()
+        inputLikeListButtonTrigger.bind { [weak self] _ in
+            self?.likeListButtonToggle()
         }
-        inputSortFilterTrigger.bind { _ in
-            self.clearSearchRecord()
-            self.requestSearch()
+        inputSortFilterTrigger.bind { [weak self] _ in
+            self?.clearSearchRecord()
+            self?.requestSearch()
         }
-        inputViewWillDisappear.bind { _ in
-            self.closeURLSession()
+        inputViewWillDisappear.bind { [weak self] _ in
+            self?.closeURLSession()
         }
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDictItemFromMyCart), name: NSNotification.Name("removeLikedItemInMyCart"), object: nil)
+    }
+    
+    private func setQuery(_ query: String) {
+        outputQuery.value = query
     }
     
     private func clearSearchRecord() {
         outputItemList.value.removeAll()
         responseInfo.total = 0
         responseInfo.start = 1
-        inputRequestSearchTrigger.value = inputSortFilterTrigger.value
+        let sort = inputSortFilterTrigger.value
+        inputRequestSearchTrigger.value = sort
     }
     
     private func pageNation() -> Int? {
@@ -160,7 +166,6 @@ final class SearchResultViewModel: BaseViewModel {
         guard let row else { return }
         fetchLikedList(isAdd: false)
         outputLikedItemIndex.value = IndexPath(row: row, section: 0)
-       
     }
     
     private func addSearchedWord() {

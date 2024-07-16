@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 
-protocol SearchResultCollectionViewCellDelegate {
+protocol SearchResultCollectionViewCellDelegate: AnyObject {
     func getQuery() -> String?
     func checkIsLikedItem(_ productId: String) -> Bool
     func updateLikedList(_ row: Int, _ productId: String)

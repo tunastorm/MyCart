@@ -27,23 +27,23 @@ class SignUpViewModel: BaseViewModel {
     private var signUpInfo: (Bool,String)?
 
     override func transform() {
-        inputUpdatePresentation.bind { _ in
-            self.outputUpdatePresentation.value = true
+        inputUpdatePresentation.bind { [weak self] _ in
+            self?.outputUpdatePresentation.value = true
         }
-        inputViewDidLoadTrigger.bind { _ in
-            self.getUser()
+        inputViewDidLoadTrigger.bind { [weak self] _ in
+            self?.getUser()
         }
-        inputNickNameValidate.bind { _ in
-            self.validation()
+        inputNickNameValidate.bind { [weak self] _ in
+            self?.validation()
         }
-        inputCompleteButton.bind { _ in
-            self.repositoryTask()
+        inputCompleteButton.bind { [weak self] _ in
+            self?.repositoryTask()
         }
-        inputAddUser.bind { _ in
-            self.addUser()
+        inputAddUser.bind { [weak self] _ in
+            self?.addUser()
         }
-        inputUpdateUser.bind { _ in
-            self.updateUser()
+        inputUpdateUser.bind { [weak self] _ in
+            self?.updateUser()
         }
     }
     

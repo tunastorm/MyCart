@@ -21,14 +21,14 @@ class MainViewModel: BaseViewModel {
     var outputTruncateSearchedListResult: Observable<RepositoryResult> = Observable(RepositoryError.deleteFailed)
     
     override func transform() {
-        inputUpdateUserTrigger.bind { _ in
-            self.getUser()
+        inputUpdateUserTrigger.bind { [weak self] _ in
+            self?.getUser()
         }
-        inputDeleteSearchedWord.bind { _ in
-            self.deleteSearchedWord()
+        inputDeleteSearchedWord.bind { [weak self] _ in
+            self?.deleteSearchedWord()
         }
-        inputTruncateSearchedListTrigger.bind { _ in
-            self.truncateSearchedList()
+        inputTruncateSearchedListTrigger.bind { [weak self] _ in
+            self?.truncateSearchedList()
         }
         NotificationCenter.default.addObserver(self, selector: #selector(getUser), name: NSNotification.Name("searchedWordListChanged"), object: nil)
     }

@@ -39,7 +39,7 @@ final class URLSessionManager{
         _ = headers.map { (key, value) in
             request.addValue(value, forHTTPHeaderField: key)
         }
-        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+        URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 guard error == nil else {
                     completionHandler(nil, .failedRequest)

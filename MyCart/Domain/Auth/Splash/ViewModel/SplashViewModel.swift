@@ -14,8 +14,8 @@ final class SplashViewModel: BaseViewModel {
     var outputUser: Observable<User?> = Observable(nil)
     
     override func transform() {
-        inputGetUser.bind { _ in
-            self.getUser()
+        inputGetUser.bind { [weak self] _ in
+            self?.getUser()
         }
     }
 
