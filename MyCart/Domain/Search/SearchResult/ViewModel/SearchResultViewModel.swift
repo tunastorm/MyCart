@@ -93,19 +93,22 @@ final class SearchResultViewModel: BaseViewModel {
         }
         outputSort.value = sort
         makeLoadingToast(positon: .center)
-        URLSessionManager.shared.callRequest(query: query, sort: sort, start: start) { [weak self] search, error in
-            guard error == nil, let search else {
-                return
+        URLSessionManager.shared.callRequest(query: query, sort: sort, start: start) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.setNewResponse(response)
+                if self?.responseInfo.start == 1, let total = self?.responseInfo.total{
+                    self?.outputTotal.value = Int(total).formatted(.number) + Resource.Text.searchTotal
+                }
+                self?.fetchLikedList()
+                self?.addSearchedWord()
+                URLSessionManager.shared.closeSession()
+                //            self?.deinitAllObservables()
+                hideToastActivity()
+            case .failure(let error):
+                hideToastActivity()
+                makeBasicToast(message: error.message, duration: 3.0, position: .bottom)
             }
-            self?.setNewResponse(search)
-            if self?.responseInfo.start == 1, let total = self?.responseInfo.total{
-                self?.outputTotal.value = Int(total).formatted(.number) + Resource.Text.searchTotal
-            }
-            self?.fetchLikedList()
-            self?.addSearchedWord()
-            URLSessionManager.shared.closeSession()
-//            self?.deinitAllObservables()
-            hideToastActivity()
         }
     }
     

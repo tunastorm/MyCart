@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum APIError {
+enum APIError: Error {
     case failedRequest
     case noData
     case invalidResponse
@@ -48,7 +48,7 @@ enum APIError {
     var message: String {
         switch self {
         case .failedRequest:
-            return "데이터 요청에 실패하였습니다. 네트워크 환경을 확인하세요."
+            return "데이터 요청에 실패하였습니다.\n 네트워크 환경을 확인하세요."
         case .noData:
             return "검색결과가 없습니다. 다른 검색어를 입력하세요."
         case .invalidResponse:
@@ -56,17 +56,17 @@ enum APIError {
         case .networkError:
             return "네트워크 연결상태를 확인하세요."
         case .redirectError:
-            return "요청한 리소스의 주소가 변경되었습니다. 올바른 주소로 다시 요청해주세요."
+            return "요청한 리소스의 주소가 변경되었습니다.\n  올바른 주소로 다시 요청해주세요."
         case .clientError:
             return "잘못된 요청이거나 접근권한이 없습니다."
         case .serverError:
-            return "일시적인 서비스 장애입니다. 잠시 후 다시 시도해주세요."
+            return "일시적인 서비스 장애입니다.\n  잠시 후 다시 시도해주세요."
         case .invalidData:
             return "응답 데이터가 유효하지 않습니다."
         case .noResultError:
             return "검색어에 해당하는 결과가 없습니다."
         case .unExpectedError:
-            return "알 수 없는 에러가 발생하였습니다. 고객센터로 문의하세요."
+            return "알 수 없는 에러가 발생하였습니다.\n 고객센터로 문의하세요."
         }
     }
     

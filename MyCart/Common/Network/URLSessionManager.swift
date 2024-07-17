@@ -10,13 +10,13 @@ import Foundation
 
 
 final class URLSessionManager{
-    typealias completionHandler = (SearchResponse<ShopItem>?, APIError?) -> Void
+    typealias CompletionHandler = (Result<SearchResponse<ShopItem>, APIError>) -> Void
     
     static let shared = URLSessionManager()
     
     private init() {}
     
-    func callRequest(query: String, sort: APIRouter.Sorting, start: Int, completionHandler: @escaping (SearchResponse<ShopItem>?, APIError?) -> Void) {
+    func callRequest(query: String, sort: APIRouter.Sorting, start: Int, completionHandler: @escaping CompletionHandler) {
         var component = URLComponents()
         component.scheme = "https"
         component.host = "openapi.naver.com"
@@ -42,35 +42,35 @@ final class URLSessionManager{
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 guard error == nil else {
-                    completionHandler(nil, .failedRequest)
+                    completionHandler(.failure(.failedRequest))
                     return
                 }
                 
                 guard let data = data else {
-                    completionHandler(nil, .noData)
+                    completionHandler(.failure(.noData))
                     return
                 }
                 
                 guard let response = response as? HTTPURLResponse else {
-                    completionHandler(nil, .invalidResponse)
+                    completionHandler(.failure(.invalidResponse))
                     return
                 }
                 
                 guard response.statusCode == 200 else {
                     switch response.statusCode {
-                    case 300..<400: completionHandler(nil, .redirectError)
-                    case 400..<500: completionHandler(nil, .clientError)
-                    case 500..<600: completionHandler(nil, .serverError)
-                    default: completionHandler(nil, .unExpectedError)
+                    case 300..<400: completionHandler(.failure(.redirectError))
+                    case 400..<500: completionHandler(.failure(.clientError))
+                    case 500..<600: completionHandler(.failure(.serverError))
+                    default: completionHandler(.failure(.serverError))
                     }
                     return
                 }
                 do {
                     let result = try JSONDecoder().decode(SearchResponse<ShopItem>.self, from: data)
 //                    print(result)
-                    completionHandler(result, nil)
+                    completionHandler(.success(result))
                 } catch {
-                    completionHandler(nil, .invalidData)
+                    completionHandler(.failure(.invalidData))
                 }
             }
         }.resume()
