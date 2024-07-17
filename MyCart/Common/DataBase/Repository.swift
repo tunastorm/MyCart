@@ -12,7 +12,7 @@ import RealmSwift
 // complitionHandler를 이용해 완료 후의 작업 처리와 에러처리 동시 구현 가능할 것
 final class Repository {
     
-    typealias RepositoryResult = (_ status: RepositoryStatus?, _ error: RepositoryError?) -> Void
+    typealias RepositoryResult = (Result<RepositoryStatus, RepositoryError>) -> Void
     typealias propertyhandler = () -> Void
     
     private let realm = try! Realm()
@@ -26,9 +26,9 @@ final class Repository {
             try realm.write {
                 realm.add(data)
             }
-            complitionHandler(RepositoryStatus.createSuccess, nil)
+            complitionHandler(.success(RepositoryStatus.createSuccess))
         } catch {
-            complitionHandler(nil, RepositoryError.createFailed)
+            complitionHandler(.failure(RepositoryError.createFailed))
         }
     }
     
@@ -58,9 +58,9 @@ final class Repository {
             try realm.write {
                 realm.create(object, value: value, update: .modified)
             }
-            complitionHandler(RepositoryStatus.updateSuccess, nil)
+            complitionHandler(.success(RepositoryStatus.updateSuccess))
         } catch {
-            complitionHandler(nil, RepositoryError.updatedFailed)
+            complitionHandler(.failure(RepositoryError.updatedFailed))
         }
     }
     
@@ -71,9 +71,9 @@ final class Repository {
                 realm.delete(user.likedList)
                 realm.delete(user)
             }
-            complitionHandler(RepositoryStatus.deleteSuccess, nil)
+            complitionHandler(.success(RepositoryStatus.deleteSuccess))
         } catch {
-            complitionHandler(nil, RepositoryError.deleteFailed)
+            complitionHandler(.failure(RepositoryError.deleteFailed))
         }
     }
     
@@ -86,9 +86,9 @@ final class Repository {
             try realm.write {
                 realm.delete(data)
             }
-            complitionHandler(RepositoryStatus.deleteSuccess, nil)
+            complitionHandler(.success(RepositoryStatus.deleteSuccess))
         } catch {
-            complitionHandler(nil, RepositoryError.deleteFailed)
+            complitionHandler(.failure(RepositoryError.deleteFailed))
         }
     }
     
@@ -97,9 +97,9 @@ final class Repository {
             try realm.write {
                 queryHandeler()
             }
-            completionHandler(RepositoryStatus.updateSuccess, nil)
+            completionHandler(.success(RepositoryStatus.updateSuccess))
         } catch {
-            completionHandler(nil, RepositoryError.updatedFailed)
+            completionHandler(.failure(RepositoryError.updatedFailed))
         }
     }
 }

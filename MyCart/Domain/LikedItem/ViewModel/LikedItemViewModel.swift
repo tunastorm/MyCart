@@ -39,20 +39,20 @@ final class LikedItemViewModel: BaseViewModel {
     }
     
     override func transform() {
-        inputFatchLikedItemList.bind { _ in
-            self.fetchLikedList()
+        inputFatchLikedItemList.bind { [weak self] _ in
+            self?.fetchLikedList()
         }
-        inputCategoryButtonTrigger.bind { _ in
-            self.filterLikedList()
+        inputCategoryButtonTrigger.bind { [weak self] _ in
+            self?.filterLikedList()
         }
-        inputConvertShopItem.bind { _ in
-            self.convertShopItem()
+        inputConvertShopItem.bind { [weak self] _ in
+            self?.convertShopItem()
         }
-        inputDeleteLikedItem.bind { _ in
-            self.deleteLikedItem()
+        inputDeleteLikedItem.bind { [weak self] _ in
+            self?.deleteLikedItem()
         }
-        inputDeleteLikedItemInDetail.bind { _ in
-            self.deleteLikedItem(inDetailView: true)
+        inputDeleteLikedItemInDetail.bind { [weak self] _ in
+            self?.deleteLikedItem(inDetailView: true)
         }
     }
     
@@ -94,14 +94,15 @@ final class LikedItemViewModel: BaseViewModel {
         let compundedFilter = categoryQuery(outputCategoryList.value[index])
         repository.queryProperty {
             outputLikedList.value = Array(user.likedList.filter(compundedFilter))
-        } completionHandler: { status, error in
-            guard error == nil, let status else {
-                // 검색결과 없다 등 에러처리
-                return
+        } completionHandler: { result in
+            switch result {
+            case .success(let status):
+                let category = outputCategoryList.value.remove(at: index)
+                outputCategoryList.value.insert(category, at: 0)
+                outputClickedCategory.value = 0
+            case .failure(let error):
+                print(error)
             }
-            let category = outputCategoryList.value.remove(at: index)
-            outputCategoryList.value.insert(category, at: 0)
-            outputClickedCategory.value = 0
         }
     }
     
@@ -113,18 +114,18 @@ final class LikedItemViewModel: BaseViewModel {
             if let item = user?.likedList.where({ $0.productId == productId }) {
                 user?.likedList.realm?.delete(item)
             }
-        } completionHandler: { [weak self] status, error in
-            guard error == nil, let status else {
-                self?.outputLikedListResult.value = error!
-                return
+        } completionHandler: { [weak self] result in
+            switch result{
+            case .success(let status):
+                if inDetailView {
+                    self?.outputPopDetaileView.value = ()
+                }
+                self?.fetchLikedList()
+                self?.outputLikedListResult.value = status
+                NotificationCenter.default.post(name: NSNotification.Name("removeLikedItemInMyCart"), object: nil, userInfo: ["productId": productId])
+            case .failure(let error):
+                self?.outputLikedListResult.value = error
             }
-            if inDetailView {
-                print(#function, "펑!!!!")
-                self?.outputPopDetaileView.value = ()
-            }
-            self?.fetchLikedList()
-            self?.outputLikedListResult.value = status
-            NotificationCenter.default.post(name: NSNotification.Name("removeLikedItemInMyCart"), object: nil, userInfo: ["productId": productId])
         }
     }
     

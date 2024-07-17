@@ -13,14 +13,16 @@ import Then
 
 final class ProductDetailViewController: BaseViewController {
     
-    var delegate: SearchResultCollectionViewCellDelegate?
+    weak var delegate: SearchResultCollectionViewCellDelegate?
     var row: Int?
     var product: ShopItem?
 
     let webView = WKWebView()
+    
     private let errorView = UIView().then {
         $0.isHidden = true
     }
+    
     private let errorLabel = UILabel().then {
         $0.font = Resource.Font.boldSystem16
         $0.textAlignment = .center
@@ -52,7 +54,6 @@ final class ProductDetailViewController: BaseViewController {
             $0.tintColor = Resource.MyColor.lightGray
             $0.contentMode = .scaleAspectFit
         }
-        
         view.addSubview(errorView)
         errorView.addSubview(errorImage)
         errorView.addSubview(errorLabel)

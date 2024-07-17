@@ -46,12 +46,13 @@ class SettingViewModel: BaseViewModel {
         guard let user = outputUser.value else {
             return
         }
-        repository.deleteUser(user) { status, error in
-            guard error == nil, let status else {
-                outputDeleteUserResult.value = error!
-                return
+        repository.deleteUser(user) { result in
+            switch result {
+            case .success(let status):
+                outputDeleteUserResult.value = status
+            case .failure(let error):
+                outputDeleteUserResult.value = error
             }
-            outputDeleteUserResult.value = status
         }
     }
 }

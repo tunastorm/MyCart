@@ -88,12 +88,13 @@ class SignUpViewModel: BaseViewModel {
             return
         }
         let user = User(nickname: nickname, profilImage: imageName)
-        repository.createItem(user) { [weak self] status, error in
-            guard error == nil, let status else {
-                self?.outputAddUserResult.value = error!
-                return
+        repository.createItem(user) { [weak self] result in
+            switch result {
+            case .success(let status):
+                self?.outputAddUserResult.value = status
+            case .failure(let error):
+                self?.outputAddUserResult.value = error
             }
-            self?.outputAddUserResult.value = status
         }
     }
     
@@ -106,12 +107,13 @@ class SignUpViewModel: BaseViewModel {
             User.Column.nickname.name: nickname,
             User.Column.profileImage.name: imageName
         ]
-        repository.updateItem(object: object, value: user) { [weak self] status, error in
-            guard error == nil, let status else {
-                self?.outputUpdateUserResult.value = error!
-                return
+        repository.updateItem(object: object, value: user) { [weak self] result in
+            switch result {
+            case .success(let status):
+                self?.outputUpdateUserResult.value = status
+            case .failure(let error):
+                self?.outputUpdateUserResult.value = error
             }
-            self?.outputUpdateUserResult.value = status
         }
     }
 }

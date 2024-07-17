@@ -11,7 +11,8 @@ import UIKit
 extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.outputItemList.value.count
+        let itemSize = viewModel.outputItemList.value.count
+        return itemSize
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -32,10 +33,9 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        let itemSize = viewModel.outputItemList.value.count
-        indexPaths.forEach { indexPath in
-            if itemSize - 1 == indexPath.row {
-                viewModel.inputRequestSearchTrigger.value = nil
+        indexPaths.forEach { [weak self] indexPath in
+            if let itemSize = self?.viewModel.outputItemList.value, itemSize.count - 1 == indexPath.row {
+                self?.viewModel.inputRequestSearchTrigger.value = nil
             }
         }
     }
@@ -45,7 +45,8 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         vc.delegate = self
         vc.row = indexPath.row
         if viewModel.outputItemList.value.count > 0 {
-            vc.product = viewModel.outputItemList.value[indexPath.row]
+            let product = viewModel.outputItemList.value[indexPath.row]
+            vc.product = product
         }
         pushAfterView(view: vc, backButton: true, animated: true)
     }

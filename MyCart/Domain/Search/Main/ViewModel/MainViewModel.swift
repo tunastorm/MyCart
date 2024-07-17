@@ -51,26 +51,28 @@ class MainViewModel: BaseViewModel {
             return
         }
         let searchedword = outputSearchedList.value[index]
-        repository.deleteItem(searchedword) { [weak self] status, error in
-            guard error == nil, let status else {
-                self?.outputDeleteSearchedWordResult.value = error!
-                return
+        repository.deleteItem(searchedword) { [weak self] result in
+            switch result {
+            case .success(let status):
+                self?.outputDeleteSearchedWordResult.value = status
+                self?.getUser()
+            case .failure(let error):
+                self?.outputDeleteSearchedWordResult.value = error
             }
-            self?.outputDeleteSearchedWordResult.value = status
-            self?.getUser()
         }
     }
     
     private func truncateSearchedList() {
         repository.queryProperty { [weak self] in
             self?.outputUser.value?.searchedList.removeAll()
-        } completionHandler: { [weak self] status, error in
-            guard error == nil, let status else {
-                self?.outputTruncateSearchedListResult.value = error!
-                return
+        } completionHandler: { [weak self] result in
+            switch result {
+            case .success(let status):
+                self?.outputTruncateSearchedListResult.value = status
+                self?.getUser()
+            case .failure(let error):
+                self?.outputTruncateSearchedListResult.value = error
             }
-            self?.outputTruncateSearchedListResult.value = status
-            self?.getUser()
         }
     }
 }

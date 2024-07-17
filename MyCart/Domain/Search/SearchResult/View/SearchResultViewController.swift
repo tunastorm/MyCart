@@ -107,7 +107,7 @@ final class SearchResultViewController: BaseViewController {
             guard let sort else { return }
             self?.updateSortingView(sort)
         }
-        viewModel.outputItemList.bind { [weak self] _ in
+        viewModel.outputItemList.bind { [weak self] itemList in
             self?.collectionView.reloadData()
         }
         viewModel.outputLikedItemIndex.bind { [weak self] indexPath in
@@ -187,7 +187,8 @@ final class SearchResultViewController: BaseViewController {
 extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
     
     func getQuery() -> String? {
-        return viewModel.outputQuery.value
+        let query = viewModel.outputQuery.value
+        return query
     }
     
     func checkIsLikedItem(_ productId: String) -> Bool {
@@ -199,3 +200,5 @@ extension SearchResultViewController: SearchResultCollectionViewCellDelegate {
         viewModel.inputLikeListButtonTrigger.value = (row,productId)
     }
 }
+
+

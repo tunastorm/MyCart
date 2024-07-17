@@ -101,7 +101,6 @@ final class SearchCollectionViewCell: BaseCollectionViewCell {
         let mallName = data.mallName
         // 검색어에 해당하는 텍스트 하이라이팅
         var attributedText = NSMutableAttributedString(string: mallName)
-        
         attributedText.addAttribute(.foregroundColor, value: Resource.MyColor.orange,
                                    range: (mallName as NSString).range(of: query))
         attributedText.addAttribute(.font, value: Resource.Font.boldSystem13,

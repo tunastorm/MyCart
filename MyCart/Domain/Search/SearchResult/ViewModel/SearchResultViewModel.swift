@@ -125,14 +125,15 @@ final class SearchResultViewModel: BaseViewModel {
     
     private func addDictItem(_ user: User, dict: [String:IndexPath]) {
         var newDict = dict
-        let newList = user.likedList.map { likedItem in
-            if self.outputLikedList.value.contains(likedItem) {
+        let newList = user.likedList.map { [weak self] likedItem in
+            if let likedList = self?.outputLikedList.value, likedList.contains(likedItem) {
                 return likedItem
             }
-            self.outputItemList.value.enumerated().forEach { index, item in
+            guard let itemList = self?.outputItemList.value else { return likedItem }
+            for (index, item) in itemList.enumerated() {
                 if item.productId == likedItem.productId {
-                    newDict [likedItem.productId] = IndexPath(row: index, section: 0)
-                    return
+                    newDict[likedItem.productId] = IndexPath(row: index, section: 0)
+                    break
                 }
             }
             return likedItem
@@ -145,7 +146,7 @@ final class SearchResultViewModel: BaseViewModel {
         var newDict = dict
         outputLikedList.value = Array(user.likedList)
         let likedIds = self.outputLikedList.value.map { $0.productId }
-        newDict.keys.forEach { productId in
+        newDict.keys.forEach { [weak self] productId in
             if likedIds.contains(productId) {
                 return
             }
@@ -159,7 +160,7 @@ final class SearchResultViewModel: BaseViewModel {
             return
         }
         var row: Int?
-        outputItemList.value.enumerated().forEach { index, item in
+        outputItemList.value.enumerated().forEach { [weak self] index, item in
             if item.productId == productId { row = index }
         }
         guard let row else { return }
@@ -182,11 +183,13 @@ final class SearchResultViewModel: BaseViewModel {
             if oldWords.count <= 1 {
                 self?.user?.searchedList.append(searchedWord)
             }
-        } completionHandler: { [weak self] status, error in
-            guard error == nil, let status else {
-                return
+        } completionHandler: { result in
+            switch result {
+            case .success(let status):
+                NotificationCenter.default.post(name: NSNotification.Name("searchedWordListChanged"), object: nil, userInfo: nil)
+            case .failure(let error):
+                print(error)
             }
-            NotificationCenter.default.post(name: NSNotification.Name("searchedWordListChanged"), object: nil, userInfo: nil)
         }
     }
     
@@ -209,14 +212,15 @@ final class SearchResultViewModel: BaseViewModel {
         
         repository.queryProperty { [weak self] in
             self?.user?.likedList.append(likedItem)
-        } completionHandler: { [weak self] status, error in
-            guard error == nil, let status else {
-                self?.outputLikedListResult.value = error!
-                return
+        } completionHandler: { [weak self] result in
+            switch result {
+            case .success(let status):
+                self?.fetchLikedList(isAdd: true)
+                self?.outputLikedItemIndex.value = IndexPath(row: row, section: 0)
+                self?.outputLikedListResult.value = status
+            case .failure(let error):
+                self?.outputLikedListResult.value = error
             }
-            self?.fetchLikedList(isAdd: true)
-            self?.outputLikedItemIndex.value = IndexPath(row: row, section: 0)
-            self?.outputLikedListResult.value = status
         }
     }
     
@@ -226,21 +230,22 @@ final class SearchResultViewModel: BaseViewModel {
             if let item = self?.user?.likedList.where({ $0.productId == productId }) {
                 self?.user?.likedList.realm?.delete(item)
             }
-        } completionHandler: { [weak self] status, error in
-            guard error == nil, let status else {
-                self?.outputLikedListResult.value = error!
-                return
+        } completionHandler: { [weak self] result in
+            switch result {
+            case .success(let status):
+                self?.fetchLikedList(isAdd: false)
+                self?.outputLikedItemIndex.value = IndexPath(row: row, section: 0)
+                self?.outputLikedListResult.value = status
+            case .failure(let error):
+                self?.outputLikedListResult.value = error
             }
-            self?.fetchLikedList(isAdd: false)
-            self?.outputLikedItemIndex.value = IndexPath(row: row, section: 0)
-            self?.outputLikedListResult.value = status
         }
     }
     
     private func deinitAllObservables() {
         print(#function)
         inputQuery = Observable(nil)
-//        inputRequestSearchTrigger = Observable(nil)
+        inputRequestSearchTrigger = Observable(nil)
         inputLikeListButtonTrigger = Observable(nil)
         inputSortFilterTrigger = Observable(nil)
         inputViewWillDisappear = Observable(nil)

@@ -31,7 +31,7 @@ enum RepositoryStatus: RepositoryResult {
 }
 
 
-enum RepositoryError: RepositoryResult {
+enum RepositoryError: RepositoryResult, Error {
     case createFailed
     case updatedFailed
     case deleteFailed
