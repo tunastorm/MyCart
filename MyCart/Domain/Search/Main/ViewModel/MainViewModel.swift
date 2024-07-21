@@ -41,7 +41,7 @@ class MainViewModel: BaseViewModel {
             outputTitle.value = nickname + Resource.Text.mainViewTitle
         }
         if let searchedList = outputUser.value?.searchedList.reversed(),
-          outputSearchedList.value.first != searchedList.first || outputSearchedList.value.count != searchedList.count {
+           outputSearchedList.value.count == 0 || outputSearchedList.value.first != searchedList.first || outputSearchedList.value.count != searchedList.count {
             outputSearchedList.value = Array(searchedList)
         }
     }

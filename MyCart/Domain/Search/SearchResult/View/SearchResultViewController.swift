@@ -21,6 +21,24 @@ final class SearchResultViewController: BaseViewController {
     
     let viewModel = SearchResultViewModel()
     
+    private let noItemView = UIView().then {
+        $0.isHidden = true
+    }
+    
+    private let noItemImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.image = Resource.NamedImage.likeSelected
+        $0.tintColor = Resource.MyColor.lightGray
+    }
+    
+    private let noItemLabel = UILabel().then {
+        $0.textColor = Resource.MyColor.lightGray
+        $0.textAlignment = .center
+        $0.font = Resource.Font.boldSystem16
+        $0.numberOfLines = 0
+        $0.text = "앗... 검색결과가 없어요. 다시 검색하세요!"
+    }
+    
     private let totalLabel = UILabel().then {
         $0.textAlignment = .left
         $0.textColor = Resource.MyColor.orange
@@ -61,14 +79,30 @@ final class SearchResultViewController: BaseViewController {
         return layout
     }
     
-    
     override func configHierarchy() {
+        view.addSubview(noItemView)
+        noItemView.addSubview(noItemImageView)
+        noItemView.addSubview(noItemLabel)
         view.addSubview(totalLabel)
         view.addSubview(sortingView)
         view.addSubview(collectionView)
     }
     
     override func configLayout() {
+        noItemView.snp.makeConstraints {
+            $0.width.equalTo(300)
+            $0.height.equalTo(130)
+            $0.center.equalTo(view.safeAreaLayoutGuide)
+        }
+        noItemImageView.snp.makeConstraints {
+            $0.size.equalTo(100)
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
+        }
+        noItemLabel.snp.makeConstraints {
+            $0.top.equalTo(noItemImageView.snp.bottom)
+            $0.bottom.horizontalEdges.equalToSuperview()
+        }
         totalLabel.snp.makeConstraints{
             $0.height.equalTo(30)
             $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
@@ -108,6 +142,7 @@ final class SearchResultViewController: BaseViewController {
             self?.updateSortingView(sort)
         }
         viewModel.outputItemList.bind { [weak self] itemList in
+            self?.noItemsToggle()
             self?.collectionView.reloadData()
         }
         viewModel.outputLikedItemIndex.bind { [weak self] indexPath in
@@ -115,6 +150,15 @@ final class SearchResultViewController: BaseViewController {
             self?.collectionView.reloadItems(at: [indexPath])
         }
         viewModel.inputRequestSearchTrigger.value = .sim
+    }
+    
+    private func noItemsToggle() {
+        let isNoItem = viewModel.outputItemList.value.count == 0
+        print(#function, viewModel.outputItemList.value.count, isNoItem)
+        noItemView.isHidden = !isNoItem
+        totalLabel.isHidden = isNoItem
+        collectionView.isHidden = isNoItem
+        sortingView.isHidden = isNoItem
     }
     
     func configQuery(_ query: String) {

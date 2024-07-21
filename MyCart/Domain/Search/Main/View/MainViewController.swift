@@ -143,6 +143,7 @@ class MainViewController: BaseViewController {
     }
     
     func searchedListToggle(_ count: Int) {
+        print(#function, count)
         if count > 0 {
             imageView.isHidden = true
             noSearchedListLabel.isHidden = true

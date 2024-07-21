@@ -107,7 +107,6 @@ final class SearchCollectionViewCell: BaseCollectionViewCell {
                                    range: (mallName as NSString).range(of: query))
         
         mallNameLabel.attributedText = attributedText
-        // 이 부분은 인코딩을 통해 풀 수도 있다
         var itemName = data.title.replacingOccurrences(of: "<b>", with: "")
         itemName = itemName.replacingOccurrences(of: "</b>", with: "")
         // 검색어에 해당하는 텍스트 하이라이팅

@@ -27,14 +27,16 @@ final class LikedItemViewModel: BaseViewModel {
     var outputLikedListResult: Observable<RepositoryResult?> = Observable(nil)
     var outputPopDetaileView: Observable<Void?> = Observable(nil)
     
-    private var categoryQuery = { (searchText: String) in
+    private var categoryQuery = { (searchText: String, condition: QueryCondition) in
         let categoryList: [LikedItem.Column] = [.category1, .category2, .category3, .category4]
         var filterArray: [NSPredicate] = []
         for item in categoryList {
-            if categoryList.contains(item) {
-                let predicate = "\(item.rawValue) CONTAINS[c] '\(searchText)'"
-                filterArray.append(NSPredicate(format:predicate))
-            }
+            let predicate = "\(item.rawValue) \(condition.value) '\(searchText)'"
+            filterArray.append(NSPredicate(format:predicate))
+//            if categoryList.contains(item) {
+//                let predicate = "\(item.rawValue) CONTAINS[c] '\(searchText)'"
+//                filterArray.append(NSPredicate(format:predicate))
+//            }
         }
         return NSCompoundPredicate(type: .or, subpredicates: filterArray)
     }
@@ -85,7 +87,7 @@ final class LikedItemViewModel: BaseViewModel {
         outputLikedList.value.forEach() { item in
             var isStored = false // item.category4 ~ 1까지 중 최하단의 카테고리 1개만 저장 후 나머지는 캔슬
             categoryProperties.enumerated().forEach { [weak self] index, property in
-                let dictIndex = 3-index
+                let dictIndex = (categoryProperties.count - 1) - index
                 if !isStored, let category = item.value(forKey: property.name) as? String, !category.isEmpty {
                     guard var categoryDict = self?.categoryVector?[dictIndex] else { return }
                     self?.categoryVector?[dictIndex] = self?.setCategoryDict(categoryDict, category) ?? [:]
@@ -150,7 +152,7 @@ final class LikedItemViewModel: BaseViewModel {
     }
     
     private func filterByCategory( _ index: Int, isDelete: Bool = false) {
-        let compundedFilter = categoryQuery(outputCategoryList.value[index])
+        let compundedFilter = categoryQuery(outputCategoryList.value[index], QueryCondition.equals)
         var list: [LikedItem]?
         repository.queryProperty { [weak self] in
             guard let result = self?.user?.likedList.filter(compundedFilter) else {

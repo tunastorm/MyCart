@@ -80,6 +80,7 @@
 		BCF5E9DB2C3FACB6002D9EA0 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9DA2C3FACB6002D9EA0 /* Array+Extension.swift */; };
 		BCF5E9DC2C401216002D9EA0 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = BCF5E9782C3D18B9002D9EA0 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BCF5E9DF2C415A4E002D9EA0 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5E9DE2C415A4E002D9EA0 /* UIImage+Extension.swift */; };
+		BCF5F63D2C4D6228002D9EA0 /* QueryCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF5F63C2C4D6228002D9EA0 /* QueryCondition.swift */; };
 		BCF731AF2C1BEB85003FC583 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731AE2C1BEB85003FC583 /* Resource.swift */; };
 		BCF731B12C1BF419003FC583 /* UIColor+HexColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */; };
 		BCF731B42C1C14DB003FC583 /* ViewTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF731B32C1C14DB003FC583 /* ViewTransition.swift */; };
@@ -167,6 +168,7 @@
 		BCF5E9CE2C3EFF62002D9EA0 /* LikedItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedItemDetailViewController.swift; sourceTree = "<group>"; };
 		BCF5E9DA2C3FACB6002D9EA0 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		BCF5E9DE2C415A4E002D9EA0 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		BCF5F63C2C4D6228002D9EA0 /* QueryCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryCondition.swift; sourceTree = "<group>"; };
 		BCF731AE2C1BEB85003FC583 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		BCF731B02C1BF419003FC583 /* UIColor+HexColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColorExtension.swift"; sourceTree = "<group>"; };
 		BCF731B32C1C14DB003FC583 /* ViewTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTransition.swift; sourceTree = "<group>"; };
@@ -399,6 +401,7 @@
 				BCF5E97F2C3D1F4F002D9EA0 /* Repository.swift */,
 				BCF5E9812C3D1FA2002D9EA0 /* RepositoryResult.swift */,
 				BCF5E9852C3D1FF0002D9EA0 /* ResourceManager.swift */,
+				BCF5F63C2C4D6228002D9EA0 /* QueryCondition.swift */,
 			);
 			path = DataBase;
 			sourceTree = "<group>";
@@ -686,6 +689,7 @@
 				BCBDE7922C1F2E4B00B551F6 /* MainTableViewCell.swift in Sources */,
 				BCF5E9802C3D1F4F002D9EA0 /* Repository.swift in Sources */,
 				BC61100B2C2134B4009EA24F /* StatusMessage.swift in Sources */,
+				BCF5F63D2C4D6228002D9EA0 /* QueryCondition.swift in Sources */,
 				BC3B9C662C1D6CCB008DCD18 /* MainViewController.swift in Sources */,
 				BCF5E98E2C3D760B002D9EA0 /* BaseViewController.swift in Sources */,
 				BCEC001E2C315B6500C96564 /* SearchResultViewController.swift in Sources */,

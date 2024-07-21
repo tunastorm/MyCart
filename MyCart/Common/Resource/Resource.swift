@@ -124,7 +124,7 @@ enum Resource {
         static let nickNameSuccess = "사용할 수 있는 닉네임이에요"
 
         static let mainViewTitle = "님의 MEANING OUT"
-        static let noListMessgae = "최근 검색어가 없어요"
+        static let noListMessgae = "최근 검색어가 없어요. 검색을 시작해보세요!"
         static let searchBarPlaceHolder = "브랜드, 상품 등을 입력하세요"
         static let currentSearched = "최근 검색"
         static let allDelete = "전체 삭제"

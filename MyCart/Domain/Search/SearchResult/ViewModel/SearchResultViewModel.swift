@@ -42,7 +42,7 @@ final class SearchResultViewModel: BaseViewModel {
         }
         inputSortFilterTrigger.bind { [weak self] _ in
             self?.clearSearchRecord()
-            self?.requestSearch()
+            self?.requestSearch(isAdd: true)
         }
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDictItemFromMyCart), name: NSNotification.Name("removeLikedItemInMyCart"), object: nil)
     }
@@ -84,7 +84,7 @@ final class SearchResultViewModel: BaseViewModel {
         }
     }
     
-    private func requestSearch() {
+    private func requestSearch(isAdd: Bool? = nil) {
         guard let start = pageNation() else { return }
         guard let query = outputQuery.value else { return }
         guard let sort = inputRequestSearchTrigger.value == nil ? outputSort.value : inputRequestSearchTrigger.value else {
@@ -99,7 +99,7 @@ final class SearchResultViewModel: BaseViewModel {
                 if self?.responseInfo.start == 1, let total = self?.responseInfo.total{
                     self?.outputTotal.value = Int(total).formatted(.number) + Resource.Text.searchTotal
                 }
-                self?.fetchLikedList()
+                self?.fetchLikedList(isAdd: isAdd)
                 self?.addSearchedWord()
                 URLSessionManager.shared.closeSession()
 //                self?.deinitAllObservables()
@@ -118,15 +118,16 @@ final class SearchResultViewModel: BaseViewModel {
         
         switch isAdd {
         case true:
-            addDictItem(user, dict: outputLikedProductIdDict.value)
+            addDictItem(user)
         case false:
-            deleteDictItem(user, dict: outputLikedProductIdDict.value)
-        default: addDictItem(user, dict: [:])
+            deleteDictItem(user)
+        default:
+            addDictItem(user)
         }
     }
     
-    private func addDictItem(_ user: User, dict: [String:IndexPath]) {
-        var newDict = dict
+    private func addDictItem(_ user: User) {
+        var newDict = outputLikedProductIdDict.value
         let newList = user.likedList.map { [weak self] likedItem in
             if let likedList = self?.outputLikedList.value, likedList.contains(likedItem) {
                 return likedItem
@@ -144,8 +145,8 @@ final class SearchResultViewModel: BaseViewModel {
         outputLikedProductIdDict.value = newDict
     }
 
-    private func deleteDictItem(_ user: User, dict: [String:IndexPath]) {
-        var newDict = dict
+    private func deleteDictItem(_ user: User) {
+        var newDict = outputLikedProductIdDict.value
         outputLikedList.value = Array(user.likedList)
         let likedIds = self.outputLikedList.value.map { $0.productId }
         newDict.keys.forEach { productId in

@@ -38,7 +38,7 @@ final class LikedItemViewController: BaseViewController {
         $0.textColor = Resource.MyColor.lightGray
         $0.textAlignment = .center
         $0.font = Resource.Font.boldSystem16
-        $0.text = "보관된 상품이 없어요. 검색을 시작해보세요!"
+        $0.text = "담은 상품이 없어요. 검색을 시작해보세요!"
 //        $0.backgroundColor = .red
     }
     
