@@ -40,7 +40,7 @@ final class LikedItemViewModel: BaseViewModel {
         return NSCompoundPredicate(type: .or, subpredicates: filterArray)
     }
     
-    private var categoryVector: [CategoryDict] = [[:], [:], [:], [:]]
+    private var categoryVector: [CategoryDict]?
     
     override func transform() {
         inputFatchLikedItemList.bind { [weak self] _ in
@@ -75,24 +75,40 @@ final class LikedItemViewModel: BaseViewModel {
     }
     
     private func fetchCategoryFilter() {
-        let categoryProperties = LikedItem.Column.allCases[8...11].reversed()
-        outputLikedList.value.forEach() { item in
-            var isStored = false // item.category4 ~ 1까지 중 1개의 카테고리만 저장 후 나머지는 캔슬
-            categoryProperties.enumerated().forEach { [weak self] index, property in
-                let dictIndex = 3-index
-                if !isStored, let category = item.value(forKey: property.name) as? String, !category.isEmpty {
-                    self?.categoryVector[dictIndex] = self?.updateCategoryDict(self?.categoryVector[dictIndex], category) ?? [:]
-                    isStored = true
-                }
-            }
-        }
         var flatten = ["전체"]
-        categoryVector.enumerated().forEach { index, dict in
+//        if var categoryVector {
+//           updateCategoryVector()
+//        } else {
+//           setCatetgoryVector()
+//        }
+        setCatetgoryVector()
+        categoryVector?.enumerated().forEach { index, dict in
             dict.keys.forEach{ flatten.append($0) }
         }
         outputCategoryList.value = flatten
         print(#function, "categoryVector: ", categoryVector)
         print(#function, "outputCategoryList: ", outputCategoryList.value)
+    }
+    
+    private func setCatetgoryVector() {
+        self.categoryVector = [[:], [:], [:], [:]]
+        let categoryProperties = LikedItem.Column.allCases[8...11].reversed()
+        outputLikedList.value.forEach() { item in
+            var isStored = false // item.category4 ~ 1까지 중 최하단의 카테고리 1개만 저장 후 나머지는 캔슬
+            categoryProperties.enumerated().forEach { [weak self] index, property in
+                let dictIndex = 3-index
+                if !isStored, let category = item.value(forKey: property.name) as? String, !category.isEmpty {
+                    guard var categoryDict = self?.categoryVector?[dictIndex] else { return }
+                    self?.categoryVector?[dictIndex] = self?.updateCategoryDict(categoryDict, category) ?? [:]
+                    isStored = true
+                }
+            }
+        }
+        return
+    }
+    
+    private func updateCategoryVector() {
+        
     }
     
     private func updateCategoryDict(_ categoryDict: CategoryDict?, _ category: String) -> CategoryDict {
