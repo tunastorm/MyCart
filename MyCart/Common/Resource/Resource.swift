@@ -7,8 +7,14 @@
 
 import UIKit
 
+enum Constants {
+    
+}
+
+
 
 enum Resource {
+    
     enum Font {
         static let system13 = UIFont.systemFont(ofSize: 13)
         static let system14 = UIFont.systemFont(ofSize: 14)

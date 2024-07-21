@@ -11,6 +11,8 @@ import RealmSwift
 
 final class LikedItemViewModel: BaseViewModel {
     
+    typealias CategoryDict = [String:Int]
+    
     var inputFatchLikedItemList: Observable<Void?> = Observable(nil)
     var inputConvertShopItem: Observable<Int?> = Observable(nil)
     var inputDeleteLikedItem: Observable<String?> = Observable(nil)
@@ -38,6 +40,8 @@ final class LikedItemViewModel: BaseViewModel {
         return NSCompoundPredicate(type: .or, subpredicates: filterArray)
     }
     
+    private var categoryVector: [CategoryDict] = [[:], [:], [:], [:]]
+    
     override func transform() {
         inputFatchLikedItemList.bind { [weak self] _ in
             self?.fetchLikedList()
@@ -61,49 +65,85 @@ final class LikedItemViewModel: BaseViewModel {
             return
         }
         self.user = user
-        print(#function, "아웃풋", outputLikedList.value.count, "현재", user.likedList.count)
         if outputLikedList.value.count != user.likedList.count {
             outputLikedList.value = Array(user.likedList)
-            print(#function, "수정된 아웃풋 ", outputLikedList.value.count)
             outputTotal.value = outputLikedList.value.count.formatted(.number) + Resource.Text.myCartTotal
         }
         print(#function, "카테고리 리스트", outputCategoryList.value)
         fetchCategoryFilter()
+        outputClickedCategory.value = 0
     }
     
     private func fetchCategoryFilter() {
-        var categoryVector = [Set<String>(),Set<String>(), Set<String>(), Set<String>()]
+        let categoryProperties = LikedItem.Column.allCases[8...11].reversed()
         outputLikedList.value.forEach() { item in
-            categoryVector[0].insert(item.category1)
-            categoryVector[1].insert(item.category2)
-            categoryVector[2].insert(item.category3)
-            categoryVector[3].insert(item.category4)
+            var isStored = false // item.category4 ~ 1까지 중 1개의 카테고리만 저장 후 나머지는 캔슬
+            categoryProperties.enumerated().forEach { [weak self] index, property in
+                let dictIndex = 3-index
+                if !isStored, let category = item.value(forKey: property.name) as? String, !category.isEmpty {
+                    self?.categoryVector[dictIndex] = self?.updateCategoryDict(self?.categoryVector[dictIndex], category) ?? [:]
+                    isStored = true
+                }
+            }
         }
-        var flatten: [String] = []
-        categoryVector.enumerated().forEach { index, set in
-            if index < 2 { return }
-            set.forEach { $0.isEmpty ? print("") : flatten.append($0) }
+        var flatten = ["전체"]
+        categoryVector.enumerated().forEach { index, dict in
+            dict.keys.forEach{ flatten.append($0) }
         }
         outputCategoryList.value = flatten
+        print(#function, "categoryVector: ", categoryVector)
+        print(#function, "outputCategoryList: ", outputCategoryList.value)
+    }
+    
+    private func updateCategoryDict(_ categoryDict: CategoryDict?, _ category: String) -> CategoryDict {
+        guard var newDict = categoryDict else {
+            return [:]
+        }
+        if let oldCount = newDict[category]{
+            let newCount = oldCount + 1
+            newDict.updateValue(newCount, forKey: category)
+        } else {
+            newDict[category] = 1
+        }
+        return newDict
     }
     
     private func filterLikedList() {
-        guard let user, let index = inputCategoryButtonTrigger.value else {
+        guard let index = inputCategoryButtonTrigger.value else {
             return
         }
+        if outputCategoryList.value[index] == "전체" {
+            fetchLikedList()
+            return
+        }
+        filterByCategory(index)
+    }
+    
+    private func filterByCategory( _ index: Int) {
         let compundedFilter = categoryQuery(outputCategoryList.value[index])
-        repository.queryProperty {
-            outputLikedList.value = Array(user.likedList.filter(compundedFilter))
-        } completionHandler: { result in
+        var list: [LikedItem]?
+        repository.queryProperty { [weak self] in
+            guard let result = self?.user?.likedList.filter(compundedFilter) else {
+                return
+            }
+            list = Array(result)
+        } completionHandler: { [weak self] result in
             switch result {
             case .success(let status):
-                let category = outputCategoryList.value.remove(at: index)
-                outputCategoryList.value.insert(category, at: 0)
-                outputClickedCategory.value = 0
+                self?.filetByCategoryComplition(list, index)
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    private func filetByCategoryComplition(_ list: [LikedItem]?, _ index: Int) {
+        guard let list else { return }
+        outputLikedList.value = list
+        outputTotal.value = list.count.formatted(.number) + Resource.Text.myCartTotal
+        let category = outputCategoryList.value.remove(at: index)
+        outputCategoryList.value.insert(category, at: 1)
+        outputClickedCategory.value = 1
     }
     
     private func deleteLikedItem(inDetailView: Bool = false) {
@@ -117,16 +157,20 @@ final class LikedItemViewModel: BaseViewModel {
         } completionHandler: { [weak self] result in
             switch result{
             case .success(let status):
-                if inDetailView {
-                    self?.outputPopDetaileView.value = ()
-                }
-                self?.fetchLikedList()
-                self?.outputLikedListResult.value = status
-                NotificationCenter.default.post(name: NSNotification.Name("removeLikedItemInMyCart"), object: nil, userInfo: ["productId": productId])
+                self?.deleteComplition(inDetailView, status, productId)
             case .failure(let error):
                 self?.outputLikedListResult.value = error
             }
         }
+    }
+    
+    private func deleteComplition(_ inDetailView: Bool, _ status: RepositoryStatus, _ productId: String) {
+        if inDetailView {
+            outputPopDetaileView.value = ()
+        }
+        fetchLikedList()
+        outputLikedListResult.value = status
+        NotificationCenter.default.post(name: NSNotification.Name("removeLikedItemInMyCart"), object: nil, userInfo: ["productId": productId])
     }
     
     private func convertShopItem() {

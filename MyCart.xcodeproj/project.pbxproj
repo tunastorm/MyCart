@@ -194,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				BCF5E9BB2C3EEDB7002D9EA0 /* Splash */,
+				BCF5F63A2C4A5EF9002D9EA0 /* Onboarding */,
 				BCF5E9BE2C3EEE41002D9EA0 /* SignUp */,
 			);
 			path = Auth;
@@ -257,6 +258,7 @@
 				BC9502EB2C1AEBB9004070B8 /* APIKey.swift */,
 				BC9503012C1B3532004070B8 /* APIRouter.swift */,
 				BCEC000F2C314AFE00C96564 /* URLSessionManager.swift */,
+				BC61100A2C2134B4009EA24F /* StatusMessage.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -294,7 +296,6 @@
 			isa = PBXGroup;
 			children = (
 				BCF731AE2C1BEB85003FC583 /* Resource.swift */,
-				BC61100A2C2134B4009EA24F /* StatusMessage.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -453,7 +454,6 @@
 			isa = PBXGroup;
 			children = (
 				BC3B9C622C1D6B0D008DCD18 /* SplashViewController.swift */,
-				BC3B9C602C1D674B008DCD18 /* OnboadingViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -521,6 +521,22 @@
 				BCF5E9C32C3EEF51002D9EA0 /* ViewModel */,
 			);
 			path = LikedItem;
+			sourceTree = "<group>";
+		};
+		BCF5F63A2C4A5EF9002D9EA0 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				BCF5F63B2C4A5F09002D9EA0 /* View */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		BCF5F63B2C4A5F09002D9EA0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BC3B9C602C1D674B008DCD18 /* OnboadingViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		BCF731B22C1C0BDF003FC583 /* Protocol */ = {

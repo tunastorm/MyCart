@@ -149,7 +149,7 @@ final class SearchResultViewModel: BaseViewModel {
         var newDict = dict
         outputLikedList.value = Array(user.likedList)
         let likedIds = self.outputLikedList.value.map { $0.productId }
-        newDict.keys.forEach { [weak self] productId in
+        newDict.keys.forEach { productId in
             if likedIds.contains(productId) {
                 return
             }

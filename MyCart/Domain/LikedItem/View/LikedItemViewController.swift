@@ -167,9 +167,11 @@ final class LikedItemViewController: BaseViewController {
             self?.pushToDetailViewController(row, product)
         }
         viewModel.outputCategoryList.bind { [weak self] _ in
+            print(#function, "outputCategoryList.bind")
             self?.categoryCollectionView.reloadData()
         }
         viewModel.outputClickedCategory.bind { [weak self] _ in
+            print(#function, "outputClickedCategory.bind")
             self?.categoryCollectionView.reloadData()
         }
         viewModel.outputPopDetaileView.bind { [weak self] _ in
