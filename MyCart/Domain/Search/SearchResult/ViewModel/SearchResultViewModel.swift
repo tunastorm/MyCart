@@ -60,7 +60,6 @@ final class SearchResultViewModel: BaseViewModel {
     }
     
     private func pageNation() -> Int? {
-        print(#function, responseInfo)
         if responseInfo.start == 1, responseInfo.total == 0 {
             return responseInfo.start
         }
@@ -103,7 +102,7 @@ final class SearchResultViewModel: BaseViewModel {
                 self?.fetchLikedList()
                 self?.addSearchedWord()
                 URLSessionManager.shared.closeSession()
-                //            self?.deinitAllObservables()
+//                self?.deinitAllObservables()
                 hideToastActivity()
             case .failure(let error):
                 hideToastActivity()
@@ -245,21 +244,22 @@ final class SearchResultViewModel: BaseViewModel {
         }
     }
     
+    // SearchResultViewController deinit 테스트
     private func deinitAllObservables() {
         print(#function)
-        inputQuery = Observable(nil)
-        inputRequestSearchTrigger = Observable(nil)
-        inputLikeListButtonTrigger = Observable(nil)
-        inputSortFilterTrigger = Observable(nil)
-        inputViewWillDisappear = Observable(nil)
-        
-        outputQuery = Observable(nil)
-        outputSort = Observable(nil)
-        outputTotal = Observable(nil)
-        outputLikedList = Observable([])
-        outputLikedItemIndex = Observable([])
-        outputLikedProductIdDict = Observable([:])
-        outputLikedListResult = Observable(nil)
+//        inputQuery = Observable(nil)
+//        inputRequestSearchTrigger = Observable(nil)
+//        inputLikeListButtonTrigger = Observable(nil)
+//        inputSortFilterTrigger = Observable(nil)
+//        inputViewWillDisappear = Observable(nil)
+//        
+//        outputQuery = Observable(nil)
+//        outputSort = Observable(nil)
+//        outputTotal = Observable(nil)
+//        outputLikedList = Observable([])
+//        outputLikedItemIndex = Observable([])
+//        outputLikedProductIdDict = Observable([:])
+//        outputLikedListResult = Observable(nil)
         outputItemList = Observable([])
     }
 }

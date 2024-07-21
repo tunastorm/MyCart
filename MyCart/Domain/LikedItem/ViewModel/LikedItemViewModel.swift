@@ -33,7 +33,6 @@ final class LikedItemViewModel: BaseViewModel {
         for item in categoryList {
             if categoryList.contains(item) {
                 let predicate = "\(item.rawValue) CONTAINS[c] '\(searchText)'"
-                print(#function, "predicate: ", predicate)
                 filterArray.append(NSPredicate(format:predicate))
             }
         }
@@ -69,10 +68,7 @@ final class LikedItemViewModel: BaseViewModel {
             outputLikedList.value = Array(user.likedList)
             outputTotal.value = outputLikedList.value.count.formatted(.number) + Resource.Text.myCartTotal
         }
-        print(#function, "isDelete: ", isDelete)
         fetchCategoryFilter(isDelete)
-        print(#function, "좋아요 리스트: ", outputLikedList.value)
-        print(#function, "카테고리 리스트: ", outputCategoryList.value)
     }
     
     private func fetchCategoryFilter(_ isDelete: Bool) {
@@ -81,8 +77,6 @@ final class LikedItemViewModel: BaseViewModel {
         } else {
             setCatetgoryVector()
         }
-        print(#function, "categoryVector: ", categoryVector)
-        print(#function, "outputCategoryList: ", outputCategoryList.value)
     }
     
     private func setCatetgoryVector() {
@@ -121,7 +115,6 @@ final class LikedItemViewModel: BaseViewModel {
         categoryVector?.enumerated().forEach { index, dict in
             dict.keys.forEach{flatten.append($0) }
         }
-        print(#function, "flatten: ", flatten)
         outputCategoryList.value = flatten
     }
     
@@ -135,7 +128,6 @@ final class LikedItemViewModel: BaseViewModel {
                 return
             }
             let newCount = oldCount - 1
-            print(#function, "newCount: ", newCount)
             if newCount > 0 {
                 self?.categoryVector?[index].updateValue(newCount, forKey:category)
             } else {
@@ -144,7 +136,6 @@ final class LikedItemViewModel: BaseViewModel {
                 self?.outputClickedCategory.value = 0
             }
         }
-        print(#function, "categoryVector: ", categoryVector)
     }
     
     private func filterLikedList() {
@@ -180,7 +171,6 @@ final class LikedItemViewModel: BaseViewModel {
         guard let list else { return }
         outputLikedList.value = list
         outputTotal.value = list.count.formatted(.number) + Resource.Text.myCartTotal
-        print(#function, "isDelete", isDelete, "index: ", index)
         if isDelete {
             fetchCategoryFilter(isDelete)
         } else {
@@ -222,12 +212,9 @@ final class LikedItemViewModel: BaseViewModel {
                 itemCount = categoryDict[category] ?? 0
             }
         }
-        print(#function, "\(category)(\(itemCount) 개) 삭제")
         if category == "전체" || itemCount <= 1 {
-            print(#function, "fetchLikedList")
             fetchLikedList()
         } else {
-            print(#function, "filterByCategory")
             filterByCategory(clickedIndex, isDelete: true)
             
         }

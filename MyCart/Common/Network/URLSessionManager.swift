@@ -67,7 +67,6 @@ final class URLSessionManager{
                 }
                 do {
                     let result = try JSONDecoder().decode(SearchResponse<ShopItem>.self, from: data)
-//                    print(result)
                     completionHandler(.success(result))
                 } catch {
                     completionHandler(.failure(.invalidData))
