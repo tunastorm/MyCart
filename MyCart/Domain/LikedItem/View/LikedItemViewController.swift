@@ -97,7 +97,7 @@ final class LikedItemViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.inputFatchLikedItemList.value = ()
+        viewModel.inputFetchLikedItemList.value = ()
         likedItemCollectionView.scrollsToTop = true
         noItemsToggle()
     }

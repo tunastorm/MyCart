@@ -13,7 +13,7 @@ final class LikedItemViewModel: BaseViewModel {
     
     typealias CategoryDict = [String:Int]
     
-    var inputFatchLikedItemList: Observable<Void?> = Observable(nil)
+    var inputFetchLikedItemList: Observable<Void?> = Observable(nil)
     var inputConvertShopItem: Observable<Int?> = Observable(nil)
     var inputDeleteLikedItem: Observable<String?> = Observable(nil)
     var inputDeleteLikedItemInDetail: Observable<String?> = Observable(nil)
@@ -43,7 +43,7 @@ final class LikedItemViewModel: BaseViewModel {
     private var categoryVector: [CategoryDict]?
     
     override func transform() {
-        inputFatchLikedItemList.bind { [weak self] _ in
+        inputFetchLikedItemList.bind { [weak self] _ in
             self?.fetchLikedList()
         }
         inputCategoryButtonTrigger.bind { [weak self] _ in
@@ -60,7 +60,7 @@ final class LikedItemViewModel: BaseViewModel {
         }
     }
     
-    private func fetchLikedList() {
+    private func fetchLikedList(isDelete: Bool = false) {
         guard let user = repository.fetchAll(obejct: object, sortKey: User.Column.signUpDate).first else {
             return
         }
@@ -69,23 +69,18 @@ final class LikedItemViewModel: BaseViewModel {
             outputLikedList.value = Array(user.likedList)
             outputTotal.value = outputLikedList.value.count.formatted(.number) + Resource.Text.myCartTotal
         }
-        print(#function, "카테고리 리스트", outputCategoryList.value)
-        fetchCategoryFilter()
-        outputClickedCategory.value = 0
+        print(#function, "isDelete: ", isDelete)
+        fetchCategoryFilter(isDelete)
+        print(#function, "좋아요 리스트: ", outputLikedList.value)
+        print(#function, "카테고리 리스트: ", outputCategoryList.value)
     }
     
-    private func fetchCategoryFilter() {
-        var flatten = ["전체"]
-//        if var categoryVector {
-//           updateCategoryVector()
-//        } else {
-//           setCatetgoryVector()
-//        }
-        setCatetgoryVector()
-        categoryVector?.enumerated().forEach { index, dict in
-            dict.keys.forEach{ flatten.append($0) }
+    private func fetchCategoryFilter(_ isDelete: Bool) {
+        if var categoryVector, isDelete {
+            deleteCategory(outputClickedCategory.value)
+        } else {
+            setCatetgoryVector()
         }
-        outputCategoryList.value = flatten
         print(#function, "categoryVector: ", categoryVector)
         print(#function, "outputCategoryList: ", outputCategoryList.value)
     }
@@ -99,19 +94,16 @@ final class LikedItemViewModel: BaseViewModel {
                 let dictIndex = 3-index
                 if !isStored, let category = item.value(forKey: property.name) as? String, !category.isEmpty {
                     guard var categoryDict = self?.categoryVector?[dictIndex] else { return }
-                    self?.categoryVector?[dictIndex] = self?.updateCategoryDict(categoryDict, category) ?? [:]
+                    self?.categoryVector?[dictIndex] = self?.setCategoryDict(categoryDict, category) ?? [:]
                     isStored = true
                 }
             }
         }
-        return
+        setOutputCategorList()
+        outputClickedCategory.value = 0
     }
     
-    private func updateCategoryVector() {
-        
-    }
-    
-    private func updateCategoryDict(_ categoryDict: CategoryDict?, _ category: String) -> CategoryDict {
+    private func setCategoryDict(_ categoryDict: CategoryDict?, _ category: String) -> CategoryDict {
         guard var newDict = categoryDict else {
             return [:]
         }
@@ -122,6 +114,37 @@ final class LikedItemViewModel: BaseViewModel {
             newDict[category] = 1
         }
         return newDict
+    }
+    
+    private func setOutputCategorList() {
+        var flatten = ["전체"]
+        categoryVector?.enumerated().forEach { index, dict in
+            dict.keys.forEach{flatten.append($0) }
+        }
+        print(#function, "flatten: ", flatten)
+        outputCategoryList.value = flatten
+    }
+    
+    private func deleteCategory(_ clickedIndex: Int?) {
+        guard let clickedIndex, let vectorCount = categoryVector?.count else {
+            return
+        }
+        let category = outputCategoryList.value[clickedIndex]
+        (0 ..< vectorCount).forEach { [weak self] index in
+            guard let oldCount = (self?.categoryVector?[index][category]) else {
+                return
+            }
+            let newCount = oldCount - 1
+            print(#function, "newCount: ", newCount)
+            if newCount > 0 {
+                self?.categoryVector?[index].updateValue(newCount, forKey:category)
+            } else {
+                self?.categoryVector?[index].removeValue(forKey: category)
+                self?.setOutputCategorList()
+                self?.outputClickedCategory.value = 0
+            }
+        }
+        print(#function, "categoryVector: ", categoryVector)
     }
     
     private func filterLikedList() {
@@ -135,7 +158,7 @@ final class LikedItemViewModel: BaseViewModel {
         filterByCategory(index)
     }
     
-    private func filterByCategory( _ index: Int) {
+    private func filterByCategory( _ index: Int, isDelete: Bool = false) {
         let compundedFilter = categoryQuery(outputCategoryList.value[index])
         var list: [LikedItem]?
         repository.queryProperty { [weak self] in
@@ -146,19 +169,24 @@ final class LikedItemViewModel: BaseViewModel {
         } completionHandler: { [weak self] result in
             switch result {
             case .success(let status):
-                self?.filetByCategoryComplition(list, index)
+                self?.filetByCategoryComplition(list, index, isDelete)
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    private func filetByCategoryComplition(_ list: [LikedItem]?, _ index: Int) {
+    private func filetByCategoryComplition(_ list: [LikedItem]?, _ index: Int, _ isDelete: Bool) {
         guard let list else { return }
         outputLikedList.value = list
         outputTotal.value = list.count.formatted(.number) + Resource.Text.myCartTotal
-        let category = outputCategoryList.value.remove(at: index)
-        outputCategoryList.value.insert(category, at: 1)
+        print(#function, "isDelete", isDelete, "index: ", index)
+        if isDelete {
+            fetchCategoryFilter(isDelete)
+        } else {
+            let category = outputCategoryList.value.remove(at: index)
+            outputCategoryList.value.insert(category, at: 1)
+        }
         outputClickedCategory.value = 1
     }
     
@@ -181,10 +209,28 @@ final class LikedItemViewModel: BaseViewModel {
     }
     
     private func deleteComplition(_ inDetailView: Bool, _ status: RepositoryStatus, _ productId: String) {
+        guard let clickedIndex = outputClickedCategory.value else {
+            return
+        }
         if inDetailView {
             outputPopDetaileView.value = ()
         }
-        fetchLikedList()
+        let category = outputCategoryList.value[clickedIndex]
+        var itemCount = 1
+        categoryVector?.forEach{ categoryDict in
+            if categoryDict.keys.contains(category) {
+                itemCount = categoryDict[category] ?? 0
+            }
+        }
+        print(#function, "\(category)(\(itemCount) 개) 삭제")
+        if category == "전체" || itemCount <= 1 {
+            print(#function, "fetchLikedList")
+            fetchLikedList()
+        } else {
+            print(#function, "filterByCategory")
+            filterByCategory(clickedIndex, isDelete: true)
+            
+        }
         outputLikedListResult.value = status
         NotificationCenter.default.post(name: NSNotification.Name("removeLikedItemInMyCart"), object: nil, userInfo: ["productId": productId])
     }
