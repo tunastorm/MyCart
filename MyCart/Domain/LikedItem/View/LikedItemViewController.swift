@@ -54,7 +54,7 @@ final class LikedItemViewController: BaseViewController {
         let horizontalCount = CGFloat(5)
         let verticalCount = CGFloat(1)
         let lineSpacing = CGFloat(10)
-        let itemSpacing = CGFloat(1)
+        let itemSpacing = CGFloat(5)
         let inset = CGFloat(5)
         
         let width = UIScreen.main.bounds.width - (inset * 2) - (itemSpacing * horizontalCount-1)
